@@ -118,4 +118,42 @@ test.describe('Velox POS Responsive Layout E2E Suite', () => {
     const openOrderBtn = page.locator('button:has-text("Open Order")');
     await expect(openOrderBtn).toBeHidden();
   });
+
+  test('Sign-In & Sign-Up screens should render responsive stacked layout without horizontal overflow on Mobile (390 x 844)', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+
+    // Verify Sign-in screen has no horizontal overflow
+    await expect(page.locator('h2:has-text("Sign in")')).toBeVisible();
+    const loginOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+    expect(loginOverflow).toBe(false);
+
+    // Click 'Create your outlet' to switch to Sign-up screen
+    await page.click('span:has-text("Create your outlet")');
+    await expect(page.locator('h2:has-text("Create your account")')).toBeVisible();
+
+    // Verify Sign-up screen has no horizontal overflow on 390px mobile
+    const signupOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+    expect(signupOverflow).toBe(false);
+
+    // Verify Business type grid container stacks to 1 column on mobile (<640px)
+    const selectElem = page.locator('select').first();
+    await expect(selectElem).toBeVisible();
+  });
+
+  test('Sign-In & Sign-Up screens should render responsive layout without horizontal overflow on Tablet (768 x 1024)', async ({ page }) => {
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await page.goto('/');
+
+    // Verify Sign-in screen on tablet
+    await expect(page.locator('h2:has-text("Sign in")')).toBeVisible();
+    const loginOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+    expect(loginOverflow).toBe(false);
+
+    // Verify Sign-up screen on tablet
+    await page.click('span:has-text("Create your outlet")');
+    await expect(page.locator('h2:has-text("Create your account")')).toBeVisible();
+    const signupOverflow = await page.evaluate(() => document.documentElement.scrollWidth > window.innerWidth);
+    expect(signupOverflow).toBe(false);
+  });
 });

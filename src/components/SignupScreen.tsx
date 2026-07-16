@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useViewport } from '../hooks/useViewport';
 
 interface SignupScreenProps {
   onSignup: (businessName: string) => void;
@@ -6,6 +7,7 @@ interface SignupScreenProps {
 }
 
 export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogin }) => {
+  const { isDesktop, isMobile } = useViewport();
   const [businessName, setBusinessName] = useState('');
   const [businessType, setBusinessType] = useState('Warung');
   const [ownerName, setOwnerName] = useState('');
@@ -33,16 +35,17 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
   };
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh', width: '100%' }}>
+    <div style={{ display: 'flex', flexDirection: isDesktop ? 'row' : 'column', minHeight: '100vh', width: '100%' }}>
       <div style={{
-        flex: 1,
+        flex: isDesktop ? 1 : 'none',
         backgroundColor: 'var(--color-velvet)',
         color: '#fff',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        padding: '56px',
-        minWidth: '420px'
+        padding: isDesktop ? '56px' : isMobile ? '28px 20px' : '40px 32px',
+        minWidth: isDesktop ? '420px' : 'auto',
+        gap: isDesktop ? '0' : '24px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{
@@ -67,20 +70,20 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             textTransform: 'uppercase',
             color: '#F8ECE4',
             fontWeight: 600,
-            marginBottom: '16px'
+            marginBottom: isMobile ? '8px' : '16px'
           }}>Get started</div>
           <h1 style={{
-            fontSize: '36px',
+            fontSize: isDesktop ? '36px' : isMobile ? '24px' : '30px',
             lineHeight: 1.18,
             fontWeight: 600,
             margin: '0 0 16px',
-            maxWidth: '380px'
+            maxWidth: isDesktop ? '380px' : '100%'
           }}>Live in under 15 minutes, no assisted onboarding.</h1>
           <p style={{
-            fontSize: '15px',
+            fontSize: isMobile ? '14px' : '15px',
             lineHeight: 1.6,
             color: '#F8ECE4',
-            maxWidth: '360px',
+            maxWidth: isDesktop ? '360px' : '100%',
             margin: 0
           }}>Create your account, add your first menu items, and take your first order today.</p>
         </div>
@@ -91,14 +94,22 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
       </div>
 
       <div style={{
-        flex: 1.1,
+        flex: isDesktop ? 1.1 : 1,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#F6F2EC',
-        padding: '48px 0'
+        padding: isDesktop ? '48px 0' : isMobile ? '24px 16px' : '40px 24px'
       }}>
-        <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '400px', padding: '32px' }}>
+        <form onSubmit={handleSubmit} style={{
+          width: '100%',
+          maxWidth: isDesktop ? '400px' : '480px',
+          padding: isDesktop ? '32px' : isMobile ? '24px 20px' : '32px',
+          backgroundColor: isDesktop ? 'transparent' : '#fff',
+          borderRadius: isDesktop ? '0' : '12px',
+          border: isDesktop ? 'none' : '1px solid var(--color-border)',
+          boxShadow: isDesktop ? 'none' : '0 4px 16px rgba(0,0,0,0.04)'
+        }}>
           <h2 style={{ fontSize: '24px', fontWeight: 600, margin: '0 0 24px' }}>Create your account</h2>
 
           <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
@@ -122,7 +133,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             required
           />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                 Business type
@@ -211,7 +222,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             required
           />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
             <div>
               <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                 Password
