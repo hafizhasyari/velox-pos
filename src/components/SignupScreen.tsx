@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useViewport } from '../hooks/useViewport';
+import { AlertNotification } from './AlertNotification';
 
 interface SignupScreenProps {
   onSignup: (businessName: string) => void;
@@ -8,6 +9,7 @@ interface SignupScreenProps {
 
 export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogin }) => {
   const { isDesktop, isMobile } = useViewport();
+  const [alertInfo, setAlertInfo] = useState<{ title: string; message: string; type?: 'error' | 'warning' } | null>(null);
   const [businessName, setBusinessName] = useState('');
   const [businessType, setBusinessType] = useState('Warung');
   const [ownerName, setOwnerName] = useState('');
@@ -20,17 +22,30 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!businessName.trim() || !ownerName.trim() || !email.trim() || !password) {
-      alert('Please fill in all required fields.');
+      setAlertInfo({
+        title: 'Missing Required Fields',
+        message: 'Please fill in your Business Name, Owner Full Name, Email, and Password before continuing.',
+        type: 'error'
+      });
       return;
     }
     if (password !== confirmPassword) {
-      alert('Passwords do not match.');
+      setAlertInfo({
+        title: 'Password Mismatch',
+        message: 'The confirm password field does not match the password you entered. Please double-check both fields.',
+        type: 'error'
+      });
       return;
     }
     if (!agreeTerms) {
-      alert('Please agree to the Terms of Service and Privacy Policy.');
+      setAlertInfo({
+        title: 'Terms of Service Required',
+        message: 'Please check the box below to agree to the Terms of Service and Privacy Policy before creating your outlet account.',
+        type: 'warning'
+      });
       return;
     }
+    setAlertInfo(null);
     onSignup(businessName.trim());
   };
 
@@ -111,6 +126,15 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
           boxShadow: isDesktop ? 'none' : '0 4px 16px rgba(0,0,0,0.04)'
         }}>
           <h2 style={{ fontSize: '24px', fontWeight: 600, margin: '0 0 24px' }}>Create your account</h2>
+
+          {alertInfo && (
+            <AlertNotification
+              title={alertInfo.title}
+              message={alertInfo.message}
+              type={alertInfo.type}
+              onClose={() => setAlertInfo(null)}
+            />
+          )}
 
           <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
             Business / outlet name
@@ -275,15 +299,27 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             color: 'var(--color-muted)',
             marginBottom: '20px',
             cursor: 'pointer',
-            lineHeight: 1.4
+            lineHeight: 1.4,
+            padding: alertInfo?.title === 'Terms of Service Required' ? '10px 12px' : '0',
+            backgroundColor: alertInfo?.title === 'Terms of Service Required' ? '#FFF8F3' : 'transparent',
+            borderRadius: '6px',
+            border: alertInfo?.title === 'Terms of Service Required' ? '1.5px solid #993C15' : '1.5px solid transparent',
+            transition: 'all 0.25s ease'
           }}>
             <input
               type="checkbox"
               checked={agreeTerms}
-              onChange={(e) => setAgreeTerms(e.target.checked)}
+              onChange={(e) => {
+                setAgreeTerms(e.target.checked);
+                if (alertInfo?.title === 'Terms of Service Required' && e.target.checked) {
+                  setAlertInfo(null);
+                }
+              }}
               style={{ marginTop: '2px' }}
             />
-            <span>I agree to the Terms of Service and Privacy Policy.</span>
+            <span style={{ fontWeight: alertInfo?.title === 'Terms of Service Required' ? 600 : 400, color: alertInfo?.title === 'Terms of Service Required' ? '#993C15' : 'var(--color-muted)' }}>
+              I agree to the Terms of Service and Privacy Policy.
+            </span>
           </label>
 
           <button
