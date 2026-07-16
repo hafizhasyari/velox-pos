@@ -16,7 +16,7 @@ import { useViewport } from './hooks/useViewport';
 import './index.css';
 
 const AppContent: React.FC = () => {
-  const { isMobile } = useViewport();
+  const { isMobile, isTablet, isDesktop } = useViewport();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -347,7 +347,13 @@ const AppContent: React.FC = () => {
       </main>
 
       {/* Floating Microservices E2E Inspector Badge */}
-      <div style={{ position: 'fixed', bottom: '20px', left: '24px', zIndex: 90 }}>
+      <div style={{
+        position: 'fixed',
+        bottom: isMobile ? '80px' : '20px',
+        left: isDesktop ? '240px' : (isTablet ? '84px' : '16px'),
+        zIndex: 90,
+        transition: 'left 0.2s ease, bottom 0.2s ease'
+      }}>
         <button
           onClick={() => setDevModeOpen(!devModeOpen)}
           style={{
