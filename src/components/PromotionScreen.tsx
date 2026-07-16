@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { VoucherPromo } from '../types/pos';
 import { Ticket, Plus, Search, Trash2, Edit, CheckCircle2, XCircle, Percent, X, Tag } from 'lucide-react';
+import { CustomSelect } from './CustomSelect';
 
 interface PromotionScreenProps {
   promotions: VoucherPromo[];
@@ -482,23 +483,15 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#241F18', marginBottom: '6px' }}>
                     Discount Type
                   </label>
-                  <select
+                  <CustomSelect
+                    testId="discount-type-select"
                     value={formType}
-                    onChange={(e) => setFormType(e.target.value as any)}
-                    style={{
-                      width: '100%',
-                      padding: '10.5px 12px',
-                      borderRadius: '7px',
-                      border: '1px solid #D8CEBE',
-                      fontSize: '13.5px',
-                      fontWeight: 600,
-                      backgroundColor: '#fff',
-                      color: '#241F18'
-                    }}
-                  >
-                    <option value="pct">Percentage (%)</option>
-                    <option value="rp">Nominal Rupiah (Rp)</option>
-                  </select>
+                    onChange={(val) => setFormType(val as any)}
+                    options={[
+                      { value: 'pct', label: 'Percentage (%)' },
+                      { value: 'rp', label: 'Nominal Rupiah (Rp)' }
+                    ]}
+                  />
                 </div>
 
                 <div>

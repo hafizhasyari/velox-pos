@@ -3,6 +3,7 @@ import type { Category, MenuItem, ModifierGroup } from '../types/pos';
 import { formatIDR } from '../data/initialData';
 import { Plus, Edit2, Archive, CheckCircle2, X } from 'lucide-react';
 import { AlertNotification } from './AlertNotification';
+import { CustomSelect } from './CustomSelect';
 
 interface MenuScreenProps {
   categories: Category[];
@@ -408,15 +409,12 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                 <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                   Category
                 </label>
-                <select
+                <CustomSelect
+                  testId="category-select"
                   value={editingItem.categoryId || activeCategoryId}
-                  onChange={(e) => setEditingItem({ ...editingItem, categoryId: e.target.value })}
-                  style={{ width: '100%', padding: '10.5px 12px', border: '1px solid #D8CEBE', borderRadius: '7px', fontSize: '13.5px', backgroundColor: '#fff', color: '#241F18' }}
-                >
-                  {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>{cat.name}</option>
-                  ))}
-                </select>
+                  onChange={(val) => setEditingItem({ ...editingItem, categoryId: val })}
+                  options={categories.map((cat) => ({ value: cat.id, label: cat.name }))}
+                />
               </div>
             </div>
 

@@ -75,6 +75,42 @@ select:disabled {
   opacity: 0.7;
 }
 
+/* Custom High-Precision Checkbox Styling */
+input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid #D8CEBE;
+  border-radius: 4.5px;
+  background-color: #fff;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+  vertical-align: middle;
+}
+
+input[type="checkbox"]:hover {
+  border-color: var(--color-velvet);
+}
+
+input[type="checkbox"]:checked {
+  background-color: var(--color-velvet);
+  border-color: var(--color-velvet);
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='3.2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='20 6 9 17 4 12'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 11px 11px;
+}
+
+input[type="checkbox"]:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(162, 63, 29, 0.15);
+}
+
+
 
 button {
   transition: all 0.15s ease;

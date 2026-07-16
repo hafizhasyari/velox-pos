@@ -137,7 +137,7 @@ test.describe('Velox POS Responsive Layout E2E Suite', () => {
     expect(signupOverflow).toBe(false);
 
     // Verify Business type grid container stacks to 1 column on mobile (<640px)
-    const selectElem = page.locator('select').first();
+    const selectElem = page.locator('[role="combobox"]').first();
     await expect(selectElem).toBeVisible();
   });
 

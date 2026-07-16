@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useViewport } from '../hooks/useViewport';
 import { AlertNotification } from './AlertNotification';
+import { CustomSelect } from './CustomSelect';
 
 interface SignupScreenProps {
   onSignup: (businessName: string) => void;
@@ -162,24 +163,17 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
               <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                 Business type
               </label>
-              <select
+              <CustomSelect
+                testId="business-type-select"
                 value={businessType}
-                onChange={(e) => setBusinessType(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '11px 12px',
-                  border: '1px solid #D8CEBE',
-                  borderRadius: '7px',
-                  fontSize: '13.5px',
-                  backgroundColor: '#fff',
-                  color: '#241F18'
-                }}
-              >
-                <option value="Warung">Warung</option>
-                <option value="Kafe">Kafe</option>
-                <option value="Restoran">Restoran</option>
-                <option value="Lainnya">Lainnya</option>
-              </select>
+                onChange={(val) => setBusinessType(val)}
+                options={[
+                  { value: 'Warung', label: 'Warung' },
+                  { value: 'Kafe', label: 'Kafe' },
+                  { value: 'Restoran', label: 'Restoran' },
+                  { value: 'Lainnya', label: 'Lainnya' }
+                ]}
+              />
             </div>
             <div>
               <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>

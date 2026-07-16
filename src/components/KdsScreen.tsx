@@ -27,19 +27,30 @@ export const KdsScreen: React.FC<KdsScreenProps> = ({ tickets, onUpdateStatus })
     const elapsed = getElapsedMinutes(ticket.createdAt);
     const isUrgent = elapsed >= 15 && ticket.status !== 'ready';
 
-    let badgeColor = '#2563EB'; // blue for new
+    let statusBoxBg = 'rgba(37, 99, 235, 0.15)'; // Blue tint for new
+    let statusBorder = '1px solid rgba(37, 99, 235, 0.4)';
+    let statusColor = '#93C5FD'; // blue-300 for >7:1 WCAG AA contrast
+    let statusDot = '#3B82F6';
     let badgeLabel = 'NEW ORDER';
+
     if (ticket.status === 'cooking') {
-      badgeColor = '#F59E0B'; // orange for cooking
-      badgeLabel = 'COOKING';
+      statusBoxBg = 'rgba(245, 158, 11, 0.15)'; // Orange tint for cooking
+      statusBorder = '1px solid rgba(245, 158, 11, 0.4)';
+      statusColor = '#FDE047'; // yellow-300 for >9:1 WCAG AA contrast
+      statusDot = '#F59E0B';
+      badgeLabel = 'COOKING IN PROGRESS';
     } else if (ticket.status === 'ready') {
-      badgeColor = '#10B981'; // green for ready
+      statusBoxBg = 'rgba(16, 185, 129, 0.15)'; // Green tint for ready
+      statusBorder = '1px solid rgba(16, 185, 129, 0.4)';
+      statusColor = '#6EE7B7'; // emerald-300 for >8:1 WCAG AA contrast
+      statusDot = '#10B981';
       badgeLabel = 'READY TO SERVE';
     }
 
     return (
       <div
         key={ticket.id}
+        data-testid={`kds-card-${ticket.ticketNo}`}
         style={{
           backgroundColor: '#2D271F',
           borderRadius: '12px',
@@ -49,47 +60,82 @@ export const KdsScreen: React.FC<KdsScreenProps> = ({ tickets, onUpdateStatus })
           flexDirection: 'column',
           justifyContent: 'space-between',
           color: '#F6F2EC',
-          boxShadow: '0 6px 16px rgba(0,0,0,0.25)',
+          boxShadow: isUrgent ? '0 0 16px rgba(239, 68, 68, 0.25), 0 6px 16px rgba(0,0,0,0.25)' : '0 6px 16px rgba(0,0,0,0.25)',
           position: 'relative'
         }}
       >
         <div>
-          {/* Header */}
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', paddingBottom: '10px', borderBottom: '1px solid #4A4033' }}>
-            <div>
-              <div style={{ fontSize: '18px', fontWeight: 700, color: '#F6F2EC', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span>{ticket.ticketNo}</span>
+          {/* High-Precision Header Container */}
+          <div style={{ marginBottom: '14px', paddingBottom: '12px', borderBottom: '1px solid #4A4033' }}>
+            {/* Row 1: Ticket No + Order Type (Left) vs Precision Timer Pill (Right) */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                <span style={{ fontSize: '20px', fontWeight: 800, color: '#F6F2EC', letterSpacing: '-0.02em', lineHeight: 1 }}>
+                  {ticket.ticketNo}
+                </span>
                 <span style={{
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  padding: '3px 8px',
-                  borderRadius: '12px',
-                  backgroundColor: badgeColor,
-                  color: '#fff',
-                  letterSpacing: '0.04em'
+                  fontSize: '12px',
+                  fontWeight: 600,
+                  padding: '3.5px 8.5px',
+                  borderRadius: '6px',
+                  backgroundColor: '#3E362A',
+                  color: '#D4CAB8',
+                  lineHeight: 1
                 }}>
-                  {badgeLabel}
+                  {ticket.type === 'dinein'
+                    ? `Dine-in • Meja ${ticket.tableNumber ? (ticket.tableNumber < 10 ? '0' + ticket.tableNumber : ticket.tableNumber) : '-'}`
+                    : 'Takeaway / Bungkus'}
                 </span>
               </div>
-              <div style={{ fontSize: '13px', color: '#A89E8E', marginTop: '4px', fontWeight: 500 }}>
-                {ticket.type === 'dinein' ? `Dine-in (Meja ${ticket.tableNumber ? (ticket.tableNumber < 10 ? '0' + ticket.tableNumber : ticket.tableNumber) : '-'})` : 'Takeaway / Bungkus'}
+
+              {/* Precision Elapsed Time Pill */}
+              <div
+                data-testid={`timer-pill-${ticket.ticketNo}`}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '5px',
+                  padding: '4.5px 9px',
+                  borderRadius: '6px',
+                  backgroundColor: isUrgent ? '#7F1D1D' : '#3E362A',
+                  color: isUrgent ? '#FCA5A5' : '#D4CAB8',
+                  border: isUrgent ? '1px solid #EF4444' : '1px solid #5C503D',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  flexShrink: 0,
+                  lineHeight: 1
+                }}
+              >
+                {isUrgent ? <AlertTriangle size={13} color="#EF4444" /> : <Clock size={13} />}
+                <span>{elapsed}m ago</span>
               </div>
             </div>
 
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '4px 8px',
-              borderRadius: '6px',
-              backgroundColor: isUrgent ? '#7F1D1D' : '#3E362A',
-              color: isUrgent ? '#FCA5A5' : '#D4CAB8',
-              fontSize: '12px',
-              fontWeight: 600
-            }}>
-              {isUrgent && <AlertTriangle size={13} color="#EF4444" />}
-              <Clock size={13} />
-              <span>{elapsed}m ago</span>
+            {/* Row 2: Dedicated Full-Width Status Banner Pill */}
+            <div
+              data-testid={`status-banner-${ticket.ticketNo}`}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '7px 11px',
+                borderRadius: '8px',
+                backgroundColor: statusBoxBg,
+                border: statusBorder,
+                color: statusColor,
+                marginTop: '11px',
+                fontSize: '12.5px',
+                fontWeight: 700,
+                letterSpacing: '0.02em'
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: statusDot, boxShadow: `0 0 6px ${statusDot}` }} />
+                <span>{badgeLabel}</span>
+              </div>
+              <span style={{ fontSize: '12px', fontWeight: 700 }}>
+                {ticket.lines.length} {ticket.lines.length === 1 ? 'Item' : 'Items'}
+              </span>
             </div>
           </div>
 

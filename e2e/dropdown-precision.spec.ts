@@ -1,40 +1,52 @@
 import { test, expect } from '@playwright/test';
 
-test.describe('Dropdown Chevron Precision & Alignment Audit Suite', () => {
+test.describe('Custom Select & Checkbox Luxury Theme Audit Suite', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.evaluate(() => localStorage.clear());
     await page.reload();
   });
 
-  test('should verify precise custom chevron styling on Sign-Up Business Type dropdown', async ({ page }) => {
+  test('should verify custom combobox trigger and luxury 10px listbox frame on Sign-Up Business Type', async ({ page }) => {
     // Navigate to Sign-Up page via "Create your outlet"
     await page.click('span:has-text("Create your outlet")');
-    const businessSelect = page.locator('select').first();
-    await expect(businessSelect).toBeVisible();
+    const trigger = page.locator('[data-testid="business-type-select"]');
+    await expect(trigger).toBeVisible();
 
-    // Check computed CSS properties to ensure appearance is reset and custom SVG is present
-    const computedStyles = await businessSelect.evaluate((el) => {
+    // Check trigger properties
+    await expect(trigger).toHaveAttribute('role', 'combobox');
+    await expect(trigger).toHaveAttribute('aria-expanded', 'false');
+
+    // Open dropdown
+    await trigger.click();
+    await expect(trigger).toHaveAttribute('aria-expanded', 'true');
+
+    const listbox = page.locator('[data-testid="business-type-select-options"]');
+    await expect(listbox).toBeVisible();
+    await expect(listbox).toHaveAttribute('role', 'listbox');
+
+    // Verify luxury frame styles (borderRadius 10px, border #D8CEBE, boxShadow)
+    const listboxStyles = await listbox.evaluate((el) => {
       const style = window.getComputedStyle(el);
       return {
-        appearance: style.appearance || style.webkitAppearance,
-        backgroundImage: style.backgroundImage,
-        paddingRight: style.paddingRight,
-        borderRadius: style.borderRadius
+        borderRadius: style.borderRadius,
+        border: style.border,
+        backgroundColor: style.backgroundColor
       };
     });
+    expect(listboxStyles.borderRadius).toBe('10px');
+    expect(listboxStyles.backgroundColor).toBe('rgb(255, 255, 255)');
 
-    expect(computedStyles.appearance).toBe('none');
-    expect(computedStyles.backgroundImage).toContain('data:image/svg+xml');
-    expect(computedStyles.paddingRight).toBe('40px');
-    expect(computedStyles.borderRadius).toBe('7px');
+    // Click an option and verify selection
+    const kafeOption = page.locator('[data-testid="option-Kafe"]');
+    await expect(kafeOption).toBeVisible();
+    await kafeOption.click();
 
-    // Verify option selection works smoothly
-    await businessSelect.selectOption('Kafe');
-    await expect(businessSelect).toHaveValue('Kafe');
+    await expect(listbox).toBeHidden();
+    await expect(trigger).toContainText('Kafe');
   });
 
-  test('should verify precise custom chevron styling on Menu Item Category dropdown', async ({ page }) => {
+  test('should verify custom category select in Menu Item modal and custom checkbox styling', async ({ page }) => {
     // Login as Owner
     await page.click('button:has-text("Sign In")');
     await page.click('button:has-text("Menu")');
@@ -42,24 +54,34 @@ test.describe('Dropdown Chevron Precision & Alignment Audit Suite', () => {
 
     // Open item modal
     await page.click('button:has-text("Item")');
-    const categorySelect = page.locator('select').first();
-    await expect(categorySelect).toBeVisible();
+    const trigger = page.locator('[data-testid="category-select"]');
+    await expect(trigger).toBeVisible();
 
-    const computedStyles = await categorySelect.evaluate((el) => {
+    // Open dropdown and check listbox
+    await trigger.click();
+    const listbox = page.locator('[data-testid="category-select-options"]');
+    await expect(listbox).toBeVisible();
+
+    const firstOption = listbox.locator('[role="option"]').first();
+    await firstOption.click();
+    await expect(listbox).toBeHidden();
+
+    // Also check custom checkbox styling on the "Active on POS" checkbox
+    const activeCheckbox = page.locator('input[type="checkbox"]').first();
+    await expect(activeCheckbox).toBeVisible();
+
+    const checkboxStyles = await activeCheckbox.evaluate((el) => {
       const style = window.getComputedStyle(el);
       return {
         appearance: style.appearance || style.webkitAppearance,
-        backgroundImage: style.backgroundImage,
-        paddingRight: style.paddingRight
+        borderRadius: style.borderRadius
       };
     });
-
-    expect(computedStyles.appearance).toBe('none');
-    expect(computedStyles.backgroundImage).toContain('data:image/svg+xml');
-    expect(computedStyles.paddingRight).toBe('40px');
+    expect(checkboxStyles.appearance).toBe('none');
+    expect(checkboxStyles.borderRadius).toBe('4.5px');
   });
 
-  test('should verify precise custom chevron styling on Promotion Discount Type dropdown', async ({ page }) => {
+  test('should verify custom discount type select in Promotion modal', async ({ page }) => {
     // Login as Owner and navigate to Vouchers / Promo tab
     await page.click('button:has-text("Sign In")');
     await page.click('button:has-text("Vouchers / Promo")');
@@ -68,23 +90,18 @@ test.describe('Dropdown Chevron Precision & Alignment Audit Suite', () => {
     await expect(createPromoBtn).toBeVisible();
     await createPromoBtn.click();
 
-    const discountSelect = page.locator('select').first();
-    await expect(discountSelect).toBeVisible();
+    const trigger = page.locator('[data-testid="discount-type-select"]');
+    await expect(trigger).toBeVisible();
 
-    const computedStyles = await discountSelect.evaluate((el) => {
-      const style = window.getComputedStyle(el);
-      return {
-        appearance: style.appearance || style.webkitAppearance,
-        backgroundImage: style.backgroundImage,
-        paddingRight: style.paddingRight
-      };
-    });
+    await trigger.click();
+    const listbox = page.locator('[data-testid="discount-type-select-options"]');
+    await expect(listbox).toBeVisible();
 
-    expect(computedStyles.appearance).toBe('none');
-    expect(computedStyles.backgroundImage).toContain('data:image/svg+xml');
-    expect(computedStyles.paddingRight).toBe('40px');
+    const rpOption = page.locator('[data-testid="option-rp"]');
+    await expect(rpOption).toBeVisible();
+    await rpOption.click();
 
-    await discountSelect.selectOption('rp');
-    await expect(discountSelect).toHaveValue('rp');
+    await expect(listbox).toBeHidden();
+    await expect(trigger).toContainText('Nominal Rupiah (Rp)');
   });
 });
