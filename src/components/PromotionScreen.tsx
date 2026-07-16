@@ -487,12 +487,13 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                     onChange={(e) => setFormType(e.target.value as any)}
                     style={{
                       width: '100%',
-                      padding: '10px 12px',
-                      borderRadius: '8px',
+                      padding: '10.5px 12px',
+                      borderRadius: '7px',
                       border: '1px solid #D8CEBE',
                       fontSize: '13.5px',
                       fontWeight: 600,
-                      backgroundColor: '#fff'
+                      backgroundColor: '#fff',
+                      color: '#241F18'
                     }}
                   >
                     <option value="pct">Percentage (%)</option>

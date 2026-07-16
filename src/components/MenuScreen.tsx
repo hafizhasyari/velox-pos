@@ -411,7 +411,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                 <select
                   value={editingItem.categoryId || activeCategoryId}
                   onChange={(e) => setEditingItem({ ...editingItem, categoryId: e.target.value })}
-                  style={{ width: '100%', padding: '10px 12px', border: '1px solid #D8CEBE', borderRadius: '7px', fontSize: '13.5px', backgroundColor: '#fff' }}
+                  style={{ width: '100%', padding: '10.5px 12px', border: '1px solid #D8CEBE', borderRadius: '7px', fontSize: '13.5px', backgroundColor: '#fff', color: '#241F18' }}
                 >
                   {categories.map((cat) => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>

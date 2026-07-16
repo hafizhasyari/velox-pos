@@ -169,7 +169,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
                   width: '100%',
                   padding: '11px 12px',
                   border: '1px solid #D8CEBE',
-                  borderRadius: '6px',
+                  borderRadius: '7px',
                   fontSize: '13.5px',
                   backgroundColor: '#fff',
                   color: '#241F18'
