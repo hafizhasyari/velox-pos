@@ -127,12 +127,12 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
       <div style={{ padding: '24px 32px 20px', borderBottom: '1px solid #E6DFD3', backgroundColor: '#FBF8F3', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: '#F3E3D8', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C1522A' }}>
+            <div style={{ width: '36px', height: '36px', borderRadius: '10px', backgroundColor: '#F3E3D8', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-velvet)' }}>
               <Ticket size={20} />
             </div>
             <div>
               <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#241F18', margin: 0 }}>Voucher & Promo Management</h1>
-              <p style={{ fontSize: '13px', color: '#7A7062', margin: 0 }}>Create promotional campaigns and set minimum spend thresholds</p>
+              <p style={{ fontSize: '13px', color: 'var(--color-muted)', margin: 0 }}>Create promotional campaigns and set minimum spend thresholds</p>
             </div>
           </div>
         </div>
@@ -140,7 +140,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
           onClick={handleOpenCreateModal}
           style={{
             padding: '10px 18px',
-            backgroundColor: '#C1522A',
+            backgroundColor: 'var(--color-velvet)',
             color: '#fff',
             border: 'none',
             borderRadius: '8px',
@@ -154,7 +154,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
             transition: 'background-color 0.15s ease'
           }}
           onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#A64320'}
-          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#C1522A'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'var(--color-velvet)'}
         >
           <Plus size={16} />
           Create New Voucher
@@ -167,7 +167,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
         <div className="responsive-grid-3" style={{ marginBottom: '24px' }}>
           <div style={{ backgroundColor: '#fff', borderRadius: '12px', padding: '18px 20px', border: '1px solid #E6DFD3', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#7A7062', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Total Vouchers</div>
+              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Total Vouchers</div>
               <div className="tnum" style={{ fontSize: '26px', fontWeight: 800, color: '#241F18', marginTop: '4px' }}>{totalCount}</div>
             </div>
             <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#F6F2EC', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#241F18' }}>
@@ -177,7 +177,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
 
           <div style={{ backgroundColor: '#fff', borderRadius: '12px', padding: '18px 20px', border: '1px solid #E6DFD3', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#7A7062', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Active Campaigns</div>
+              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Active Campaigns</div>
               <div className="tnum" style={{ fontSize: '26px', fontWeight: 800, color: '#16A34A', marginTop: '4px' }}>{activeCount}</div>
             </div>
             <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#EBFEF2', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#16A34A' }}>
@@ -187,10 +187,10 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
 
           <div style={{ backgroundColor: '#fff', borderRadius: '12px', padding: '18px 20px', border: '1px solid #E6DFD3', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <div>
-              <div style={{ fontSize: '12px', fontWeight: 600, color: '#7A7062', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Max Discount Ratio</div>
-              <div className="tnum" style={{ fontSize: '26px', fontWeight: 800, color: '#C1522A', marginTop: '4px' }}>{maxDiscount}%</div>
+              <div style={{ fontSize: '12px', fontWeight: 600, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>Max Discount Ratio</div>
+              <div className="tnum" style={{ fontSize: '26px', fontWeight: 800, color: 'var(--color-velvet)', marginTop: '4px' }}>{maxDiscount}%</div>
             </div>
-            <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#FFF0E6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C1522A' }}>
+            <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#FFF0E6', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-velvet)' }}>
               <Percent size={22} />
             </div>
           </div>
@@ -199,7 +199,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
         {/* Search and Filters */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px', gap: '16px' }}>
           <div style={{ position: 'relative', width: '320px' }}>
-            <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: '#7A7062' }} />
+            <Search size={16} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-muted)' }} />
             <input
               type="text"
               placeholder="Search code or description..."
@@ -228,7 +228,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                   borderRadius: '6px',
                   border: 'none',
                   backgroundColor: filterStatus === s ? '#fff' : 'transparent',
-                  color: filterStatus === s ? '#241F18' : '#7A7062',
+                  color: filterStatus === s ? '#241F18' : 'var(--color-muted)',
                   fontWeight: filterStatus === s ? 700 : 600,
                   fontSize: '12.5px',
                   cursor: 'pointer',
@@ -270,7 +270,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                     padding: '4px 10px',
                     borderRadius: '6px',
                     backgroundColor: promo.active ? '#FFF0E6' : '#F6F2EC',
-                    color: promo.active ? '#C1522A' : '#7A7062',
+                    color: promo.active ? 'var(--color-velvet)' : 'var(--color-muted)',
                     border: `1px dashed ${promo.active ? '#F3B49E' : '#D8CEBE'}`,
                     letterSpacing: '0.05em'
                   }}>
@@ -284,7 +284,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                       borderRadius: '20px',
                       border: 'none',
                       backgroundColor: promo.active ? '#EBFEF2' : '#F6F2EC',
-                      color: promo.active ? '#16A34A' : '#7A7062',
+                      color: promo.active ? '#16A34A' : 'var(--color-muted)',
                       fontSize: '11.5px',
                       fontWeight: 700,
                       cursor: 'pointer',
@@ -302,7 +302,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                   {promo.label}
                 </div>
 
-                <div style={{ fontSize: '12.5px', color: '#7A7062', display: 'flex', alignItems: 'center', gap: '16px', marginTop: '12px', padding: '10px 12px', backgroundColor: '#FBF8F3', borderRadius: '8px' }}>
+                <div style={{ fontSize: '12.5px', color: 'var(--color-muted)', display: 'flex', alignItems: 'center', gap: '16px', marginTop: '12px', padding: '10px 12px', backgroundColor: '#FBF8F3', borderRadius: '8px' }}>
                   <div>
                     <span style={{ fontSize: '11px', textTransform: 'uppercase', display: 'block', color: '#8E8271' }}>Discount</span>
                     <strong style={{ color: '#241F18' }}>
@@ -369,7 +369,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
             <div style={{ gridColumn: '1 / -1', padding: '60px 20px', textAlign: 'center', backgroundColor: '#fff', borderRadius: '12px', border: '1px dashed #D8CEBE' }}>
               <Ticket size={40} style={{ color: '#D8CEBE', margin: '0 auto 12px' }} />
               <div style={{ fontSize: '16px', fontWeight: 700, color: '#241F18' }}>No promotions found</div>
-              <p style={{ fontSize: '13px', color: '#7A7062', marginTop: '4px' }}>Try adjusting your search filters or create your first campaign.</p>
+              <p style={{ fontSize: '13px', color: 'var(--color-muted)', marginTop: '4px' }}>Try adjusting your search filters or create your first campaign.</p>
             </div>
           )}
         </div>
@@ -381,14 +381,14 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
           <div className="responsive-modal-box" style={{ backgroundColor: '#fff', borderRadius: '16px', width: 'min(94vw, 540px)', border: '1px solid #E6DFD3', boxShadow: '0 20px 40px rgba(0,0,0,0.15)', overflow: 'hidden' }}>
             <div style={{ padding: '20px 24px', borderBottom: '1px solid #E6DFD3', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FBF8F3' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Ticket size={18} style={{ color: '#C1522A' }} />
+                <Ticket size={18} style={{ color: 'var(--color-velvet)' }} />
                 <h3 style={{ fontSize: '16px', fontWeight: 800, margin: 0 }}>
                   {editingPromo ? `Edit Voucher "${editingPromo.code}"` : 'Create New Promo Voucher'}
                 </h3>
               </div>
               <button
                 onClick={() => setIsModalOpen(false)}
-                style={{ border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: '#7A7062' }}
+                style={{ border: 'none', backgroundColor: 'transparent', cursor: 'pointer', color: 'var(--color-muted)' }}
               >
                 <X size={20} />
               </button>
@@ -422,7 +422,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                       fontWeight: 700,
                       textTransform: 'uppercase',
                       backgroundColor: editingPromo ? '#F6F2EC' : '#fff',
-                      color: editingPromo ? '#7A7062' : '#241F18'
+                      color: editingPromo ? 'var(--color-muted)' : '#241F18'
                     }}
                   />
                   {editingPromo && <span style={{ fontSize: '11px', color: '#8E8271' }}>Code cannot be modified once created</span>}
@@ -441,7 +441,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                       borderRadius: '8px',
                       border: '1px solid #D8CEBE',
                       backgroundColor: formActive ? '#EBFEF2' : '#F6F2EC',
-                      color: formActive ? '#16A34A' : '#7A7062',
+                      color: formActive ? '#16A34A' : 'var(--color-muted)',
                       fontWeight: 700,
                       fontSize: '13.5px',
                       cursor: 'pointer',
@@ -549,10 +549,10 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '12px 14px', backgroundColor: '#fff', borderRadius: '8px', border: '1px solid #E6DFD3' }}>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 800, padding: '2px 6px', borderRadius: '4px', backgroundColor: '#FFF0E6', color: '#C1522A' }}>
+                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', fontWeight: 800, padding: '2px 6px', borderRadius: '4px', backgroundColor: '#FFF0E6', color: 'var(--color-velvet)' }}>
                         {formCode || 'PROMO_CODE'}
                       </span>
-                      <span style={{ fontSize: '11px', color: '#7A7062' }}>
+                      <span style={{ fontSize: '11px', color: 'var(--color-muted)' }}>
                         Min. {formatIDR(Number(formMinSpend) || 0)}
                       </span>
                     </div>
@@ -563,7 +563,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                   <button
                     type="button"
                     disabled
-                    style={{ padding: '6px 14px', borderRadius: '6px', border: 'none', backgroundColor: '#C1522A', color: '#fff', fontWeight: 700, fontSize: '12px' }}
+                    style={{ padding: '6px 14px', borderRadius: '6px', border: 'none', backgroundColor: 'var(--color-velvet)', color: '#fff', fontWeight: 700, fontSize: '12px' }}
                   >
                     Use
                   </button>
@@ -581,7 +581,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                 <button
                   type="submit"
                   disabled={isSaving}
-                  style={{ padding: '10px 22px', borderRadius: '8px', border: 'none', backgroundColor: '#C1522A', color: '#fff', fontWeight: 700, fontSize: '13.5px', cursor: 'pointer', boxShadow: '0 2px 6px rgba(193,82,42,0.25)' }}
+                  style={{ padding: '10px 22px', borderRadius: '8px', border: 'none', backgroundColor: 'var(--color-velvet)', color: '#fff', fontWeight: 700, fontSize: '13.5px', cursor: 'pointer', boxShadow: '0 2px 6px rgba(193,82,42,0.25)' }}
                 >
                   {isSaving ? 'Saving...' : 'Save Voucher'}
                 </button>

@@ -36,7 +36,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
     <div style={{ display: 'flex', minHeight: '100vh', width: '100%' }}>
       <div style={{
         flex: 1,
-        backgroundColor: '#C1522A',
+        backgroundColor: 'var(--color-velvet)',
         color: '#fff',
         display: 'flex',
         flexDirection: 'column',
@@ -65,7 +65,8 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             fontSize: '12px',
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
-            opacity: 0.75,
+            color: '#F8ECE4',
+            fontWeight: 600,
             marginBottom: '16px'
           }}>Get started</div>
           <h1 style={{
@@ -78,13 +79,13 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
           <p style={{
             fontSize: '15px',
             lineHeight: 1.6,
-            opacity: 0.85,
+            color: '#F8ECE4',
             maxWidth: '360px',
             margin: 0
           }}>Create your account, add your first menu items, and take your first order today.</p>
         </div>
 
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', opacity: 0.55 }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12.5px', color: '#F8ECE4', fontWeight: 500 }}>
           Built for Indonesian UMKM F&amp;B outlets
         </div>
       </div>
@@ -100,7 +101,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
         <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '400px', padding: '32px' }}>
           <h2 style={{ fontSize: '24px', fontWeight: 600, margin: '0 0 24px' }}>Create your account</h2>
 
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
             Business / outlet name
           </label>
           <input
@@ -123,7 +124,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                 Business type
               </label>
               <select
@@ -146,7 +147,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
               </select>
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                 Owner full name
               </label>
               <input
@@ -168,7 +169,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             </div>
           </div>
 
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
             Email
           </label>
           <input
@@ -189,7 +190,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             required
           />
 
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
             Phone number
           </label>
           <input
@@ -212,7 +213,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
 
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '16px' }}>
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                 Password
               </label>
               <input
@@ -233,7 +234,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
               />
             </div>
             <div>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                 Confirm password
               </label>
               <input
@@ -260,7 +261,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             alignItems: 'flex-start',
             gap: '8px',
             fontSize: '12.5px',
-            color: '#7A7062',
+            color: 'var(--color-muted)',
             marginBottom: '20px',
             cursor: 'pointer',
             lineHeight: 1.4
@@ -279,7 +280,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             style={{
               width: '100%',
               padding: '13px',
-              backgroundColor: '#C1522A',
+              backgroundColor: 'var(--color-velvet)',
               color: '#fff',
               border: 'none',
               borderRadius: '6px',
@@ -291,11 +292,11 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             Create account
           </button>
 
-          <div style={{ textAlign: 'center', marginTop: '18px', fontSize: '12.5px', color: '#7A7062' }}>
+          <div style={{ textAlign: 'center', marginTop: '18px', fontSize: '12.5px', color: 'var(--color-muted)' }}>
             Already have an account?{' '}
             <span
               onClick={onGoToLogin}
-              style={{ color: '#C1522A', fontWeight: 600, cursor: 'pointer' }}
+              style={{ color: 'var(--color-velvet)', fontWeight: 600, cursor: 'pointer' }}
             >
               Sign in
             </span>

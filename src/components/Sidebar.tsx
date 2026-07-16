@@ -55,7 +55,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               width: '26px',
               height: '26px',
               borderRadius: '6px',
-              backgroundColor: '#C1522A',
+              backgroundColor: 'var(--color-velvet)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -66,7 +66,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               V
             </div>
             <span style={{ fontSize: '16px', fontWeight: 700, letterSpacing: '-0.01em' }}>Velox</span>
-            <span style={{ fontSize: '11px', color: '#A79C8A', backgroundColor: '#E6DFD3', padding: '2px 6px', borderRadius: '4px', textTransform: 'capitalize' }}>
+            <span style={{ fontSize: '11px', color: 'var(--color-placeholder)', backgroundColor: '#E6DFD3', padding: '2px 6px', borderRadius: '4px', textTransform: 'capitalize' }}>
               {role}
             </span>
           </div>
@@ -82,7 +82,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               border: '1px solid #E6DFD3',
               borderRadius: '6px',
               fontSize: '11.5px',
-              color: '#7A7062',
+              color: 'var(--color-muted)',
               cursor: 'pointer'
             }}
           >
@@ -123,7 +123,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   height: '100%',
                   border: 'none',
                   backgroundColor: 'transparent',
-                  color: isActive ? '#C1522A' : '#7A7062',
+                  color: isActive ? 'var(--color-velvet)' : 'var(--color-muted)',
                   cursor: 'pointer'
                 }}
               >
@@ -155,7 +155,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
           width: '28px',
           height: '28px',
           borderRadius: '7px',
-          backgroundColor: '#C1522A',
+          backgroundColor: 'var(--color-velvet)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -190,7 +190,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 cursor: 'pointer',
                 textAlign: 'left',
                 backgroundColor: isActive ? '#F3E3D8' : 'transparent',
-                color: isActive ? '#C1522A' : '#7A7062'
+                color: isActive ? 'var(--color-velvet)' : 'var(--color-muted)'
               }}
               title={isTablet ? item.label : ''}
             >
@@ -207,7 +207,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             width: '28px',
             height: '28px',
             borderRadius: '50%',
-            backgroundColor: '#C1522A',
+            backgroundColor: 'var(--color-velvet)',
             color: '#fff',
             display: 'flex',
             alignItems: 'center',
@@ -223,7 +223,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
               <div style={{ fontSize: '12.5px', fontWeight: 600, textTransform: 'capitalize' }}>
                 {role}
               </div>
-              <div style={{ fontSize: '10.5px', color: '#A79C8A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+              <div style={{ fontSize: '10.5px', color: 'var(--color-placeholder)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                 {tenantName}
               </div>
             </div>
@@ -242,7 +242,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             border: '1px solid #E6DFD3',
             borderRadius: '7px',
             fontSize: '12.5px',
-            color: '#7A7062',
+            color: 'var(--color-muted)',
             cursor: 'pointer'
           }}
           title="Sign out"

@@ -253,14 +253,14 @@ const AppContent: React.FC = () => {
         justifyContent: 'center'
       }}>
         {loading && (
-          <div style={{ padding: '48px', color: '#7A7062', fontSize: '15px', fontWeight: 600 }}>
+          <div style={{ padding: '48px', color: 'var(--color-muted)', fontSize: '15px', fontWeight: 600 }}>
             Syncing with Velox Microservices Gateway...
           </div>
         )}
 
         {!loading && error && (
           <div style={{ padding: '48px', maxWidth: '600px', width: '100%' }}>
-            <div style={{ backgroundColor: '#F6E3DE', border: '1px solid #9C2B2B', padding: '20px', borderRadius: '10px', color: '#9C2B2B' }}>
+            <div style={{ backgroundColor: '#F6E3DE', border: '1px solid var(--color-danger-text)', padding: '20px', borderRadius: '10px', color: 'var(--color-danger-text)' }}>
               <h3 style={{ margin: '0 0 8px', fontSize: '16px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <AlertTriangle size={20} />
                 Microservices Gateway Error
@@ -270,7 +270,7 @@ const AppContent: React.FC = () => {
                 onClick={refreshAllData}
                 style={{
                   padding: '9px 16px',
-                  backgroundColor: '#9C2B2B',
+                  backgroundColor: 'var(--color-danger-text)',
                   color: '#fff',
                   border: 'none',
                   borderRadius: '6px',
@@ -356,7 +356,7 @@ const AppContent: React.FC = () => {
             gap: '8px',
             padding: '9px 15px',
             borderRadius: '30px',
-            backgroundColor: isSimulatedError ? '#9C2B2B' : '#241F18',
+            backgroundColor: isSimulatedError ? 'var(--color-danger-text)' : '#241F18',
             color: '#fff',
             border: '1px solid rgba(255,255,255,0.15)',
             fontSize: '12px',
@@ -384,15 +384,15 @@ const AppContent: React.FC = () => {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', borderBottom: '1px solid #3A332A', paddingBottom: '10px' }}>
               <span style={{ fontSize: '13.5px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '6px' }}>
-                <Server size={16} color="#C1522A" />
+                <Server size={16} color="var(--color-velvet)" />
                 Phase 1 Service Gateway
               </span>
-              <span style={{ fontSize: '10px', backgroundColor: '#3A332A', padding: '3px 7px', borderRadius: '4px', color: '#4C7A4A' }}>
+              <span style={{ fontSize: '10px', backgroundColor: '#3A332A', padding: '3px 7px', borderRadius: '4px', color: 'var(--color-success-text)' }}>
                 8 Active Adapters
               </span>
             </div>
 
-            <div style={{ fontSize: '12px', color: '#A79C8A', marginBottom: '16px', lineHeight: 1.5 }}>
+            <div style={{ fontSize: '12px', color: 'var(--color-placeholder)', marginBottom: '16px', lineHeight: 1.5 }}>
               All UI actions are routed through modular async Service Adapters (`/api/v1/*`) backed by LocalStorage (`velox_db_v1`) to test end-to-end microservice readiness.
             </div>
 
@@ -404,7 +404,7 @@ const AppContent: React.FC = () => {
                   padding: '9px',
                   borderRadius: '6px',
                   border: '1px solid #4D4539',
-                  backgroundColor: isSimulatedError ? '#9C2B2B' : '#3A332A',
+                  backgroundColor: isSimulatedError ? 'var(--color-danger-text)' : '#3A332A',
                   color: '#fff',
                   fontSize: '12px',
                   fontWeight: 600,
@@ -465,7 +465,7 @@ const AppContent: React.FC = () => {
           gap: '8px',
           animation: 'voToast 3.2s ease forwards'
         }}>
-          <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#C1522A' }} />
+          <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--color-velvet)' }} />
           <span>{toastMessage}</span>
         </div>
       )}

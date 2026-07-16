@@ -46,7 +46,7 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
     <div style={{ padding: '32px 36px', maxWidth: '1180px', width: '100%' }}>
       <div style={{ marginBottom: '24px' }}>
         <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 4px' }}>Shift Reconciliation</h1>
-        <div style={{ fontSize: '13px', color: '#7A7062' }}>Manage cashier drawer cash, open/close shift, and reconcile variances</div>
+        <div style={{ fontSize: '13px', color: 'var(--color-muted)' }}>Manage cashier drawer cash, open/close shift, and reconcile variances</div>
       </div>
 
       <div className="responsive-grid-2" style={{ gap: '20px', alignItems: 'start' }}>
@@ -54,7 +54,7 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
         <div style={{ backgroundColor: '#fff', border: '1px solid #E6DFD3', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(36,31,24,0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
             <span style={{ fontSize: '15px', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Clock size={18} color="#C1522A" />
+              <Clock size={18} color="var(--color-velvet)" />
               Current Drawer Status
             </span>
             <span style={{
@@ -63,7 +63,7 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
               padding: '3px 8px',
               borderRadius: '5px',
               backgroundColor: shiftOpen ? '#E7EFE4' : '#F1ECE3',
-              color: shiftOpen ? '#4C7A4A' : '#7A7062',
+              color: shiftOpen ? 'var(--color-success-text)' : 'var(--color-muted)',
               display: 'flex',
               alignItems: 'center',
               gap: '4px'
@@ -75,10 +75,10 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
 
           {!shiftOpen ? (
             <form onSubmit={handleOpenSubmit}>
-              <p style={{ fontSize: '13px', color: '#7A7062', lineHeight: 1.5, marginBottom: '20px' }}>
+              <p style={{ fontSize: '13px', color: 'var(--color-muted)', lineHeight: 1.5, marginBottom: '20px' }}>
                 Open a new cashier shift by entering the starting petty cash in the drawer. Orders can only be processed when a shift is active.
               </p>
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                 Opening Cash Drawer Amount (Rp)
               </label>
               <input
@@ -103,7 +103,7 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
                   padding: '13px',
                   borderRadius: '8px',
                   border: 'none',
-                  backgroundColor: '#C1522A',
+                  backgroundColor: 'var(--color-velvet)',
                   color: '#fff',
                   fontSize: '14px',
                   fontWeight: 700,
@@ -118,20 +118,20 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
             <form onSubmit={handleCloseSubmit}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', backgroundColor: '#FBF8F3', border: '1px solid #E6DFD3', borderRadius: '8px', padding: '16px', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
-                  <span style={{ color: '#7A7062' }}>Opening Cash</span>
+                  <span style={{ color: 'var(--color-muted)' }}>Opening Cash</span>
                   <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{formatIDR(shiftOpeningCash)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
-                  <span style={{ color: '#7A7062' }}>Cash Sales Taken</span>
-                  <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: '#4C7A4A' }}>+{formatIDR(shiftExpectedCash - shiftOpeningCash)}</span>
+                  <span style={{ color: 'var(--color-muted)' }}>Cash Sales Taken</span>
+                  <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, color: 'var(--color-success-text)' }}>+{formatIDR(shiftExpectedCash - shiftOpeningCash)}</span>
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14.5px', fontWeight: 700, borderTop: '1px solid #E6DFD3', paddingTop: '10px' }}>
                   <span>Expected Cash Drawer</span>
-                  <span className="tnum" style={{ fontFamily: 'var(--font-mono)', color: '#C1522A' }}>{formatIDR(shiftExpectedCash)}</span>
+                  <span className="tnum" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-velvet)' }}>{formatIDR(shiftExpectedCash)}</span>
                 </div>
               </div>
 
-              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                 Actual Counted Cash in Drawer (Rp)
               </label>
               <input
@@ -156,7 +156,7 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
                   padding: '12px 14px',
                   borderRadius: '7px',
                   backgroundColor: varianceVal === 0 ? '#E7EFE4' : '#F6E3DE',
-                  color: varianceVal === 0 ? '#4C7A4A' : '#9C2B2B',
+                  color: varianceVal === 0 ? 'var(--color-success-text)' : 'var(--color-danger-text)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
@@ -199,7 +199,7 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
           <div style={{ fontSize: '15px', fontWeight: 700, marginBottom: '18px' }}>Past Shift Reconciliations</div>
 
           <div style={{ border: '1px solid #E6DFD3', borderRadius: '8px', overflow: 'hidden' }}>
-            <div style={{ display: 'flex', backgroundColor: '#FBF8F3', padding: '10px 14px', fontSize: '11px', fontWeight: 600, color: '#A79C8A', textTransform: 'uppercase', letterSpacing: '0.03em', borderBottom: '1px solid #E6DFD3' }}>
+            <div style={{ display: 'flex', backgroundColor: '#FBF8F3', padding: '10px 14px', fontSize: '11px', fontWeight: 600, color: 'var(--color-placeholder)', textTransform: 'uppercase', letterSpacing: '0.03em', borderBottom: '1px solid #E6DFD3' }}>
               <span style={{ flex: 1.2 }}>Shift Date</span>
               <span style={{ flex: 1 }}>Opening</span>
               <span style={{ flex: 1 }}>Expected</span>
@@ -221,7 +221,7 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
                     padding: '2px 6px',
                     borderRadius: '4px',
                     backgroundColor: h.variance === 0 ? '#E7EFE4' : '#F6E3DE',
-                    color: h.variance === 0 ? '#4C7A4A' : '#9C2B2B'
+                    color: h.variance === 0 ? 'var(--color-success-text)' : 'var(--color-danger-text)'
                   }}>
                     {h.variance === 0 ? 'Rp0' : `${h.variance > 0 ? '+' : ''}${formatIDR(h.variance)}`}
                   </span>

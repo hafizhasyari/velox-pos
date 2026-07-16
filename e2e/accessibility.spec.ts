@@ -21,7 +21,7 @@ test.describe('Accessibility Audit Suite', () => {
       .withTags(['wcag2a', 'wcag2aa'])
       .analyze();
 
-    const critical = results.violations.filter(v => v.impact === 'critical');
+    const criticalOrContrast = results.violations.filter(v => v.impact === 'critical' || v.id === 'color-contrast');
     if (results.violations.length > 0) {
       console.log('Login a11y violations:', results.violations.map(v => ({
         id: v.id,
@@ -30,7 +30,7 @@ test.describe('Accessibility Audit Suite', () => {
         nodes: v.nodes.length,
       })));
     }
-    expect(critical).toHaveLength(0);
+    expect(criticalOrContrast).toHaveLength(0);
   });
 
   test('Dashboard should have no critical a11y violations', async ({ page }) => {
@@ -41,7 +41,7 @@ test.describe('Accessibility Audit Suite', () => {
       .withTags(['wcag2a', 'wcag2aa'])
       .analyze();
 
-    const critical = results.violations.filter(v => v.impact === 'critical');
+    const criticalOrContrast = results.violations.filter(v => v.impact === 'critical' || v.id === 'color-contrast');
     if (results.violations.length > 0) {
       console.log('Dashboard a11y violations:', results.violations.map(v => ({
         id: v.id,
@@ -50,7 +50,7 @@ test.describe('Accessibility Audit Suite', () => {
         nodes: v.nodes.length,
       })));
     }
-    expect(critical).toHaveLength(0);
+    expect(criticalOrContrast).toHaveLength(0);
   });
 
   test('POS screen should have no critical a11y violations', async ({ page }) => {
@@ -61,7 +61,7 @@ test.describe('Accessibility Audit Suite', () => {
       .withTags(['wcag2a', 'wcag2aa'])
       .analyze();
 
-    const critical = results.violations.filter(v => v.impact === 'critical');
+    const criticalOrContrast = results.violations.filter(v => v.impact === 'critical' || v.id === 'color-contrast');
     if (results.violations.length > 0) {
       console.log('POS a11y violations:', results.violations.map(v => ({
         id: v.id,
@@ -70,7 +70,7 @@ test.describe('Accessibility Audit Suite', () => {
         nodes: v.nodes.length,
       })));
     }
-    expect(critical).toHaveLength(0);
+    expect(criticalOrContrast).toHaveLength(0);
   });
 
   test('Menu Management should have no critical a11y violations', async ({ page }) => {
@@ -81,7 +81,7 @@ test.describe('Accessibility Audit Suite', () => {
       .withTags(['wcag2a', 'wcag2aa'])
       .analyze();
 
-    const critical = results.violations.filter(v => v.impact === 'critical');
+    const criticalOrContrast = results.violations.filter(v => v.impact === 'critical' || v.id === 'color-contrast');
     if (results.violations.length > 0) {
       console.log('Menu a11y violations:', results.violations.map(v => ({
         id: v.id,
@@ -90,7 +90,7 @@ test.describe('Accessibility Audit Suite', () => {
         nodes: v.nodes.length,
       })));
     }
-    expect(critical).toHaveLength(0);
+    expect(criticalOrContrast).toHaveLength(0);
   });
 
   test('KDS should have no critical a11y violations', async ({ page }) => {
@@ -101,7 +101,7 @@ test.describe('Accessibility Audit Suite', () => {
       .withTags(['wcag2a', 'wcag2aa'])
       .analyze();
 
-    const critical = results.violations.filter(v => v.impact === 'critical');
+    const criticalOrContrast = results.violations.filter(v => v.impact === 'critical' || v.id === 'color-contrast');
     if (results.violations.length > 0) {
       console.log('KDS a11y violations:', results.violations.map(v => ({
         id: v.id,
@@ -110,7 +110,7 @@ test.describe('Accessibility Audit Suite', () => {
         nodes: v.nodes.length,
       })));
     }
-    expect(critical).toHaveLength(0);
+    expect(criticalOrContrast).toHaveLength(0);
   });
 
   test('Shift Reconciliation should have no critical a11y violations', async ({ page }) => {
@@ -121,7 +121,7 @@ test.describe('Accessibility Audit Suite', () => {
       .withTags(['wcag2a', 'wcag2aa'])
       .analyze();
 
-    const critical = results.violations.filter(v => v.impact === 'critical');
+    const criticalOrContrast = results.violations.filter(v => v.impact === 'critical' || v.id === 'color-contrast');
     if (results.violations.length > 0) {
       console.log('Shift a11y violations:', results.violations.map(v => ({
         id: v.id,
@@ -130,6 +130,6 @@ test.describe('Accessibility Audit Suite', () => {
         nodes: v.nodes.length,
       })));
     }
-    expect(critical).toHaveLength(0);
+    expect(criticalOrContrast).toHaveLength(0);
   });
 });

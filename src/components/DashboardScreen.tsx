@@ -32,7 +32,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ tenantName }) 
     return {
       label: `${up ? '+' : ''}${v.toFixed(1)}%`,
       bg: up ? '#E7EFE4' : '#F6E3DE',
-      color: up ? '#4C7A4A' : '#9C2B2B'
+      color: up ? 'var(--color-success-text)' : 'var(--color-danger-text)'
     };
   };
 
@@ -47,8 +47,8 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ tenantName }) 
     fontSize: '12.5px',
     fontWeight: 600,
     cursor: 'pointer' as const,
-    backgroundColor: period === p ? '#C1522A' : 'transparent',
-    color: period === p ? '#fff' : '#7A7062'
+    backgroundColor: period === p ? 'var(--color-velvet)' : 'transparent',
+    color: period === p ? '#fff' : 'var(--color-muted)'
   });
 
   const topStyles = (v: string) => ({
@@ -59,7 +59,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ tenantName }) 
     fontWeight: 600,
     cursor: 'pointer' as const,
     backgroundColor: topView === v ? '#241F18' : 'transparent',
-    color: topView === v ? '#fff' : '#7A7062'
+    color: topView === v ? '#fff' : 'var(--color-muted)'
   });
 
   return (
@@ -67,7 +67,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ tenantName }) 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
         <div>
           <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 4px' }}>Dashboard</h1>
-          <div style={{ fontSize: '13px', color: '#7A7062' }}>Sales overview for {tenantName}</div>
+          <div style={{ fontSize: '13px', color: 'var(--color-muted)' }}>Sales overview for {tenantName}</div>
         </div>
         <div style={{ display: 'flex', gap: '6px', backgroundColor: '#FBF8F3', border: '1px solid #E6DFD3', borderRadius: '8px', padding: '4px' }}>
           <button onClick={() => setPeriod('today')} style={periodStyles('today')}>Today</button>
@@ -79,8 +79,8 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ tenantName }) 
       <div className="responsive-grid-3" style={{ marginBottom: '20px' }}>
         <div style={{ backgroundColor: '#fff', border: '1px solid #E6DFD3', borderRadius: '10px', padding: '20px', boxShadow: '0 1px 3px rgba(36,31,24,0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-            <span style={{ fontSize: '12.5px', color: '#7A7062', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <DollarSign size={15} color="#C1522A" />
+            <span style={{ fontSize: '12.5px', color: 'var(--color-muted)', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <DollarSign size={15} color="var(--color-velvet)" />
               Revenue
             </span>
             <span style={{ fontSize: '11.5px', fontWeight: 700, padding: '2px 7px', borderRadius: '5px', backgroundColor: revB.bg, color: revB.color }}>
@@ -94,8 +94,8 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ tenantName }) 
 
         <div style={{ backgroundColor: '#fff', border: '1px solid #E6DFD3', borderRadius: '10px', padding: '20px', boxShadow: '0 1px 3px rgba(36,31,24,0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-            <span style={{ fontSize: '12.5px', color: '#7A7062', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <ShoppingBag size={15} color="#C1522A" />
+            <span style={{ fontSize: '12.5px', color: 'var(--color-muted)', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <ShoppingBag size={15} color="var(--color-velvet)" />
               Orders
             </span>
             <span style={{ fontSize: '11.5px', fontWeight: 700, padding: '2px 7px', borderRadius: '5px', backgroundColor: ordB.bg, color: ordB.color }}>
@@ -109,8 +109,8 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ tenantName }) 
 
         <div style={{ backgroundColor: '#fff', border: '1px solid #E6DFD3', borderRadius: '10px', padding: '20px', boxShadow: '0 1px 3px rgba(36,31,24,0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-            <span style={{ fontSize: '12.5px', color: '#7A7062', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <TrendingUp size={15} color="#C1522A" />
+            <span style={{ fontSize: '12.5px', color: 'var(--color-muted)', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <TrendingUp size={15} color="var(--color-velvet)" />
               Avg Ticket
             </span>
             <span style={{ fontSize: '11.5px', fontWeight: 700, padding: '2px 7px', borderRadius: '5px', backgroundColor: avgB.bg, color: avgB.color }}>
@@ -138,13 +138,13 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ tenantName }) 
                     width: '100%',
                     maxWidth: '40px',
                     borderRadius: '4px 4px 0 0',
-                    backgroundColor: '#C1522A',
+                    backgroundColor: 'var(--color-velvet)',
                     height: `${bar.heightPct}%`,
                     minHeight: '4px',
                     transition: 'height 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
                   }}
                 />
-                <span style={{ fontSize: '11px', color: '#A79C8A', fontWeight: 500 }}>{bar.label}</span>
+                <span style={{ fontSize: '11px', color: 'var(--color-placeholder)', fontWeight: 500 }}>{bar.label}</span>
               </div>
             ))}
           </div>
@@ -168,12 +168,12 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ tenantName }) 
                 <span style={{ fontSize: '12.5px', fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', paddingRight: '8px' }}>
                   {it.rank}. {it.name}
                 </span>
-                <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '11.5px', color: '#7A7062', flexShrink: 0 }}>
+                <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '11.5px', color: 'var(--color-muted)', flexShrink: 0 }}>
                   {it.valueLabel}
                 </span>
               </div>
               <div style={{ height: '5px', backgroundColor: '#F3E3D8', borderRadius: '3px', overflow: 'hidden' }}>
-                <div style={{ height: '100%', backgroundColor: '#C1522A', width: `${it.barPct}%`, transition: 'width 0.3s ease' }} />
+                <div style={{ height: '100%', backgroundColor: 'var(--color-velvet)', width: `${it.barPct}%`, transition: 'width 0.3s ease' }} />
               </div>
             </div>
           ))}

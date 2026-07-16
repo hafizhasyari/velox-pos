@@ -20,7 +20,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
     <div style={{ display: 'flex', minHeight: '100vh', width: '100%' }}>
       <div style={{
         flex: 1,
-        backgroundColor: '#C1522A',
+        backgroundColor: 'var(--color-velvet)',
         color: '#fff',
         display: 'flex',
         flexDirection: 'column',
@@ -49,7 +49,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
             fontSize: '12px',
             letterSpacing: '0.14em',
             textTransform: 'uppercase',
-            opacity: 0.75,
+            color: '#F8ECE4',
+            fontWeight: 600,
             marginBottom: '16px'
           }}>Point of Sale</div>
           <h1 style={{
@@ -62,13 +63,13 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
           <p style={{
             fontSize: '15px',
             lineHeight: 1.6,
-            opacity: 0.85,
+            color: '#F8ECE4',
             maxWidth: '360px',
             margin: 0
           }}>Order taking, shift reconciliation, and sales reporting for single-outlet F&amp;B businesses.</p>
         </div>
 
-        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', opacity: 0.55 }}>
+        <div style={{ fontFamily: 'var(--font-mono)', fontSize: '12.5px', color: '#F8ECE4', fontWeight: 500 }}>
           Built for Indonesian UMKM F&amp;B outlets
         </div>
       </div>
@@ -83,7 +84,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
         <form onSubmit={handleSubmit} style={{ width: '100%', maxWidth: '360px', padding: '32px' }}>
           <h2 style={{ fontSize: '24px', fontWeight: 600, margin: '0 0 28px' }}>Sign in</h2>
           
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
             Email
           </label>
           <input
@@ -104,7 +105,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
             required
           />
 
-          <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+          <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
             Password
           </label>
           <input
@@ -130,7 +131,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
             fontWeight: 600,
             letterSpacing: '0.03em',
             textTransform: 'uppercase',
-            color: '#A79C8A',
+            color: 'var(--color-placeholder)',
             marginBottom: '8px'
           }}>Continue as (demo)</div>
 
@@ -145,9 +146,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                border: `1px solid ${loginRole === 'owner' ? '#C1522A' : '#D8CEBE'}`,
-                backgroundColor: loginRole === 'owner' ? '#C1522A' : '#fff',
-                color: loginRole === 'owner' ? '#fff' : '#7A7062'
+                border: `1px solid ${loginRole === 'owner' ? 'var(--color-velvet)' : '#D8CEBE'}`,
+                backgroundColor: loginRole === 'owner' ? 'var(--color-velvet)' : '#fff',
+                color: loginRole === 'owner' ? '#fff' : 'var(--color-muted)'
               }}
             >
               Owner
@@ -162,9 +163,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
                 fontSize: '13px',
                 fontWeight: 600,
                 cursor: 'pointer',
-                border: `1px solid ${loginRole === 'kasir' ? '#C1522A' : '#D8CEBE'}`,
-                backgroundColor: loginRole === 'kasir' ? '#C1522A' : '#fff',
-                color: loginRole === 'kasir' ? '#fff' : '#7A7062'
+                border: `1px solid ${loginRole === 'kasir' ? 'var(--color-velvet)' : '#D8CEBE'}`,
+                backgroundColor: loginRole === 'kasir' ? 'var(--color-velvet)' : '#fff',
+                color: loginRole === 'kasir' ? '#fff' : 'var(--color-muted)'
               }}
             >
               Kasir
@@ -176,7 +177,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
             style={{
               width: '100%',
               padding: '13px',
-              backgroundColor: '#C1522A',
+              backgroundColor: 'var(--color-velvet)',
               color: '#fff',
               border: 'none',
               borderRadius: '6px',
@@ -189,11 +190,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
             Sign In as {loginRole === 'owner' ? 'Owner' : 'Kasir'}
           </button>
 
-          <div style={{ textAlign: 'center', marginTop: '18px', fontSize: '12.5px', color: '#7A7062' }}>
+          <div style={{ textAlign: 'center', marginTop: '18px', fontSize: '12.5px', color: 'var(--color-muted)' }}>
             New to Velox?{' '}
             <span
               onClick={onGoToSignup}
-              style={{ color: '#C1522A', fontWeight: 600, cursor: 'pointer' }}
+              style={{ color: 'var(--color-velvet)', fontWeight: 600, cursor: 'pointer' }}
             >
               Create your outlet
             </span>

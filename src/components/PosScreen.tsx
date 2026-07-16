@@ -190,7 +190,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
       <div style={{ padding: '16px 20px', borderBottom: '1px solid #E6DFD3', display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#FBF8F3' }}>
         <div>
           <div style={{ fontSize: '15px', fontWeight: 700 }}>Current Order</div>
-          <div style={{ fontSize: '12px', color: '#7A7062' }}>
+          <div style={{ fontSize: '12px', color: 'var(--color-muted)' }}>
             {orderType === 'dinein' ? `Dine-in · ${tableNumber ? `Table ${tableNumber}` : 'No table'}` : 'Takeaway order'}
           </div>
         </div>
@@ -199,7 +199,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
             <button
               onClick={onClearCart}
               title="Clear cart"
-              style={{ border: 'none', background: 'none', color: '#9C2B2B', cursor: 'pointer', padding: '4px' }}
+              style={{ border: 'none', background: 'none', color: 'var(--color-danger-text)', cursor: 'pointer', padding: '4px' }}
             >
               <Trash2 size={16} />
             </button>
@@ -207,7 +207,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
           {inDrawer && (
             <button
               onClick={() => setShowMobileCartDrawer(false)}
-              style={{ border: 'none', background: 'none', color: '#7A7062', cursor: 'pointer', padding: '4px' }}
+              style={{ border: 'none', background: 'none', color: 'var(--color-muted)', cursor: 'pointer', padding: '4px' }}
             >
               <X size={20} />
             </button>
@@ -218,11 +218,11 @@ export const PosScreen: React.FC<PosScreenProps> = ({
       {/* Cart Line Items */}
       <div style={{ flex: 1, overflowY: 'auto', padding: '16px 20px' }}>
         {cart.length === 0 ? (
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: '#A79C8A', textAlign: 'center', padding: '20px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', height: '100%', color: 'var(--color-placeholder)', textAlign: 'center', padding: '20px' }}>
             <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: '#FBF8F3', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '12px' }}>
               <Tag size={20} color="#D8CEBE" />
             </div>
-            <div style={{ fontSize: '14px', fontWeight: 600, color: '#7A7062', marginBottom: '4px' }}>No items in cart</div>
+            <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--color-muted)', marginBottom: '4px' }}>No items in cart</div>
             <div style={{ fontSize: '12px' }}>Select menu items on the left to start building an order.</div>
           </div>
         ) : (
@@ -238,13 +238,13 @@ export const PosScreen: React.FC<PosScreenProps> = ({
               </div>
 
               {line.modNames.length > 0 && (
-                <div style={{ fontSize: '11.5px', color: '#7A7062', marginBottom: '8px', lineHeight: 1.4 }}>
+                <div style={{ fontSize: '11.5px', color: 'var(--color-muted)', marginBottom: '8px', lineHeight: 1.4 }}>
                   + {line.modNames.join(', ')}
                 </div>
               )}
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '8px' }}>
-                <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '11.5px', color: '#7A7062' }}>
+                <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '11.5px', color: 'var(--color-muted)' }}>
                   @{formatIDR(line.basePrice + line.modTotal)}
                 </span>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -259,7 +259,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                   </span>
                   <button
                     onClick={() => onUpdateCartQty(line.id, 1)}
-                    style={{ width: '26px', height: '26px', borderRadius: '6px', border: 'none', backgroundColor: '#C1522A', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                    style={{ width: '26px', height: '26px', borderRadius: '6px', border: 'none', backgroundColor: 'var(--color-velvet)', color: '#fff', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                   >
                     <Plus size={13} />
                   </button>
@@ -281,9 +281,9 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                 width: '100%',
                 padding: '8px 12px',
                 borderRadius: '8px',
-                border: '1px dashed #C1522A',
+                border: '1px dashed var(--color-velvet)',
                 backgroundColor: '#FFF8F5',
-                color: '#C1522A',
+                color: 'var(--color-velvet)',
                 fontSize: '12.5px',
                 fontWeight: 700,
                 display: 'flex',
@@ -296,7 +296,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
               <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Ticket size={16} /> Apply Promo Voucher
               </span>
-              <span style={{ fontSize: '11px', backgroundColor: '#C1522A', color: '#fff', padding: '2px 6px', borderRadius: '4px' }}>
+              <span style={{ fontSize: '11px', backgroundColor: 'var(--color-velvet)', color: '#fff', padding: '2px 6px', borderRadius: '4px' }}>
                 HEMAT20 Available
               </span>
             </button>
@@ -325,23 +325,23 @@ export const PosScreen: React.FC<PosScreenProps> = ({
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '13px', marginBottom: '16px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', color: '#7A7062' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-muted)' }}>
               <span>Subtotal</span>
               <span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>{formatIDR(subtotal)}</span>
             </div>
             {discountAmount > 0 && (
-              <div style={{ display: 'flex', justifyContent: 'space-between', color: '#9C2B2B', fontWeight: 500 }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-danger-text)', fontWeight: 500 }}>
                 <span>Discount ({discountType === 'pct' ? `${discountValue}%` : 'Rp'})</span>
                 <span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>-{formatIDR(discountAmount)}</span>
               </div>
             )}
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: '#7A7062' }}>Tax (10%)</span>
+              <span style={{ color: 'var(--color-muted)' }}>Tax (10%)</span>
               <span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>{formatIDR(tax)}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '17px', fontWeight: 700, paddingTop: '8px', borderTop: '1px solid #E6DFD3', marginTop: '4px' }}>
               <span>Total</span>
-              <span className="tnum" style={{ fontFamily: 'var(--font-mono)', color: '#C1522A' }}>{formatIDR(total)}</span>
+              <span className="tnum" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-velvet)' }}>{formatIDR(total)}</span>
             </div>
           </div>
 
@@ -356,7 +356,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
               padding: '14px',
               borderRadius: '8px',
               border: 'none',
-              backgroundColor: !shiftOpen || (orderType === 'dinein' && !tableNumber) ? '#D8CEBE' : '#C1522A',
+              backgroundColor: !shiftOpen || (orderType === 'dinein' && !tableNumber) ? '#D8CEBE' : 'var(--color-velvet)',
               color: '#fff',
               fontSize: '15px',
               fontWeight: 700,
@@ -372,7 +372,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
             <ArrowRight size={18} />
           </button>
           {orderType === 'dinein' && !tableNumber && (
-            <div style={{ fontSize: '11px', color: '#9C2B2B', textAlign: 'center', marginTop: '6px', fontWeight: 500 }}>
+            <div style={{ fontSize: '11px', color: 'var(--color-danger-text)', textAlign: 'center', marginTop: '6px', fontWeight: 500 }}>
               Please select a table before checking out.
             </div>
           )}
@@ -388,7 +388,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
         {/* Top Header */}
         <div style={{ padding: '16px 20px', borderBottom: '1px solid #E6DFD3', backgroundColor: '#FBF8F3', display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', backgroundColor: '#fff', border: '1px solid #D8CEBE', borderRadius: '7px', padding: '6px 12px', width: isMobile ? '100%' : '280px' }}>
-            <Search size={16} color="#A79C8A" />
+            <Search size={16} color="var(--color-placeholder)" />
             <input
               type="text"
               value={searchQuery}
@@ -410,7 +410,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                   fontWeight: 600,
                   cursor: 'pointer',
                   backgroundColor: orderType === 'dinein' ? '#fff' : 'transparent',
-                  color: orderType === 'dinein' ? '#C1522A' : '#7A7062',
+                  color: orderType === 'dinein' ? 'var(--color-velvet)' : 'var(--color-muted)',
                   boxShadow: orderType === 'dinein' ? '0 1px 2px rgba(0,0,0,0.06)' : 'none'
                 }}
               >
@@ -426,7 +426,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                   fontWeight: 600,
                   cursor: 'pointer',
                   backgroundColor: orderType === 'takeaway' ? '#fff' : 'transparent',
-                  color: orderType === 'takeaway' ? '#C1522A' : '#7A7062',
+                  color: orderType === 'takeaway' ? 'var(--color-velvet)' : 'var(--color-muted)',
                   boxShadow: orderType === 'takeaway' ? '0 1px 2px rgba(0,0,0,0.06)' : 'none'
                 }}
               >
@@ -451,7 +451,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                   color: '#241F18'
                 }}
               >
-                <Users size={15} color="#C1522A" />
+                <Users size={15} color="var(--color-velvet)" />
                 <span>{tableNumber ? `Table ${tableNumber}` : 'Select Table'}</span>
               </button>
             )}
@@ -469,7 +469,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
               fontSize: '13px',
               fontWeight: activeCategoryId === 'all' ? 600 : 500,
               backgroundColor: activeCategoryId === 'all' ? '#241F18' : '#F1ECE3',
-              color: activeCategoryId === 'all' ? '#fff' : '#7A7062',
+              color: activeCategoryId === 'all' ? '#fff' : 'var(--color-muted)',
               cursor: 'pointer',
               whiteSpace: 'nowrap'
             }}
@@ -487,7 +487,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                 fontSize: '13px',
                 fontWeight: activeCategoryId === cat.id ? 600 : 500,
                 backgroundColor: activeCategoryId === cat.id ? '#241F18' : '#F1ECE3',
-                color: activeCategoryId === cat.id ? '#fff' : '#7A7062',
+                color: activeCategoryId === cat.id ? '#fff' : 'var(--color-muted)',
                 cursor: 'pointer',
                 whiteSpace: 'nowrap'
               }}
@@ -517,7 +517,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                 boxShadow: '0 1px 3px rgba(36,31,24,0.03)',
                 transition: 'transform 0.15s ease, border-color 0.15s ease'
               }}
-              onMouseEnter={(e) => { e.currentTarget.style.borderColor = '#C1522A'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+              onMouseEnter={(e) => { e.currentTarget.style.borderColor = 'var(--color-velvet)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
               onMouseLeave={(e) => { e.currentTarget.style.borderColor = '#E6DFD3'; e.currentTarget.style.transform = 'translateY(0)'; }}
             >
               <div>
@@ -527,11 +527,11 @@ export const PosScreen: React.FC<PosScreenProps> = ({
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '12px' }}>
-                <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 600, color: '#C1522A' }}>
+                <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '13px', fontWeight: 600, color: 'var(--color-velvet)' }}>
                   {formatIDR(item.price)}
                 </span>
                 {item.modifierGroups && item.modifierGroups.length > 0 && (
-                  <span style={{ fontSize: '10px', fontWeight: 700, padding: '2px 5px', borderRadius: '4px', backgroundColor: '#F3E3D8', color: '#C1522A', letterSpacing: '0.04em' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 700, padding: '2px 5px', borderRadius: '4px', backgroundColor: '#F3E3D8', color: 'var(--color-velvet)', letterSpacing: '0.04em' }}>
                     MOD
                   </span>
                 )}
@@ -563,18 +563,18 @@ export const PosScreen: React.FC<PosScreenProps> = ({
           animation: 'voFadeIn 0.15s ease'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <div style={{ backgroundColor: '#C1522A', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '14px' }}>
+            <div style={{ backgroundColor: 'var(--color-velvet)', width: '36px', height: '36px', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '14px' }}>
               {cart.reduce((sum, l) => sum + l.qty, 0)}
             </div>
             <div>
               <div style={{ fontSize: '13.5px', fontWeight: 700 }}>Current Order</div>
-              <div style={{ fontSize: '12px', color: '#A79C8A' }}>{formatIDR(subtotal)}</div>
+              <div style={{ fontSize: '12px', color: 'var(--color-placeholder)' }}>{formatIDR(subtotal)}</div>
             </div>
           </div>
           <button
             onClick={() => setShowMobileCartDrawer(true)}
             style={{
-              backgroundColor: '#C1522A',
+              backgroundColor: 'var(--color-velvet)',
               color: '#fff',
               border: 'none',
               borderRadius: '8px',
@@ -640,7 +640,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                     style={{
                       padding: '16px 10px',
                       borderRadius: '8px',
-                      border: `2px solid ${isSel ? '#C1522A' : t.status === 'occupied' ? '#F6E3DE' : '#E6DFD3'}`,
+                      border: `2px solid ${isSel ? 'var(--color-velvet)' : t.status === 'occupied' ? '#F6E3DE' : '#E6DFD3'}`,
                       backgroundColor: isSel ? '#F3E3D8' : t.status === 'occupied' ? '#FBF8F3' : '#fff',
                       cursor: t.status === 'occupied' ? 'not-allowed' : 'pointer',
                       display: 'flex',
@@ -650,8 +650,8 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                       opacity: t.status === 'occupied' ? 0.6 : 1
                     }}
                   >
-                    <span style={{ fontSize: '16px', fontWeight: 700, color: isSel ? '#C1522A' : '#241F18' }}>T-{t.number}</span>
-                    <span style={{ fontSize: '11px', color: t.status === 'occupied' ? '#9C2B2B' : '#4C7A4A', fontWeight: 600, textTransform: 'capitalize' }}>
+                    <span style={{ fontSize: '16px', fontWeight: 700, color: isSel ? 'var(--color-velvet)' : '#241F18' }}>T-{t.number}</span>
+                    <span style={{ fontSize: '11px', color: t.status === 'occupied' ? 'var(--color-danger-text)' : 'var(--color-success-text)', fontWeight: 600, textTransform: 'capitalize' }}>
                       {t.status} ({t.seats}s)
                     </span>
                   </button>
@@ -667,12 +667,12 @@ export const PosScreen: React.FC<PosScreenProps> = ({
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(36, 31, 24, 0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 60, animation: 'voFadeIn 0.15s ease' }}>
           <div className="responsive-modal-box" style={{ backgroundColor: '#fff', borderRadius: '12px', padding: '26px', width: 'min(94vw, 440px)', boxShadow: '0 20px 60px rgba(0, 0, 0, 0.25)' }}>
             <div style={{ fontSize: '17px', fontWeight: 700, marginBottom: '4px' }}>{activeItemForMod.name}</div>
-            <div className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: '#C1522A', marginBottom: '18px' }}>{formatIDR(activeItemForMod.price)}</div>
+            <div className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '14px', color: 'var(--color-velvet)', marginBottom: '18px' }}>{formatIDR(activeItemForMod.price)}</div>
 
             {activeItemForMod.modifierGroups.map((g) => (
               <div key={g.id} style={{ marginBottom: '18px' }}>
                 <div style={{ fontSize: '13px', fontWeight: 600, marginBottom: '8px' }}>
-                  {g.name} <span style={{ fontSize: '11px', color: '#A79C8A', fontWeight: 400 }}>({g.multi ? 'Select any' : 'Select one'})</span>
+                  {g.name} <span style={{ fontSize: '11px', color: 'var(--color-placeholder)', fontWeight: 400 }}>({g.multi ? 'Select any' : 'Select one'})</span>
                 </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                   {g.options.map((opt) => {
@@ -688,7 +688,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                           justifyContent: 'space-between',
                           padding: '10px 12px',
                           borderRadius: '7px',
-                          border: `1px solid ${isSelected ? '#C1522A' : '#D8CEBE'}`,
+                          border: `1px solid ${isSelected ? 'var(--color-velvet)' : '#D8CEBE'}`,
                           backgroundColor: isSelected ? '#F3E3D8' : '#fff',
                           cursor: 'pointer',
                           textAlign: 'left'
@@ -696,7 +696,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                       >
                         <span style={{ fontSize: '13px', fontWeight: isSelected ? 600 : 500 }}>{opt.name}</span>
                         {opt.priceDelta > 0 && (
-                          <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: '#C1522A' }}>+{formatIDR(opt.priceDelta)}</span>
+                          <span className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '12px', color: 'var(--color-velvet)' }}>+{formatIDR(opt.priceDelta)}</span>
                         )}
                       </button>
                     );
@@ -707,7 +707,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
 
             <div style={{ display: 'flex', gap: '10px', marginTop: '24px' }}>
               <button onClick={() => setActiveItemForMod(null)} style={{ flex: 1, padding: '11px', borderRadius: '8px', border: '1px solid #D8CEBE', backgroundColor: '#fff', fontSize: '13px', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
-              <button onClick={confirmAddWithMods} style={{ flex: 1, padding: '11px', borderRadius: '8px', border: 'none', backgroundColor: '#C1522A', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>Add to cart</button>
+              <button onClick={confirmAddWithMods} style={{ flex: 1, padding: '11px', borderRadius: '8px', border: 'none', backgroundColor: 'var(--color-velvet)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}>Add to cart</button>
             </div>
           </div>
         </div>
@@ -718,18 +718,18 @@ export const PosScreen: React.FC<PosScreenProps> = ({
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(36, 31, 24, 0.45)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 60, animation: 'voFadeIn 0.15s ease' }}>
           <div className="responsive-modal-box" style={{ backgroundColor: '#fff', borderRadius: '12px', padding: '26px', width: 'min(94vw, 420px)', boxShadow: '0 20px 60px rgba(0, 0, 0, 0.25)' }}>
             <div style={{ fontSize: '18px', fontWeight: 700, marginBottom: '6px' }}>Checkout Order</div>
-            <div className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '28px', fontWeight: 700, color: '#C1522A', marginBottom: '20px' }}>{formatIDR(total)}</div>
+            <div className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '28px', fontWeight: 700, color: 'var(--color-velvet)', marginBottom: '20px' }}>{formatIDR(total)}</div>
 
             <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
               <button
                 onClick={() => setPaymentMethod('cash')}
-                style={{ flex: 1, padding: '10px', borderRadius: '7px', border: `2px solid ${paymentMethod === 'cash' ? '#C1522A' : '#E6DFD3'}`, backgroundColor: paymentMethod === 'cash' ? '#F3E3D8' : '#fff', fontWeight: 600, cursor: 'pointer' }}
+                style={{ flex: 1, padding: '10px', borderRadius: '7px', border: `2px solid ${paymentMethod === 'cash' ? 'var(--color-velvet)' : '#E6DFD3'}`, backgroundColor: paymentMethod === 'cash' ? '#F3E3D8' : '#fff', fontWeight: 600, cursor: 'pointer' }}
               >
                 Cash
               </button>
               <button
                 onClick={() => setPaymentMethod('qris')}
-                style={{ flex: 1, padding: '10px', borderRadius: '7px', border: `2px solid ${paymentMethod === 'qris' ? '#C1522A' : '#E6DFD3'}`, backgroundColor: paymentMethod === 'qris' ? '#F3E3D8' : '#fff', fontWeight: 600, cursor: 'pointer' }}
+                style={{ flex: 1, padding: '10px', borderRadius: '7px', border: `2px solid ${paymentMethod === 'qris' ? 'var(--color-velvet)' : '#E6DFD3'}`, backgroundColor: paymentMethod === 'qris' ? '#F3E3D8' : '#fff', fontWeight: 600, cursor: 'pointer' }}
               >
                 QRIS
               </button>
@@ -737,7 +737,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
 
             {paymentMethod === 'cash' ? (
               <div style={{ marginBottom: '24px' }}>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>Cash Tendered (Rp)</label>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>Cash Tendered (Rp)</label>
                 <input
                   type="number"
                   value={cashInput}
@@ -755,13 +755,13 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                 <div style={{ width: '140px', height: '140px', margin: '0 auto 12px', backgroundColor: '#241F18', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', borderRadius: '10px', fontSize: '18px', fontWeight: 700, letterSpacing: '0.1em' }}>
                   QRIS CODE
                 </div>
-                <div style={{ fontSize: '12.5px', color: '#7A7062' }}>Scan with GoPay, OVO, Dana, or BCA Mobile</div>
+                <div style={{ fontSize: '12.5px', color: 'var(--color-muted)' }}>Scan with GoPay, OVO, Dana, or BCA Mobile</div>
               </div>
             )}
 
             <div style={{ display: 'flex', gap: '10px' }}>
               <button onClick={() => setShowCheckoutModal(false)} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: '1px solid #D8CEBE', backgroundColor: '#fff', fontSize: '13.5px', fontWeight: 600, cursor: 'pointer' }}>Cancel</button>
-              <button onClick={handleCompletePayment} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: 'none', backgroundColor: '#C1522A', color: '#fff', fontSize: '13.5px', fontWeight: 700, cursor: 'pointer' }}>Complete Payment</button>
+              <button onClick={handleCompletePayment} style={{ flex: 1, padding: '12px', borderRadius: '8px', border: 'none', backgroundColor: 'var(--color-velvet)', color: '#fff', fontSize: '13.5px', fontWeight: 700, cursor: 'pointer' }}>Complete Payment</button>
             </div>
           </div>
         </div>
@@ -773,7 +773,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
           <div className="receipt-clip responsive-modal-box" style={{ backgroundColor: '#fff', width: 'min(94vw, 340px)', padding: '26px 22px 36px', boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)', position: 'relative' }}>
             <div style={{ textAlign: 'center', borderBottom: '1px dashed #D8CEBE', paddingBottom: '16px', marginBottom: '16px' }}>
               <div style={{ fontSize: '16px', fontWeight: 700 }}>{tenantName}</div>
-              <div style={{ fontSize: '11px', color: '#7A7062', marginTop: '2px' }}>{lastOrderReceipt.orderId} · {lastOrderReceipt.time}</div>
+              <div style={{ fontSize: '11px', color: 'var(--color-muted)', marginTop: '2px' }}>{lastOrderReceipt.orderId} · {lastOrderReceipt.time}</div>
               <div style={{ fontSize: '11.5px', fontWeight: 600, textTransform: 'uppercase', marginTop: '6px' }}>
                 {lastOrderReceipt.orderType} {lastOrderReceipt.tableNumber ? `(Table ${lastOrderReceipt.tableNumber})` : ''}
               </div>
@@ -787,7 +787,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                     <span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>{formatIDR((l.basePrice + l.modTotal) * l.qty)}</span>
                   </div>
                   {l.modNames.length > 0 && (
-                    <div style={{ fontSize: '10.5px', color: '#7A7062', paddingLeft: '14px' }}>+{l.modNames.join(', ')}</div>
+                    <div style={{ fontSize: '10.5px', color: 'var(--color-muted)', paddingLeft: '14px' }}>+{l.modNames.join(', ')}</div>
                   )}
                 </div>
               ))}
@@ -796,7 +796,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
             <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', borderBottom: '1px dashed #D8CEBE', paddingBottom: '16px', marginBottom: '16px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Subtotal</span><span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>{formatIDR(lastOrderReceipt.totals.subtotal)}</span></div>
               {lastOrderReceipt.totals.discountAmount > 0 && (
-                <div style={{ display: 'flex', justifyContent: 'space-between', color: '#9C2B2B' }}><span>Discount</span><span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>-{formatIDR(lastOrderReceipt.totals.discountAmount)}</span></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-danger-text)' }}><span>Discount</span><span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>-{formatIDR(lastOrderReceipt.totals.discountAmount)}</span></div>
               )}
               <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Tax (10%)</span><span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>{formatIDR(lastOrderReceipt.totals.tax)}</span></div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', fontWeight: 700, marginTop: '4px' }}><span>Total</span><span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>{formatIDR(lastOrderReceipt.totals.total)}</span></div>
@@ -813,7 +813,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
               <button onClick={() => window.print()} style={{ flex: 1, padding: '10px', borderRadius: '6px', border: '1px solid #D8CEBE', backgroundColor: '#fff', fontSize: '12px', fontWeight: 600, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px' }}>
                 <Printer size={14} /> Print
               </button>
-              <button onClick={() => setLastOrderReceipt(null)} style={{ flex: 1, padding: '10px', borderRadius: '6px', border: 'none', backgroundColor: '#C1522A', color: '#fff', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}>
+              <button onClick={() => setLastOrderReceipt(null)} style={{ flex: 1, padding: '10px', borderRadius: '6px', border: 'none', backgroundColor: 'var(--color-velvet)', color: '#fff', fontSize: '12px', fontWeight: 700, cursor: 'pointer' }}>
                 Done
               </button>
             </div>
@@ -827,9 +827,9 @@ export const PosScreen: React.FC<PosScreenProps> = ({
           <div className="responsive-modal-box" style={{ width: 'min(94vw, 420px)', backgroundColor: '#fff', borderRadius: '16px', padding: '24px', boxShadow: '0 20px 40px rgba(0,0,0,0.3)', border: '1px solid #E6DFD3' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: '#241F18', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <Ticket size={20} color="#C1522A" /> Select or Enter Voucher
+                <Ticket size={20} color="var(--color-velvet)" /> Select or Enter Voucher
               </h3>
-              <button onClick={() => setShowPromoModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7A7062' }}>
+              <button onClick={() => setShowPromoModal(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--color-muted)' }}>
                 <X size={20} />
               </button>
             </div>
@@ -857,7 +857,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
               </div>
             )}
 
-            <div style={{ fontSize: '12.5px', fontWeight: 700, color: '#7A7062', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            <div style={{ fontSize: '12.5px', fontWeight: 700, color: 'var(--color-muted)', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Available Vouchers
             </div>
 
@@ -871,7 +871,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                     style={{
                       padding: '14px',
                       borderRadius: '10px',
-                      border: isEligible ? '1px solid #C1522A' : '1px solid #E6DFD3',
+                      border: isEligible ? '1px solid var(--color-velvet)' : '1px solid #E6DFD3',
                       backgroundColor: isEligible ? '#FFF8F5' : '#FBF8F3',
                       display: 'flex',
                       justifyContent: 'space-between',
@@ -885,12 +885,12 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                           {promo.code}
                         </span>
                         {!isEligible && (
-                          <span style={{ fontSize: '11px', color: '#9C2B2B', fontWeight: 600 }}>
+                          <span style={{ fontSize: '11px', color: 'var(--color-danger-text)', fontWeight: 600 }}>
                             Min. {formatIDR(promo.minSpend)}
                           </span>
                         )}
                       </div>
-                      <div style={{ fontSize: '13px', color: '#7A7062', marginTop: '6px', fontWeight: 500 }}>
+                      <div style={{ fontSize: '13px', color: 'var(--color-muted)', marginTop: '6px', fontWeight: 500 }}>
                         {promo.label}
                       </div>
                     </div>
@@ -902,7 +902,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                         padding: '8px 14px',
                         borderRadius: '6px',
                         border: 'none',
-                        backgroundColor: isEligible ? '#C1522A' : '#D8CEBE',
+                        backgroundColor: isEligible ? 'var(--color-velvet)' : '#D8CEBE',
                         color: '#fff',
                         fontSize: '12.5px',
                         fontWeight: 700,

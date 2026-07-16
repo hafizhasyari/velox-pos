@@ -27,7 +27,7 @@ export const KdsScreen: React.FC<KdsScreenProps> = ({ tickets, onUpdateStatus })
     const elapsed = getElapsedMinutes(ticket.createdAt);
     const isUrgent = elapsed >= 15 && ticket.status !== 'ready';
 
-    let badgeColor = '#3B82F6'; // blue for new
+    let badgeColor = '#2563EB'; // blue for new
     let badgeLabel = 'NEW ORDER';
     if (ticket.status === 'cooking') {
       badgeColor = '#F59E0B'; // orange for cooking
@@ -212,7 +212,7 @@ export const KdsScreen: React.FC<KdsScreenProps> = ({ tickets, onUpdateStatus })
             width: '44px',
             height: '44px',
             borderRadius: '10px',
-            backgroundColor: '#C1522A',
+            backgroundColor: 'var(--color-velvet)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -232,10 +232,10 @@ export const KdsScreen: React.FC<KdsScreenProps> = ({ tickets, onUpdateStatus })
 
         {/* Counter Pills */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px' }}>
-          <div style={{ padding: '8px 16px', borderRadius: '8px', backgroundColor: '#2D271F', border: '1px solid #3B82F6', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#3B82F6' }} />
+          <div style={{ padding: '8px 16px', borderRadius: '8px', backgroundColor: '#2D271F', border: '1px solid #2563EB', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#2563EB' }} />
             <span style={{ fontSize: '13px', fontWeight: 600, color: '#A89E8E' }}>New:</span>
-            <span style={{ fontSize: '15px', fontWeight: 700, color: '#3B82F6' }}>{newTickets.length}</span>
+            <span style={{ fontSize: '15px', fontWeight: 700, color: '#2563EB' }}>{newTickets.length}</span>
           </div>
           <div style={{ padding: '8px 16px', borderRadius: '8px', backgroundColor: '#2D271F', border: '1px solid #F59E0B', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#F59E0B' }} />
@@ -258,7 +258,7 @@ export const KdsScreen: React.FC<KdsScreenProps> = ({ tickets, onUpdateStatus })
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          color: '#7A7062',
+          color: 'var(--color-muted)',
           padding: '48px'
         }}>
           <ChefHat size={48} style={{ opacity: 0.3, marginBottom: '16px' }} />

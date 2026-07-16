@@ -2,21 +2,21 @@
 
 :root {
   --color-obsidian: #241f18;
-  --color-velvet: #c1522a;
-  --color-velvet-hover: #a5431f;
+  --color-velvet: #a23f1d;
+  --color-velvet-hover: #883316;
   --color-cream-bg: #f6f2ec;
   --color-sidebar-bg: #fbf8f3;
   --color-surface: #ffffff;
   --color-border: #d8cebe;
   --color-border-light: #e6dfd3;
   --color-border-faint: #f1ece3;
-  --color-muted: #7a7062;
-  --color-placeholder: #a79c8a;
+  --color-muted: #5e564a;
+  --color-placeholder: #6b6356;
   
   --color-success-bg: #e7efe4;
-  --color-success-text: #4c7a4a;
+  --color-success-text: #365a34;
   --color-danger-bg: #f6e3de;
-  --color-danger-text: #9c2b2b;
+  --color-danger-text: #8c2424;
 
   --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;

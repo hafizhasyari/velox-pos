@@ -135,7 +135,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '22px' }}>
         <div>
           <h1 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 4px' }}>Menu Management</h1>
-          <div style={{ fontSize: '13px', color: '#7A7062' }}>Categories, items, and modifiers</div>
+          <div style={{ fontSize: '13px', color: 'var(--color-muted)' }}>Categories, items, and modifiers</div>
         </div>
         <div style={{ display: 'flex', gap: '8px' }}>
           <button
@@ -162,7 +162,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
               padding: '9px 14px',
               borderRadius: '7px',
               border: 'none',
-              backgroundColor: '#C1522A',
+              backgroundColor: 'var(--color-velvet)',
               color: '#fff',
               fontSize: '13px',
               fontWeight: 600,
@@ -193,8 +193,8 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                   fontSize: '13px',
                   fontWeight: 500,
                   cursor: 'pointer',
-                  backgroundColor: isSel ? '#C1522A' : '#fff',
-                  color: isSel ? '#fff' : '#7A7062',
+                  backgroundColor: isSel ? 'var(--color-velvet)' : '#fff',
+                  color: isSel ? '#fff' : 'var(--color-muted)',
                   display: 'flex',
                   justifyContent: 'space-between'
                 }}
@@ -233,7 +233,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
               padding: '10px 14px',
               fontSize: '11px',
               fontWeight: 600,
-              color: '#A79C8A',
+              color: 'var(--color-placeholder)',
               textTransform: 'uppercase',
               letterSpacing: '0.03em',
               borderBottom: '1px solid #E6DFD3'
@@ -277,7 +277,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                 }}>
                   {formatIDR(item.price)}
                 </span>
-                <span style={{ width: '60px', flexShrink: 0, color: '#7A7062', fontSize: '12px' }}>
+                <span style={{ width: '60px', flexShrink: 0, color: 'var(--color-muted)', fontSize: '12px' }}>
                   {item.modifierGroups.length ? `${item.modifierGroups.length} grp` : '—'}
                 </span>
                 <span style={{ width: '70px', flexShrink: 0 }}>
@@ -287,7 +287,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                     padding: '3px 7px',
                     borderRadius: '5px',
                     backgroundColor: item.active ? '#E7EFE4' : '#F1ECE3',
-                    color: item.active ? '#4C7A4A' : '#A79C8A',
+                    color: item.active ? 'var(--color-success-text)' : 'var(--color-placeholder)',
                     whiteSpace: 'nowrap'
                   }}>
                     {item.active ? 'Active' : 'Archived'}
@@ -364,7 +364,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
               {editingItem.id ? 'Edit item' : 'New item'}
             </div>
 
-            <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+            <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
               Name
             </label>
             <input
@@ -377,7 +377,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
 
             <div className="responsive-grid-2" style={{ gap: '12px', marginBottom: '14px' }}>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                   Price (Rp)
                 </label>
                 <input
@@ -389,7 +389,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                 />
               </div>
               <div>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: '#7A7062', marginBottom: '6px' }}>
+                <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                   Category
                 </label>
                 <select
@@ -419,9 +419,9 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                 <div key={g.id} style={{ backgroundColor: '#FBF8F3', border: '1px solid #E6DFD3', borderRadius: '8px', padding: '10px 12px', marginBottom: '10px' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                     <span style={{ fontSize: '12.5px', fontWeight: 600 }}>
-                      {g.name} <span style={{ color: '#A79C8A', fontWeight: 400 }}>· {g.required ? 'required' : 'optional'}</span>
+                      {g.name} <span style={{ color: 'var(--color-placeholder)', fontWeight: 400 }}>· {g.required ? 'required' : 'optional'}</span>
                     </span>
-                    <button type="button" onClick={() => removeModifierGroup(g.id)} style={{ border: 'none', background: 'none', color: '#9C2B2B', fontSize: '11px', cursor: 'pointer' }}>
+                    <button type="button" onClick={() => removeModifierGroup(g.id)} style={{ border: 'none', background: 'none', color: 'var(--color-danger-text)', fontSize: '11px', cursor: 'pointer' }}>
                       Remove
                     </button>
                   </div>
@@ -430,8 +430,8 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                     <div key={opt.id} style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', padding: '4px 0' }}>
                       <span>{opt.name}</span>
                       <span style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-                        <span className="tnum" style={{ fontFamily: 'var(--font-mono)', color: '#7A7062' }}>+{formatIDR(opt.priceDelta)}</span>
-                        <button type="button" onClick={() => removeOptionFromGroup(g.id, opt.id)} style={{ border: 'none', background: 'none', color: '#9C2B2B', cursor: 'pointer', fontSize: '14px', lineHeight: 1 }}>
+                        <span className="tnum" style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-muted)' }}>+{formatIDR(opt.priceDelta)}</span>
+                        <button type="button" onClick={() => removeOptionFromGroup(g.id, opt.id)} style={{ border: 'none', background: 'none', color: 'var(--color-danger-text)', cursor: 'pointer', fontSize: '14px', lineHeight: 1 }}>
                           ×
                         </button>
                       </span>
@@ -468,7 +468,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                   placeholder="New group name"
                   style={{ flex: 1, padding: '7px 9px', border: '1px solid #D8CEBE', borderRadius: '5px', fontSize: '12px' }}
                 />
-                <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: '#7A7062', whiteSpace: 'nowrap' }}>
+                <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: 'var(--color-muted)', whiteSpace: 'nowrap' }}>
                   <input type="checkbox" checked={newGroupRequired} onChange={(e) => setNewGroupRequired(e.target.checked)} />
                   Required
                 </label>
@@ -488,7 +488,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
               </button>
               <button
                 type="submit"
-                style={{ flex: 1, padding: '11px', borderRadius: '8px', border: 'none', backgroundColor: '#C1522A', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
+                style={{ flex: 1, padding: '11px', borderRadius: '8px', border: 'none', backgroundColor: 'var(--color-velvet)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
               >
                 Save item
               </button>
@@ -540,7 +540,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
               </button>
               <button
                 type="submit"
-                style={{ flex: 1, padding: '11px', borderRadius: '8px', border: 'none', backgroundColor: '#C1522A', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
+                style={{ flex: 1, padding: '11px', borderRadius: '8px', border: 'none', backgroundColor: 'var(--color-velvet)', color: '#fff', fontSize: '13px', fontWeight: 700, cursor: 'pointer' }}
               >
                 Save
               </button>
