@@ -460,6 +460,7 @@ const AppContent: React.FC = () => {
           fontWeight: 600,
           boxShadow: '0 8px 24px rgba(36, 31, 24, 0.25)',
           zIndex: 100,
+          pointerEvents: 'none',
           display: 'flex',
           alignItems: 'center',
           gap: '8px',

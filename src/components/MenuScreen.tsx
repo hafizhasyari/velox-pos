@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { Category, MenuItem, ModifierGroup } from '../types/pos';
 import { formatIDR } from '../data/initialData';
 import { Plus, Edit2, Archive, CheckCircle2, X } from 'lucide-react';
+import { AlertNotification } from './AlertNotification';
 
 interface MenuScreenProps {
   categories: Category[];
@@ -25,6 +26,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
 
   const [showItemModal, setShowItemModal] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
+  const [modalAlert, setModalAlert] = useState<{ title: string; message: string; type?: 'error' | 'warning' } | null>(null);
 
   // Draft modifiers inside item modal
   const [newGroupName, setNewGroupName] = useState('');
@@ -39,6 +41,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
   );
 
   const openNewItemModal = () => {
+    setModalAlert(null);
     setEditingItem({
       id: '',
       name: '',
@@ -51,6 +54,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
   };
 
   const openEditModal = (item: MenuItem) => {
+    setModalAlert(null);
     setEditingItem(JSON.parse(JSON.stringify(item)));
     setShowItemModal(true);
   };
@@ -58,9 +62,14 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
   const handleSaveItemSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!editingItem || !editingItem.name.trim() || !editingItem.price) {
-      alert('Name and price are required.');
+      setModalAlert({
+        title: 'Missing Item Details',
+        message: 'Please enter both the item name and price (greater than 0) before saving to your menu.',
+        type: 'error'
+      });
       return;
     }
+    setModalAlert(null);
     onSaveItem(editingItem);
     setShowItemModal(false);
     setEditingItem(null);
@@ -364,6 +373,15 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
               {editingItem.id ? 'Edit item' : 'New item'}
             </div>
 
+            {modalAlert && (
+              <AlertNotification
+                title={modalAlert.title}
+                message={modalAlert.message}
+                type={modalAlert.type}
+                onClose={() => setModalAlert(null)}
+              />
+            )}
+
             <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
               Name
             </label>
@@ -372,7 +390,6 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
               value={editingItem.name}
               onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
               style={{ width: '100%', padding: '10px 12px', border: '1px solid #D8CEBE', borderRadius: '7px', fontSize: '13.5px', marginBottom: '14px' }}
-              required
             />
 
             <div className="responsive-grid-2" style={{ gap: '12px', marginBottom: '14px' }}>
@@ -385,7 +402,6 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                   value={editingItem.price || ''}
                   onChange={(e) => setEditingItem({ ...editingItem, price: Number(e.target.value) })}
                   style={{ width: '100%', padding: '10px 12px', border: '1px solid #D8CEBE', borderRadius: '7px', fontSize: '13.5px' }}
-                  required
                 />
               </div>
               <div>

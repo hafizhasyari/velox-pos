@@ -3,6 +3,7 @@ import type { Category, MenuItem, TableItem, CartLine, ModifierOption, VoucherPr
 import { formatIDR } from '../data/initialData';
 import { Search, Users, Trash2, Plus, Minus, Tag, ArrowRight, Printer, X, Ticket } from 'lucide-react';
 import { useViewport } from '../hooks/useViewport';
+import { AlertNotification } from './AlertNotification';
 
 interface PosScreenProps {
   categories: Category[];
@@ -62,6 +63,8 @@ export const PosScreen: React.FC<PosScreenProps> = ({
   const [showCheckoutModal, setShowCheckoutModal] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState<'cash' | 'qris'>('cash');
   const [cashInput, setCashInput] = useState<string>('');
+  const [checkoutAlert, setCheckoutAlert] = useState<{ title: string; message: string; type?: 'error' | 'warning' } | null>(null);
+  const [posAlert, setPosAlert] = useState<{ title: string; message: string; type?: 'error' | 'warning' } | null>(null);
 
   // Receipt Modal
   const [lastOrderReceipt, setLastOrderReceipt] = useState<any | null>(null);
@@ -94,9 +97,14 @@ export const PosScreen: React.FC<PosScreenProps> = ({
   // Handle clicking item on grid
   const handleItemClick = (item: MenuItem) => {
     if (!shiftOpen) {
-      alert('Open a shift before taking orders.');
+      setPosAlert({
+        title: 'Shift Closed',
+        message: 'Please open a shift in the Shift Reconciliation module before taking new orders or adding items to cart.',
+        type: 'warning'
+      });
       return;
     }
+    setPosAlert(null);
     if (item.modifierGroups && item.modifierGroups.length > 0) {
       setActiveItemForMod(item);
       const initMods: Record<string, ModifierOption[]> = {};
@@ -165,9 +173,14 @@ export const PosScreen: React.FC<PosScreenProps> = ({
   const handleCompletePayment = () => {
     const tendered = paymentMethod === 'cash' ? (Number(cashInput) || total) : total;
     if (paymentMethod === 'cash' && tendered < total) {
-      alert('Cash tendered is less than order total.');
+      setCheckoutAlert({
+        title: 'Insufficient Cash Tendered',
+        message: `The cash amount entered (Rp ${tendered.toLocaleString('id-ID')}) is less than the order total (Rp ${total.toLocaleString('id-ID')}). Please enter a valid amount.`,
+        type: 'error'
+      });
       return;
     }
+    setCheckoutAlert(null);
     const receiptData = {
       orderId: 'ORD-' + Math.floor(1000 + Math.random() * 9000),
       time: new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }),
@@ -474,7 +487,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
               whiteSpace: 'nowrap'
             }}
           >
-            All Menu
+            All Active ({allActiveItems.length})
           </button>
           {categories.map((cat) => (
             <button
@@ -492,10 +505,21 @@ export const PosScreen: React.FC<PosScreenProps> = ({
                 whiteSpace: 'nowrap'
               }}
             >
-              {cat.name}
+              {cat.name} ({cat.items.filter(i => i.active).length})
             </button>
           ))}
         </div>
+
+        {posAlert && (
+          <div style={{ padding: '16px 20px 0 20px' }}>
+            <AlertNotification
+              title={posAlert.title}
+              message={posAlert.message}
+              type={posAlert.type}
+              onClose={() => setPosAlert(null)}
+            />
+          </div>
+        )}
 
         {/* Items Grid */}
         <div style={{ flex: 1, padding: '20px', overflowY: 'auto', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '14px', alignContent: 'start', paddingBottom: isCompactPos && cart.length > 0 ? '100px' : '20px' }}>
@@ -719,6 +743,15 @@ export const PosScreen: React.FC<PosScreenProps> = ({
           <div className="responsive-modal-box" style={{ backgroundColor: '#fff', borderRadius: '12px', padding: '26px', width: 'min(94vw, 420px)', boxShadow: '0 20px 60px rgba(0, 0, 0, 0.25)' }}>
             <div style={{ fontSize: '18px', fontWeight: 700, marginBottom: '6px' }}>Checkout Order</div>
             <div className="tnum" style={{ fontFamily: 'var(--font-mono)', fontSize: '28px', fontWeight: 700, color: 'var(--color-velvet)', marginBottom: '20px' }}>{formatIDR(total)}</div>
+
+            {checkoutAlert && (
+              <AlertNotification
+                title={checkoutAlert.title}
+                message={checkoutAlert.message}
+                type={checkoutAlert.type}
+                onClose={() => setCheckoutAlert(null)}
+              />
+            )}
 
             <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
               <button

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { ShiftRecord } from '../types/pos';
 import { formatIDR } from '../data/initialData';
 import { Clock, CheckCircle2, AlertCircle } from 'lucide-react';
+import { AlertNotification } from './AlertNotification';
 
 interface ShiftScreenProps {
   shiftOpen: boolean;
@@ -22,6 +23,7 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
 }) => {
   const [openingInput, setOpeningInput] = useState('200000');
   const [closingInput, setClosingInput] = useState('');
+  const [shiftAlert, setShiftAlert] = useState<{ title: string; message: string; type?: 'error' | 'warning' } | null>(null);
 
   const countedVal = Number(closingInput) || 0;
   const varianceVal = shiftOpen ? (countedVal - shiftExpectedCash) : 0;
@@ -35,9 +37,14 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
   const handleCloseSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (closingInput === '') {
-      alert('Please enter the counted cash amount.');
+      setShiftAlert({
+        title: 'Counted Cash Required',
+        message: 'Please enter the physical cash amount counted in your drawer before closing the shift.',
+        type: 'error'
+      });
       return;
     }
+    setShiftAlert(null);
     onCloseShift(countedVal, varianceVal);
     setClosingInput('');
   };
@@ -131,6 +138,15 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
                 </div>
               </div>
 
+              {shiftAlert && (
+                <AlertNotification
+                  title={shiftAlert.title}
+                  message={shiftAlert.message}
+                  type={shiftAlert.type}
+                  onClose={() => setShiftAlert(null)}
+                />
+              )}
+
               <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
                 Actual Counted Cash in Drawer (Rp)
               </label>
@@ -148,7 +164,6 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
                   fontFamily: 'var(--font-mono)',
                   marginBottom: '14px'
                 }}
-                required
               />
 
               {closingInput !== '' && (
