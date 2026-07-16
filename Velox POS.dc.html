@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+body{margin:0;-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box}
+input,button,select,textarea{font-family:inherit}
+::placeholder{color:#A79C8A}
+input:focus,select:focus{outline:none;border-color:#C1522A}
+@keyframes voFadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes voToast{0%{opacity:0;transform:translate(-50%,10px)}8%{opacity:1;transform:translate(-50%,0)}92%{opacity:1;transform:translate(-50%,0)}100%{opacity:0;transform:translate(-50%,10px)}}
+a{color:#C1522A;text-decoration:none}
+a:hover{color:#A5431F;text-decoration:underline}
+</style>
+</helmet>
+<div style="font-family:'IBM Plex Sans',sans-serif;background:#F6F2EC;color:#241F18;min-height:100vh;width:100%">
+
+<sc-if value="{{ isLoginScreen }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="Login" style="display:flex;min-height:100vh">
+  <div style="flex:1;background:#C1522A;color:#fff;display:flex;flex-direction:column;justify-content:space-between;padding:56px;min-width:420px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none"><path d="M5 6 L12 18 L19 6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 5 L19.5 2.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></svg>
+      <span style="font-size:22px;font-weight:700;letter-spacing:-0.02em">Velox</span>
+    </div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-bottom:16px">Point of Sale</div>
+      <h1 style="font-size:38px;line-height:1.18;font-weight:600;margin:0 0 16px;max-width:380px">Run your counter, know your numbers.</h1>
+      <p style="font-size:15px;line-height:1.6;opacity:.85;max-width:360px;margin:0">Order taking, shift reconciliation, and sales reporting for single-outlet F&amp;B businesses.</p>
+    </div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;opacity:.55">Built for Indonesian UMKM F&amp;B outlets</div>
+  </div>
+  <div style="flex:1.1;display:flex;align-items:center;justify-content:center;background:#F6F2EC">
+    <div style="width:100%;max-width:360px;padding:32px">
+      <h2 style="font-size:24px;font-weight:600;margin:0 0 28px">Sign in</h2>
+      <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Email</label>
+      <input type="email" placeholder="owner@warungibusari.id" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:6px;font-size:14px;margin-bottom:16px;background:#fff;color:#241F18"/>
+      <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Password</label>
+      <input type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:6px;font-size:14px;margin-bottom:22px;background:#fff;color:#241F18"/>
+      <div style="font-size:11.5px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;color:#A79C8A;margin-bottom:8px">Continue as (demo)</div>
+      <div style="display:flex;gap:8px;margin-bottom:24px">
+        <button onClick="{{ setLoginRoleOwner }}" style="flex:1;padding:10px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid {{ ownerBtnBorder }};background:{{ ownerBtnBg }};color:{{ ownerBtnColor }}">Owner</button>
+        <button onClick="{{ setLoginRoleKasir }}" style="flex:1;padding:10px;border-radius:6px;font-size:13px;font-weight:600;cursor:pointer;border:1px solid {{ kasirBtnBorder }};background:{{ kasirBtnBg }};color:{{ kasirBtnColor }}">Kasir</button>
+      </div>
+      <button onClick="{{ loginSubmit }}" style="width:100%;padding:13px;background:#C1522A;color:#fff;border:none;border-radius:6px;font-size:14.5px;font-weight:600;cursor:pointer">Sign In</button>
+      <div style="text-align:center;margin-top:18px;font-size:12.5px;color:#7A7062">New to Velox? <span onClick="{{ goToSignup }}" style="color:#C1522A;font-weight:600;cursor:pointer">Create your outlet</span></div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isSignupScreen }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="Signup" style="display:flex;min-height:100vh">
+  <div style="flex:1;background:#C1522A;color:#fff;display:flex;flex-direction:column;justify-content:space-between;padding:56px;min-width:420px">
+    <div style="display:flex;align-items:center;gap:10px">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none"><path d="M5 6 L12 18 L19 6" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M15.5 5 L19.5 2.2" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></svg>
+      <span style="font-size:22px;font-weight:700;letter-spacing:-0.02em">Velox</span>
+    </div>
+    <div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;letter-spacing:.14em;text-transform:uppercase;opacity:.75;margin-bottom:16px">Get started</div>
+      <h1 style="font-size:36px;line-height:1.18;font-weight:600;margin:0 0 16px;max-width:380px">Live in under 15 minutes, no assisted onboarding.</h1>
+      <p style="font-size:15px;line-height:1.6;opacity:.85;max-width:360px;margin:0">Create your account, add your first menu items, and take your first order today.</p>
+    </div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:12px;opacity:.55">Built for Indonesian UMKM F&amp;B outlets</div>
+  </div>
+  <div style="flex:1.1;display:flex;align-items:center;justify-content:center;background:#F6F2EC;padding:48px 0">
+    <div style="width:100%;max-width:400px;padding:32px">
+      <h2 style="font-size:24px;font-weight:600;margin:0 0 24px">Create your account</h2>
+
+      <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Business / outlet name</label>
+      <input value="{{ signupBusinessName }}" onChange="{{ onSignupBusinessNameChange }}" placeholder="Warung Makan Ibu Sari" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:6px;font-size:14px;margin-bottom:14px;background:#fff;color:#241F18"/>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Business type</label>
+          <select value="{{ signupBusinessType }}" onChange="{{ onSignupBusinessTypeChange }}" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:6px;font-size:13.5px;background:#fff;color:#241F18">
+            <option value="Warung">Warung</option>
+            <option value="Kafe">Kafe</option>
+            <option value="Restoran">Restoran</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Owner full name</label>
+          <input value="{{ signupOwnerName }}" onChange="{{ onSignupOwnerNameChange }}" placeholder="Ibu Sari" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:6px;font-size:13.5px;background:#fff;color:#241F18"/>
+        </div>
+      </div>
+
+      <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Email</label>
+      <input value="{{ signupEmail }}" onChange="{{ onSignupEmailChange }}" type="email" placeholder="owner@warungibusari.id" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:6px;font-size:14px;margin-bottom:14px;background:#fff;color:#241F18"/>
+
+      <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Phone number</label>
+      <input value="{{ signupPhone }}" onChange="{{ onSignupPhoneChange }}" placeholder="+62 812 3456 7890" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:6px;font-size:14px;margin-bottom:14px;background:#fff;color:#241F18"/>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Password</label>
+          <input value="{{ signupPassword }}" onChange="{{ onSignupPasswordChange }}" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:6px;font-size:14px;background:#fff;color:#241F18"/>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Confirm password</label>
+          <input value="{{ signupConfirmPassword }}" onChange="{{ onSignupConfirmPasswordChange }}" type="password" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:6px;font-size:14px;background:#fff;color:#241F18"/>
+        </div>
+      </div>
+
+      <label style="display:flex;align-items:flex-start;gap:8px;font-size:12.5px;color:#7A7062;margin-bottom:20px;cursor:pointer;line-height:1.4">
+        <input type="checkbox" checked="{{ signupAgreeTerms }}" onChange="{{ onSignupAgreeTermsChange }}" style="margin-top:2px"/>
+        <span>I agree to the Terms of Service and Privacy Policy.</span>
+      </label>
+
+      <button onClick="{{ submitSignup }}" style="width:100%;padding:13px;background:#C1522A;color:#fff;border:none;border-radius:6px;font-size:14.5px;font-weight:600;cursor:pointer">Create account</button>
+      <div style="text-align:center;margin-top:18px;font-size:12.5px;color:#7A7062">Already have an account? <span onClick="{{ goToLogin }}" style="color:#C1522A;font-weight:600;cursor:pointer">Sign in</span></div>
+    </div>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isLoggedIn }}" hint-placeholder-val="{{ false }}">
+<div style="display:flex;height:100vh;overflow:hidden">
+  <div style="width:216px;background:#FBF8F3;border-right:1px solid #E6DFD3;display:flex;flex-direction:column;padding:20px 14px;flex-shrink:0">
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 8px 26px">
+      <svg viewBox="0 0 28 28" width="24" height="24"><rect x="0" y="0" width="28" height="28" rx="7" fill="#C1522A"/><path d="M9 9 L14 19 L19 9" stroke="#fff" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="M18 8.3 L21.5 5.6" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity=".55"/></svg>
+      <span style="font-size:16.5px;font-weight:700;letter-spacing:-.01em">Velox</span>
+    </div>
+    <button onClick="{{ navToDashboard }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:7px;border:none;font-size:13.5px;font-weight:500;cursor:pointer;text-align:left;margin-bottom:3px;background:{{ navDashboardBg }};color:{{ navDashboardColor }}">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19V10M10 19V5M16 19v-7M22 19H2"/></svg>
+      <span>Dashboard</span>
+      <sc-if value="{{ kasirLocked }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;opacity:.55"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></sc-if>
+    </button>
+    <button onClick="{{ navToMenu }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:7px;border:none;font-size:13.5px;font-weight:500;cursor:pointer;text-align:left;margin-bottom:3px;background:{{ navMenuBg }};color:{{ navMenuColor }}">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <span>Menu</span>
+      <sc-if value="{{ kasirLocked }}"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" style="margin-left:auto;opacity:.55"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></sc-if>
+    </button>
+    <button onClick="{{ navToPos }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:7px;border:none;font-size:13.5px;font-weight:500;cursor:pointer;text-align:left;margin-bottom:3px;background:{{ navPosBg }};color:{{ navPosColor }}">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M7 12h4M7 16h4"/></svg>
+      <span>Order / POS</span>
+    </button>
+    <button onClick="{{ navToShift }}" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:7px;border:none;font-size:13.5px;font-weight:500;cursor:pointer;text-align:left;margin-bottom:3px;background:{{ navShiftBg }};color:{{ navShiftColor }}">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      <span>Shift</span>
+    </button>
+    <div style="flex:1"></div>
+    <div style="border-top:1px solid #E6DFD3;padding-top:14px;margin-top:10px">
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 8px 12px">
+        <div style="width:28px;height:28px;border-radius:50%;background:#C1522A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0">{{ roleInitial }}</div>
+        <div style="min-width:0">
+          <div style="font-size:12.5px;font-weight:600">{{ roleLabel }}</div>
+          <div style="font-size:10.5px;color:#A79C8A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ tenantName }}</div>
+        </div>
+      </div>
+      <button onClick="{{ logout }}" style="width:100%;padding:8px 10px;background:none;border:1px solid #E6DFD3;border-radius:7px;font-size:12.5px;color:#7A7062;cursor:pointer">Sign out</button>
+    </div>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;min-width:0">
+
+  <sc-if value="{{ isDashboard }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Dashboard" style="padding:32px 36px;max-width:1180px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+      <div>
+        <h1 style="font-size:22px;font-weight:700;margin:0 0 4px">Dashboard</h1>
+        <div style="font-size:13px;color:#7A7062">Sales overview for {{ tenantName }}</div>
+      </div>
+      <div style="display:flex;gap:6px;background:#FBF8F3;border:1px solid #E6DFD3;border-radius:8px;padding:4px">
+        <button onClick="{{ setPeriodToday }}" style="padding:7px 14px;border-radius:6px;border:none;font-size:12.5px;font-weight:600;cursor:pointer;background:{{ periodTodayBg }};color:{{ periodTodayColor }}">Today</button>
+        <button onClick="{{ setPeriod7d }}" style="padding:7px 14px;border-radius:6px;border:none;font-size:12.5px;font-weight:600;cursor:pointer;background:{{ period7dBg }};color:{{ period7dColor }}">7 Days</button>
+        <button onClick="{{ setPeriod30d }}" style="padding:7px 14px;border-radius:6px;border:none;font-size:12.5px;font-weight:600;cursor:pointer;background:{{ period30dBg }};color:{{ period30dColor }}">30 Days</button>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+      <div style="background:#fff;border:1px solid #E6DFD3;border-radius:10px;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <span style="font-size:12.5px;color:#7A7062;font-weight:500">Revenue</span>
+          <span style="font-size:11.5px;font-weight:700;padding:2px 7px;border-radius:5px;background:{{ kpiRevenueDeltaBg }};color:{{ kpiRevenueDeltaColor }}">{{ kpiRevenueDeltaLabel }}</span>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;font-feature-settings:'tnum' 1">{{ kpiRevenueLabel }}</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E6DFD3;border-radius:10px;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <span style="font-size:12.5px;color:#7A7062;font-weight:500">Orders</span>
+          <span style="font-size:11.5px;font-weight:700;padding:2px 7px;border-radius:5px;background:{{ kpiOrdersDeltaBg }};color:{{ kpiOrdersDeltaColor }}">{{ kpiOrdersDeltaLabel }}</span>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;font-feature-settings:'tnum' 1">{{ kpiOrders }}</div>
+      </div>
+      <div style="background:#fff;border:1px solid #E6DFD3;border-radius:10px;padding:20px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+          <span style="font-size:12.5px;color:#7A7062;font-weight:500">Avg Ticket</span>
+          <span style="font-size:11.5px;font-weight:700;padding:2px 7px;border-radius:5px;background:{{ kpiAvgTicketDeltaBg }};color:{{ kpiAvgTicketDeltaColor }}">{{ kpiAvgTicketDeltaLabel }}</span>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:26px;font-weight:600;font-feature-settings:'tnum' 1">{{ kpiAvgTicketLabel }}</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px">
+      <div style="background:#fff;border:1px solid #E6DFD3;border-radius:10px;padding:22px">
+        <div style="font-size:13.5px;font-weight:600;margin-bottom:20px">Revenue trend</div>
+        <div style="display:flex;align-items:flex-end;gap:14px;height:170px">
+          <sc-for list="{{ chartBars }}" as="bar" hint-placeholder-count="7">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;height:100%;justify-content:flex-end;gap:8px">
+              <div style="width:100%;max-width:40px;border-radius:4px 4px 0 0;background:#C1522A;height:{{ bar.heightPct }}%;min-height:3px"></div>
+              <span style="font-size:11px;color:#A79C8A;font-weight:500">{{ bar.label }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div style="background:#fff;border:1px solid #E6DFD3;border-radius:10px;padding:22px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <span style="font-size:13.5px;font-weight:600">Top items</span>
+          <div style="display:flex;gap:4px;background:#FBF8F3;border:1px solid #E6DFD3;border-radius:6px;padding:3px">
+            <button onClick="{{ setTopRevenue }}" style="padding:4px 8px;border-radius:4px;border:none;font-size:11px;font-weight:600;cursor:pointer;background:{{ topRevenueBg }};color:{{ topRevenueColor }}">Rev</button>
+            <button onClick="{{ setTopQty }}" style="padding:4px 8px;border-radius:4px;border:none;font-size:11px;font-weight:600;cursor:pointer;background:{{ topQtyBg }};color:{{ topQtyColor }}">Qty</button>
+          </div>
+        </div>
+        <sc-for list="{{ topItems }}" as="it" hint-placeholder-count="5">
+          <div style="margin-bottom:13px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:5px">
+              <span style="font-size:12.5px;font-weight:500;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:8px">{{ it.rank }}. {{ it.name }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:#7A7062;flex-shrink:0;font-feature-settings:'tnum' 1">{{ it.valueLabel }}</span>
+            </div>
+            <div style="height:5px;background:#F3E3D8;border-radius:3px;overflow:hidden"><div style="height:100%;background:#C1522A;width:{{ it.barPct }}%"></div></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isMenuScreen }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Menu" style="padding:32px 36px;max-width:1180px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+      <div>
+        <h1 style="font-size:22px;font-weight:700;margin:0 0 4px">Menu Management</h1>
+        <div style="font-size:13px;color:#7A7062">Categories, items, and modifiers</div>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onClick="{{ openNewCategoryModal }}" style="padding:9px 14px;border-radius:7px;border:1px solid #D8CEBE;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#241F18">+ Category</button>
+        <button onClick="{{ openNewItemModal }}" style="padding:9px 14px;border-radius:7px;border:none;background:#C1522A;color:#fff;font-size:13px;font-weight:600;cursor:pointer">+ Item</button>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:160px 1fr;gap:20px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+          <button onClick="{{ cat.selectMe }}" style="text-align:left;padding:10px 12px;border-radius:7px;border:none;font-size:13px;font-weight:500;cursor:pointer;background:{{ cat.bg }};color:{{ cat.color }};display:flex;justify-content:space-between">
+            <span>{{ cat.name }}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:11px;opacity:.7">{{ cat.count }}</span>
+          </button>
+        </sc-for>
+      </div>
+      <div>
+        <input value="{{ menuSearch }}" onChange="{{ onMenuSearchChange }}" placeholder="Search items in this category..." style="width:100%;padding:10px 12px;border:1px solid #D8CEBE;border-radius:7px;font-size:13.5px;margin-bottom:14px;background:#fff"/>
+        <div style="background:#fff;border:1px solid #E6DFD3;border-radius:10px;overflow:hidden">
+          <div style="display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:11px;font-weight:600;color:#A79C8A;text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid #E6DFD3">
+            <span style="flex:1;min-width:0">Item</span><span style="width:62px;flex-shrink:0">Price</span><span style="width:44px;flex-shrink:0">Mods</span><span style="width:58px;flex-shrink:0">Status</span><span style="width:60px;flex-shrink:0"></span>
+          </div>
+          <sc-for list="{{ menuItemsFiltered }}" as="item" hint-placeholder-count="4">
+            <div style="display:flex;align-items:center;gap:8px;padding:11px 14px;border-bottom:1px solid #F1ECE3;font-size:13px">
+              <span style="flex:1;min-width:0;font-weight:500;opacity:{{ item.rowOpacity }};white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ item.name }}</span>
+              <span style="width:62px;flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:12px;font-feature-settings:'tnum' 1;opacity:{{ item.rowOpacity }}">{{ item.priceLabel }}</span>
+              <span style="width:44px;flex-shrink:0;color:#7A7062;font-size:12px">{{ item.modCount }}</span>
+              <span style="width:58px;flex-shrink:0"><span style="font-size:10.5px;font-weight:600;padding:3px 7px;border-radius:5px;background:{{ item.statusBg }};color:{{ item.statusColor }};white-space:nowrap">{{ item.statusLabel }}</span></span>
+              <div style="width:60px;flex-shrink:0;display:flex;gap:5px;justify-content:flex-end">
+                <button onClick="{{ item.edit }}" title="Edit" style="width:26px;height:26px;border-radius:5px;border:1px solid #D8CEBE;background:#fff;cursor:pointer;color:#241F18;display:flex;align-items:center;justify-content:center;padding:0"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+                <button onClick="{{ item.toggleArchive }}" title="{{ item.archiveLabel }}" style="width:26px;height:26px;border-radius:5px;border:1px solid #D8CEBE;background:#fff;cursor:pointer;color:#241F18;display:flex;align-items:center;justify-content:center;padding:0"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8M10 13h4"/></svg></button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isPosScreen }}" hint-placeholder-val="{{ true }}">
+  <div data-screen-label="POS" style="display:flex;height:100%">
+    <div style="flex:1;padding:24px 24px 24px 28px;overflow-y:auto;min-width:0">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">
+        <div style="display:flex;background:#FBF8F3;border:1px solid #E6DFD3;border-radius:8px;padding:4px;flex-shrink:0">
+          <button onClick="{{ setDineIn }}" style="padding:8px 16px;border-radius:6px;border:none;font-size:12.5px;font-weight:600;cursor:pointer;background:{{ dineInBg }};color:{{ dineInColor }}">Dine-in</button>
+          <button onClick="{{ setTakeaway }}" style="padding:8px 16px;border-radius:6px;border:none;font-size:12.5px;font-weight:600;cursor:pointer;background:{{ takeawayBg }};color:{{ takeawayColor }}">Takeaway</button>
+        </div>
+        <sc-if value="{{ isDineIn }}">
+          <button onClick="{{ openTablePicker }}" style="padding:9px 14px;border-radius:8px;border:1px solid #D8CEBE;background:#fff;font-size:12.5px;font-weight:600;cursor:pointer;color:#241F18;flex-shrink:0">{{ tableButtonLabel }}</button>
+        </sc-if>
+        <input value="{{ posSearch }}" onChange="{{ onPosSearchChange }}" placeholder="Search menu..." style="flex:1 1 160px;min-width:0;padding:9px 13px;border:1px solid #D8CEBE;border-radius:8px;font-size:13px;background:#fff"/>
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap">
+        <sc-for list="{{ categoriesPos }}" as="cat" hint-placeholder-count="5">
+          <button onClick="{{ cat.selectPos }}" style="padding:8px 14px;border-radius:20px;border:1px solid {{ cat.posBorder }};background:{{ cat.posBg }};color:{{ cat.posColor }};font-size:12.5px;font-weight:600;cursor:pointer">{{ cat.name }}</button>
+        </sc-for>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px">
+        <sc-for list="{{ posItemsFiltered }}" as="item" hint-placeholder-count="8">
+          <button onClick="{{ item.add }}" style="text-align:left;padding:14px;border-radius:10px;border:1px solid #E6DFD3;background:#fff;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-height:88px">
+            <span style="font-size:13px;font-weight:600;line-height:1.3">{{ item.name }}</span>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:auto">
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:12.5px;color:#7A7062;font-feature-settings:'tnum' 1">{{ item.priceLabel }}</span>
+              <sc-if value="{{ item.hasMods }}"><span style="font-size:9.5px;font-weight:700;color:#C1522A;background:#F3E3D8;padding:2px 5px;border-radius:4px">MOD</span></sc-if>
+            </div>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="width:352px;flex-shrink:0;background:#fff;border-left:1px solid #E6DFD3;display:flex;flex-direction:column;height:100%">
+      <div style="padding:18px 20px 14px;border-bottom:1px solid #E6DFD3">
+        <div style="font-size:14.5px;font-weight:700;margin-bottom:4px">Current Order</div>
+        <div style="font-size:12px;color:#7A7062">{{ orderContextLabel }}</div>
+      </div>
+      <div style="flex:1;overflow-y:auto;padding:8px 20px">
+        <sc-if value="{{ cartEmpty }}"><div style="padding:40px 0;text-align:center;color:#A79C8A;font-size:13px">Cart is empty. Tap a menu item to add it.</div></sc-if>
+        <sc-for list="{{ cartLines }}" as="line" hint-placeholder-count="0">
+          <div style="padding:12px 0;border-bottom:1px solid #F1ECE3">
+            <div style="display:flex;justify-content:space-between;gap:8px">
+              <span style="font-size:13px;font-weight:600">{{ line.name }}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:13px;font-feature-settings:'tnum' 1">{{ line.lineTotalLabel }}</span>
+            </div>
+            <sc-if value="{{ line.modNamesLabel }}"><div style="font-size:11.5px;color:#7A7062;margin-top:2px">{{ line.modNamesLabel }}</div></sc-if>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <button onClick="{{ line.decrement }}" style="width:22px;height:22px;border-radius:5px;border:1px solid #D8CEBE;background:#fff;cursor:pointer;font-size:13px;line-height:1">&minus;</button>
+                <span style="font-size:12.5px;font-weight:600;min-width:14px;text-align:center">{{ line.qty }}</span>
+                <button onClick="{{ line.increment }}" style="width:22px;height:22px;border-radius:5px;border:1px solid #D8CEBE;background:#fff;cursor:pointer;font-size:13px;line-height:1">+</button>
+              </div>
+              <button onClick="{{ line.remove }}" style="font-size:11px;color:#9C2B2B;background:none;border:none;cursor:pointer">Remove</button>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      <div style="padding:16px 20px 20px;border-top:1px solid #E6DFD3">
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <div style="display:flex;background:#FBF8F3;border:1px solid #E6DFD3;border-radius:6px;padding:3px">
+            <button onClick="{{ setDiscPercent }}" style="padding:5px 8px;border-radius:4px;border:none;font-size:11px;font-weight:600;cursor:pointer;background:{{ discPercentBg }};color:{{ discPercentColor }}">%</button>
+            <button onClick="{{ setDiscFixed }}" style="padding:5px 8px;border-radius:4px;border:none;font-size:11px;font-weight:600;cursor:pointer;background:{{ discFixedBg }};color:{{ discFixedColor }}">Rp</button>
+          </div>
+          <input value="{{ discountValue }}" onChange="{{ onDiscountChange }}" type="number" placeholder="Discount" style="flex:1;padding:6px 10px;border:1px solid #D8CEBE;border-radius:6px;font-size:12.5px;background:#fff"/>
+        </div>
+        <div style="position:relative;background:#fff;padding:16px 16px 22px;clip-path:polygon(0 0,100% 0,100% calc(100% - 8px),95% 100%,90% calc(100% - 8px),85% 100%,80% calc(100% - 8px),75% 100%,70% calc(100% - 8px),65% 100%,60% calc(100% - 8px),55% 100%,50% calc(100% - 8px),45% 100%,40% calc(100% - 8px),35% 100%,30% calc(100% - 8px),25% 100%,20% calc(100% - 8px),15% 100%,10% calc(100% - 8px),5% 100%,0 calc(100% - 8px));filter:drop-shadow(0 2px 8px rgba(36,31,24,.1));border:1px dashed #D8CEBE">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#7A7062;margin-bottom:6px"><span>Subtotal</span><span style="font-family:'IBM Plex Mono',monospace;font-feature-settings:'tnum' 1">{{ subtotalLabel }}</span></div>
+          <sc-if value="{{ hasDiscount }}"><div style="display:flex;justify-content:space-between;font-size:12px;color:#7A7062;margin-bottom:6px"><span>Discount</span><span style="font-family:'IBM Plex Mono',monospace;font-feature-settings:'tnum' 1">&minus;{{ discountAmountLabel }}</span></div></sc-if>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#7A7062;margin-bottom:10px"><span>Tax (10%)</span><span style="font-family:'IBM Plex Mono',monospace;font-feature-settings:'tnum' 1">{{ taxLabel }}</span></div>
+          <div style="border-top:1px dashed #D8CEBE;padding-top:10px;display:flex;justify-content:space-between;align-items:baseline">
+            <span style="font-size:13.5px;font-weight:700">Total</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:700;font-feature-settings:'tnum' 1">{{ totalLabel }}</span>
+          </div>
+        </div>
+        <button onClick="{{ openPayment }}" style="width:100%;padding:14px;background:#C1522A;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer;margin-top:12px">Charge {{ totalLabel }}</button>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isShiftScreen }}" hint-placeholder-val="{{ false }}">
+  <div data-screen-label="Shift" style="padding:32px 36px;max-width:820px">
+    <h1 style="font-size:22px;font-weight:700;margin:0 0 4px">Shift</h1>
+    <div style="font-size:13px;color:#7A7062;margin-bottom:22px">Cash reconciliation for the current cashier session</div>
+
+    <sc-if value="{{ shiftOpen }}">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px">
+        <div style="background:#fff;border:1px solid #E6DFD3;border-radius:10px;padding:20px">
+          <div style="font-size:12px;color:#7A7062;margin-bottom:8px">Opened</div>
+          <div style="font-size:15px;font-weight:600">{{ shiftOpenedLabel }}</div>
+        </div>
+        <div style="background:#fff;border:1px solid #E6DFD3;border-radius:10px;padding:20px">
+          <div style="font-size:12px;color:#7A7062;margin-bottom:8px">Orders this shift</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:20px;font-weight:600">{{ shiftOrderCount }}</div>
+        </div>
+      </div>
+      <div style="position:relative;background:#fff;padding:22px 24px 30px;margin-bottom:22px;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),95% 100%,90% calc(100% - 10px),85% 100%,80% calc(100% - 10px),75% 100%,70% calc(100% - 10px),65% 100%,60% calc(100% - 10px),55% 100%,50% calc(100% - 10px),45% 100%,40% calc(100% - 10px),35% 100%,30% calc(100% - 10px),25% 100%,20% calc(100% - 10px),15% 100%,10% calc(100% - 10px),5% 100%,0 calc(100% - 10px));filter:drop-shadow(0 2px 10px rgba(36,31,24,.1));border:1px dashed #D8CEBE">
+        <div style="font-size:13px;font-weight:700;margin-bottom:16px">Close shift &mdash; cash count</div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px"><span style="color:#7A7062">Opening cash</span><span style="font-family:'IBM Plex Mono',monospace;font-feature-settings:'tnum' 1">{{ openingCashLabel }}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px"><span style="color:#7A7062">Cash sales</span><span style="font-family:'IBM Plex Mono',monospace;font-feature-settings:'tnum' 1">{{ shiftSalesCashLabel }}</span></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:16px;border-top:1px dashed #D8CEBE;padding-top:10px"><span style="font-weight:600">Expected in drawer</span><span style="font-family:'IBM Plex Mono',monospace;font-weight:700;font-feature-settings:'tnum' 1">{{ expectedCashLabel }}</span></div>
+        <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Counted cash</label>
+        <input value="{{ closingCashInput }}" onChange="{{ onClosingCashChange }}" type="number" placeholder="0" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:7px;font-size:14px;margin-bottom:14px;background:#FBF8F3"/>
+        <sc-if value="{{ showVariancePreview }}">
+          <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:700;padding:10px 12px;border-radius:7px;background:{{ varianceBg }};color:{{ varianceColor }};margin-bottom:14px"><span>Variance</span><span style="font-family:'IBM Plex Mono',monospace">{{ varianceLabel }}</span></div>
+        </sc-if>
+        <button onClick="{{ closeShift }}" style="width:100%;padding:13px;background:#241F18;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;cursor:pointer">Close Shift</button>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ shiftOpen }}" hint-placeholder-val="{{ false }}">
+    </sc-if>
+    <sc-if value="{{ !shiftOpenInverse }}" hint-placeholder-val="{{ false }}">
+      <div style="background:#fff;border:1px solid #E6DFD3;border-radius:10px;padding:24px;margin-bottom:24px">
+        <div style="font-size:13.5px;font-weight:700;margin-bottom:14px">Open shift</div>
+        <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Starting cash in drawer</label>
+        <input value="{{ openingCashInput }}" onChange="{{ onOpeningCashChange }}" type="number" placeholder="200000" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:7px;font-size:14px;margin-bottom:14px;background:#FBF8F3"/>
+        <button onClick="{{ openShift }}" style="padding:12px 22px;background:#C1522A;color:#fff;border:none;border-radius:8px;font-size:13.5px;font-weight:700;cursor:pointer">Open Shift</button>
+      </div>
+    </sc-if>
+
+    <div style="font-size:13px;font-weight:700;margin-bottom:10px">Shift history</div>
+    <div style="background:#fff;border:1px solid #E6DFD3;border-radius:10px;overflow:hidden">
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;padding:10px 16px;font-size:11px;font-weight:600;color:#A79C8A;text-transform:uppercase;letter-spacing:.03em;border-bottom:1px solid #E6DFD3">
+        <span>Date</span><span>Opening</span><span>Expected</span><span>Counted</span><span>Variance</span>
+      </div>
+      <sc-for list="{{ shiftHistory }}" as="h" hint-placeholder-count="1">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;padding:12px 16px;font-size:12.5px;border-bottom:1px solid #F1ECE3;font-family:'IBM Plex Mono',monospace;font-feature-settings:'tnum' 1;align-items:center">
+          <span style="font-family:'IBM Plex Sans',sans-serif">{{ h.date }}</span>
+          <span>{{ h.openingLabel }}</span>
+          <span>{{ h.expectedLabel }}</span>
+          <span>{{ h.countedLabel }}</span>
+          <span style="font-weight:700;color:{{ h.varianceColor }}">{{ h.varianceLabel }}</span>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ toastMessage }}">
+  <div style="position:fixed;bottom:28px;left:50%;background:#241F18;color:#fff;padding:12px 20px;border-radius:8px;font-size:13px;font-weight:500;box-shadow:0 8px 24px rgba(0,0,0,.25);z-index:100;animation:voToast 2.6s ease forwards">{{ toastMessage }}</div>
+</sc-if>
+
+<sc-if value="{{ showTablePicker }}">
+  <div style="position:fixed;inset:0;background:rgba(36,31,24,.45);display:flex;align-items:center;justify-content:center;z-index:60;animation:voFadeIn .15s ease" onClick="{{ closeTablePicker }}">
+    <div style="background:#fff;border-radius:12px;padding:26px;width:460px;box-shadow:0 20px 60px rgba(0,0,0,.25)" onClick="{{ stopClick }}">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px">
+        <span style="font-size:15px;font-weight:700">Select table</span>
+        <button onClick="{{ closeTablePicker }}" style="border:none;background:none;cursor:pointer;font-size:18px;color:#7A7062;line-height:1">&times;</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px">
+        <sc-for list="{{ tables }}" as="t" hint-placeholder-count="12">
+          <button onClick="{{ t.select }}" disabled="{{ t.disabled }}" style="padding:16px 6px;border-radius:8px;text-align:center;cursor:{{ t.cursor }};background:{{ t.bg }};color:{{ t.color }};border:1px solid {{ t.border }}">
+            <div style="font-size:15px;font-weight:700">{{ t.number }}</div>
+            <div style="font-size:10px;margin-top:3px;opacity:.8">{{ t.statusLabel }}</div>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ activeModifierItem }}">
+  <div style="position:fixed;inset:0;background:rgba(36,31,24,.45);display:flex;align-items:center;justify-content:center;z-index:60;animation:voFadeIn .15s ease">
+    <div style="background:#fff;border-radius:12px;padding:26px;width:420px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+      <div style="font-size:15px;font-weight:700;margin-bottom:4px">{{ activeModifierItem.name }}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:13px;color:#7A7062;margin-bottom:18px">{{ activeModifierItemPriceLabel }}</div>
+      <sc-for list="{{ modifierGroupsView }}" as="g" hint-placeholder-count="2">
+        <div style="margin-bottom:18px">
+          <div style="font-size:12.5px;font-weight:600;margin-bottom:8px">{{ g.name }} <span style="color:#A79C8A;font-weight:400">{{ g.requiredLabel }}</span></div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ g.options }}" as="opt" hint-placeholder-count="3">
+              <button onClick="{{ opt.toggle }}" style="padding:8px 13px;border-radius:20px;border:1px solid {{ opt.border }};background:{{ opt.bg }};color:{{ opt.color }};font-size:12px;font-weight:600;cursor:pointer">{{ opt.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+      <div style="display:flex;gap:10px;margin-top:8px">
+        <button onClick="{{ cancelModifiers }}" style="flex:1;padding:11px;border-radius:8px;border:1px solid #D8CEBE;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#241F18">Cancel</button>
+        <button onClick="{{ confirmModifiers }}" style="flex:1;padding:11px;border-radius:8px;border:none;background:#C1522A;color:#fff;font-size:13px;font-weight:700;cursor:pointer">Add to order</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showPaymentModal }}">
+  <div style="position:fixed;inset:0;background:rgba(36,31,24,.45);display:flex;align-items:center;justify-content:center;z-index:60;animation:voFadeIn .15s ease">
+    <div style="background:#fff;border-radius:12px;padding:28px;width:400px;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+      <div style="font-size:13px;color:#7A7062;margin-bottom:4px">Amount due</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:32px;font-weight:700;margin-bottom:20px;font-feature-settings:'tnum' 1">{{ totalLabel }}</div>
+      <div style="display:flex;gap:6px;background:#FBF8F3;border:1px solid #E6DFD3;border-radius:8px;padding:4px;margin-bottom:18px">
+        <button onClick="{{ setPayCash }}" style="flex:1;padding:9px;border-radius:6px;border:none;font-size:12.5px;font-weight:600;cursor:pointer;background:{{ payCashBg }};color:{{ payCashColor }}">Cash</button>
+        <button onClick="{{ setPayQris }}" style="flex:1;padding:9px;border-radius:6px;border:none;font-size:12.5px;font-weight:600;cursor:pointer;background:{{ payQrisBg }};color:{{ payQrisColor }}">QRIS</button>
+      </div>
+      <sc-if value="{{ isPayCash }}">
+        <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Cash received</label>
+        <input value="{{ cashTenderedInput }}" onChange="{{ onCashTenderedChange }}" type="number" placeholder="0" style="width:100%;padding:11px 12px;border:1px solid #D8CEBE;border-radius:7px;font-size:15px;margin-bottom:10px;background:#FBF8F3"/>
+        <div style="display:flex;gap:6px;margin-bottom:16px">
+          <sc-for list="{{ quickCashOptions }}" as="qc" hint-placeholder-count="3">
+            <button onClick="{{ qc.apply }}" style="flex:1;padding:7px;border-radius:6px;border:1px solid #D8CEBE;background:#fff;font-size:11.5px;font-weight:600;cursor:pointer;color:#241F18">{{ qc.label }}</button>
+          </sc-for>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;font-weight:600;padding:10px 0;border-top:1px dashed #D8CEBE;margin-bottom:14px"><span>Change</span><span style="font-family:'IBM Plex Mono',monospace">{{ changeLabel }}</span></div>
+      </sc-if>
+      <sc-if value="{{ isPayQris }}">
+        <div style="display:flex;flex-direction:column;align-items:center;padding:20px 0;margin-bottom:10px">
+          <div style="width:120px;height:120px;border:1px dashed #D8CEBE;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#A79C8A;font-size:11px;margin-bottom:12px">QR code</div>
+          <div style="font-size:12px;color:#7A7062">Waiting for customer scan&hellip;</div>
+        </div>
+      </sc-if>
+      <div style="display:flex;gap:10px">
+        <button onClick="{{ closePayment }}" style="flex:1;padding:11px;border-radius:8px;border:1px solid #D8CEBE;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#241F18">Cancel</button>
+        <button onClick="{{ confirmPayment }}" disabled="{{ payDisabled }}" style="flex:1;padding:11px;border-radius:8px;border:none;background:{{ confirmPayBg }};color:#fff;font-size:13px;font-weight:700;cursor:{{ confirmPayCursor }}">Confirm</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showReceipt }}">
+  <div style="position:fixed;inset:0;background:rgba(36,31,24,.45);display:flex;align-items:center;justify-content:center;z-index:60;animation:voFadeIn .15s ease">
+    <div style="position:relative;background:#fff;padding:28px 26px 34px;width:340px;clip-path:polygon(0 0,100% 0,100% calc(100% - 10px),95% 100%,90% calc(100% - 10px),85% 100%,80% calc(100% - 10px),75% 100%,70% calc(100% - 10px),65% 100%,60% calc(100% - 10px),55% 100%,50% calc(100% - 10px),45% 100%,40% calc(100% - 10px),35% 100%,30% calc(100% - 10px),25% 100%,20% calc(100% - 10px),15% 100%,10% calc(100% - 10px),5% 100%,0 calc(100% - 10px));filter:drop-shadow(0 12px 40px rgba(0,0,0,.3))">
+      <div style="text-align:center;margin-bottom:16px">
+        <div style="display:flex;align-items:center;justify-content:center;gap:6px">
+          <svg viewBox="0 0 28 28" width="17" height="17"><rect x="0" y="0" width="28" height="28" rx="7" fill="#C1522A"/><path d="M9 9 L14 19 L19 9" stroke="#fff" stroke-width="2.8" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span style="font-size:15px;font-weight:700">Velox POS</span>
+        </div>
+        <div style="font-size:11px;color:#7A7062">{{ tenantName }}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A79C8A;margin-top:6px">{{ lastOrder.id }} &middot; {{ lastOrderTimeLabel }}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:#A79C8A">{{ orderContextLabel }}</div>
+      </div>
+      <div style="border-top:1px dashed #D8CEBE;padding-top:12px;margin-bottom:12px">
+        <sc-for list="{{ lastOrderLines }}" as="line" hint-placeholder-count="2">
+          <div style="display:flex;justify-content:space-between;font-size:12px;margin-bottom:6px">
+            <span>{{ line.qty }}&times; {{ line.name }}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-feature-settings:'tnum' 1">{{ line.lineTotalLabel }}</span>
+          </div>
+        </sc-for>
+      </div>
+      <div style="border-top:1px dashed #D8CEBE;padding-top:12px">
+        <div style="display:flex;justify-content:space-between;font-size:16px;font-weight:700;margin-bottom:6px"><span>Total</span><span style="font-family:'IBM Plex Mono',monospace">{{ lastOrderTotalLabel }}</span></div>
+        <sc-if value="{{ lastOrderChangeLabel }}"><div style="display:flex;justify-content:space-between;font-size:12px;color:#7A7062"><span>Change</span><span style="font-family:'IBM Plex Mono',monospace">{{ lastOrderChangeLabel }}</span></div></sc-if>
+      </div>
+      <button onClick="{{ startNewOrder }}" style="width:100%;padding:12px;background:#C1522A;color:#fff;border:none;border-radius:8px;font-size:13.5px;font-weight:700;cursor:pointer;margin-top:18px">New Order</button>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showItemModal }}">
+  <div style="position:fixed;inset:0;background:rgba(36,31,24,.45);display:flex;align-items:center;justify-content:center;z-index:60;animation:voFadeIn .15s ease">
+    <div style="background:#fff;border-radius:12px;padding:26px;width:440px;max-height:86vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+      <div style="font-size:15px;font-weight:700;margin-bottom:18px">{{ itemModalTitle }}</div>
+      <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Name</label>
+      <input value="{{ editingItemDraft.name }}" onChange="{{ onDraftNameChange }}" style="width:100%;padding:10px 12px;border:1px solid #D8CEBE;border-radius:7px;font-size:13.5px;margin-bottom:14px"/>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+        <div>
+          <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Price (Rp)</label>
+          <input value="{{ editingItemDraft.price }}" onChange="{{ onDraftPriceChange }}" type="number" style="width:100%;padding:10px 12px;border:1px solid #D8CEBE;border-radius:7px;font-size:13.5px"/>
+        </div>
+        <div>
+          <label style="display:block;font-size:12px;font-weight:500;color:#7A7062;margin-bottom:6px">Category</label>
+          <select value="{{ editingItemDraft.categoryId }}" onChange="{{ onDraftCategoryChange }}" style="width:100%;padding:10px 12px;border:1px solid #D8CEBE;border-radius:7px;font-size:13.5px;background:#fff">
+            <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="5">
+              <option value="{{ cat.id }}">{{ cat.name }}</option>
+            </sc-for>
+          </select>
+        </div>
+      </div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:13px;margin-bottom:20px;cursor:pointer">
+        <input type="checkbox" checked="{{ editingItemDraft.active }}" onChange="{{ onDraftActiveChange }}"/> Active on POS
+      </label>
+      <div style="border-top:1px solid #E6DFD3;padding-top:16px;margin-bottom:16px">
+        <div style="font-size:12.5px;font-weight:600;margin-bottom:10px">Modifier groups</div>
+        <sc-for list="{{ draftModifierGroups }}" as="g" hint-placeholder-count="0">
+          <div style="background:#FBF8F3;border:1px solid #E6DFD3;border-radius:8px;padding:10px 12px;margin-bottom:10px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <span style="font-size:12.5px;font-weight:600">{{ g.name }} <span style="color:#A79C8A;font-weight:400">&middot; {{ g.typeLabel }}</span></span>
+              <button onClick="{{ g.remove }}" style="border:none;background:none;color:#9C2B2B;font-size:11px;cursor:pointer">Remove</button>
+            </div>
+            <sc-for list="{{ g.options }}" as="opt" hint-placeholder-count="2">
+              <div style="display:flex;justify-content:space-between;font-size:12px;padding:4px 0">
+                <span>{{ opt.name }}</span>
+                <span style="display:flex;gap:8px;align-items:center"><span style="font-family:'IBM Plex Mono',monospace;color:#7A7062">{{ opt.priceLabel }}</span><button onClick="{{ opt.remove }}" style="border:none;background:none;color:#9C2B2B;cursor:pointer;font-size:14px;line-height:1">&times;</button></span>
+              </div>
+            </sc-for>
+            <div style="display:flex;gap:6px;margin-top:8px">
+              <input value="{{ g.newOptionName }}" onChange="{{ g.onNewOptionNameChange }}" placeholder="Option name" style="flex:1;padding:6px 8px;border:1px solid #D8CEBE;border-radius:5px;font-size:11.5px"/>
+              <input value="{{ g.newOptionPrice }}" onChange="{{ g.onNewOptionPriceChange }}" type="number" placeholder="+Rp" style="width:70px;padding:6px 8px;border:1px solid #D8CEBE;border-radius:5px;font-size:11.5px"/>
+              <button onClick="{{ g.addOption }}" style="padding:6px 10px;border:none;background:#241F18;color:#fff;border-radius:5px;font-size:11px;cursor:pointer">Add</button>
+            </div>
+          </div>
+        </sc-for>
+        <div style="display:flex;gap:6px;align-items:center">
+          <input value="{{ newGroupName }}" onChange="{{ onNewGroupNameChange }}" placeholder="New group name" style="flex:1;padding:7px 9px;border:1px solid #D8CEBE;border-radius:5px;font-size:12px"/>
+          <label style="display:flex;align-items:center;gap:4px;font-size:11px;color:#7A7062;white-space:nowrap"><input type="checkbox" checked="{{ newGroupRequired }}" onChange="{{ onNewGroupRequiredChange }}"/>Required</label>
+          <button onClick="{{ addModifierGroupToDraft }}" style="padding:7px 11px;border:1px solid #D8CEBE;background:#fff;border-radius:5px;font-size:11px;cursor:pointer;color:#241F18">+ Group</button>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button onClick="{{ closeItemModal }}" style="flex:1;padding:11px;border-radius:8px;border:1px solid #D8CEBE;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#241F18">Cancel</button>
+        <button onClick="{{ saveItem }}" style="flex:1;padding:11px;border-radius:8px;border:none;background:#C1522A;color:#fff;font-size:13px;font-weight:700;cursor:pointer">Save item</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ showCategoryModal }}">
+  <div style="position:fixed;inset:0;background:rgba(36,31,24,.45);display:flex;align-items:center;justify-content:center;z-index:60;animation:voFadeIn .15s ease">
+    <div style="background:#fff;border-radius:12px;padding:26px;width:340px;box-shadow:0 20px 60px rgba(0,0,0,.25)">
+      <div style="font-size:15px;font-weight:700;margin-bottom:16px">New category</div>
+      <input value="{{ newCategoryName }}" onChange="{{ onNewCategoryNameChange }}" placeholder="e.g. Desserts" style="width:100%;padding:10px 12px;border:1px solid #D8CEBE;border-radius:7px;font-size:13.5px;margin-bottom:18px"/>
+      <div style="display:flex;gap:10px">
+        <button onClick="{{ closeCategoryModal }}" style="flex:1;padding:11px;border-radius:8px;border:1px solid #D8CEBE;background:#fff;font-size:13px;font-weight:600;cursor:pointer;color:#241F18">Cancel</button>
+        <button onClick="{{ saveCategory }}" style="flex:1;padding:11px;border-radius:8px;border:none;background:#C1522A;color:#fff;font-size:13px;font-weight:700;cursor:pointer">Save</button>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+function formatIDR(n) {
+  n = Math.round(Number(n) || 0);
+  return 'Rp' + n.toLocaleString('id-ID');
+}
+
+function buildInitialMenu() {
+  return [
+    { id: 'c1', name: 'Nasi & Ayam', items: [
+      { id: 'i1', name: 'Nasi Goreng Spesial', price: 28000, active: true, modifierGroups: [
+        { id: 'g1', name: 'Level Kepedasan', required: true, multi: false, options: [
+          { id: 'o1', name: 'Tidak Pedas', priceDelta: 0 }, { id: 'o2', name: 'Sedang', priceDelta: 0 }, { id: 'o3', name: 'Pedas', priceDelta: 0 }
+        ]},
+        { id: 'g2', name: 'Tambahan', required: false, multi: true, options: [
+          { id: 'o4', name: 'Telur', priceDelta: 5000 }, { id: 'o5', name: 'Ayam Suwir', priceDelta: 8000 }
+        ]}
+      ]},
+      { id: 'i2', name: 'Ayam Geprek', price: 25000, active: true, modifierGroups: [
+        { id: 'g3', name: 'Level Kepedasan', required: true, multi: false, options: [
+          { id: 'o6', name: 'Sedang', priceDelta: 0 }, { id: 'o7', name: 'Pedas', priceDelta: 0 }, { id: 'o8', name: 'Extra Pedas', priceDelta: 0 }
+        ]}
+      ]},
+      { id: 'i3', name: 'Nasi Ayam Bakar', price: 27000, active: true, modifierGroups: [] },
+      { id: 'i4', name: 'Nasi Rendang', price: 32000, active: true, modifierGroups: [] }
+    ]},
+    { id: 'c2', name: 'Mie & Bakmi', items: [
+      { id: 'i5', name: 'Mie Goreng Jawa', price: 24000, active: true, modifierGroups: [] },
+      { id: 'i6', name: 'Bakmi Ayam Pangsit', price: 26000, active: true, modifierGroups: [] },
+      { id: 'i7', name: 'Indomie Special', price: 15000, active: true, modifierGroups: [] }
+    ]},
+    { id: 'c3', name: 'Minuman', items: [
+      { id: 'i8', name: 'Es Teh Manis', price: 6000, active: true, modifierGroups: [] },
+      { id: 'i9', name: 'Es Jeruk', price: 8000, active: true, modifierGroups: [] },
+      { id: 'i10', name: 'Kopi Susu Gula Aren', price: 18000, active: true, modifierGroups: [] },
+      { id: 'i11', name: 'Air Mineral', price: 5000, active: true, modifierGroups: [] },
+      { id: 'i12', name: 'Es Kelapa Muda', price: 15000, active: true, modifierGroups: [] }
+    ]},
+    { id: 'c4', name: 'Snack & Gorengan', items: [
+      { id: 'i13', name: 'Tahu Isi (5pcs)', price: 12000, active: true, modifierGroups: [] },
+      { id: 'i14', name: 'Pisang Goreng', price: 10000, active: true, modifierGroups: [] },
+      { id: 'i15', name: 'Kentang Goreng', price: 15000, active: true, modifierGroups: [] }
+    ]},
+    { id: 'c5', name: 'Dessert', items: [
+      { id: 'i16', name: 'Es Krim Goreng', price: 18000, active: true, modifierGroups: [] },
+      { id: 'i17', name: 'Puding Coklat', price: 12000, active: true, modifierGroups: [] }
+    ]}
+  ];
+}
+
+function buildInitialTables() {
+  const statuses = ['free', 'free', 'occupied', 'free', 'free', 'occupied', 'free', 'free', 'free', 'occupied', 'free', 'free'];
+  return statuses.map((s, i) => ({ id: 't' + (i + 1), number: i + 1, status: s, seats: (i % 3 === 0 ? 2 : 4) }));
+}
+
+const DASHBOARD_DATA = {
+  today: {
+    kpis: { revenue: 1840000, revenueDelta: 8.4, orders: 62, ordersDelta: 5.1, avgTicket: 29677, avgTicketDelta: 3.1 },
+    chart: [ { label: '08', value: 40000 }, { label: '10', value: 90000 }, { label: '12', value: 320000 }, { label: '14', value: 260000 }, { label: '16', value: 140000 }, { label: '18', value: 190000 }, { label: '20', value: 410000 }, { label: '22', value: 390000 } ],
+    topItemsByRevenue: [ { name: 'Nasi Goreng Spesial', qty: 18, revenue: 504000 }, { name: 'Ayam Geprek', qty: 14, revenue: 350000 }, { name: 'Kopi Susu Gula Aren', qty: 16, revenue: 288000 }, { name: 'Nasi Ayam Bakar', qty: 9, revenue: 243000 }, { name: 'Mie Goreng Jawa', qty: 8, revenue: 192000 } ],
+    topItemsByQty: [ { name: 'Es Teh Manis', qty: 34, revenue: 204000 }, { name: 'Nasi Goreng Spesial', qty: 18, revenue: 504000 }, { name: 'Kopi Susu Gula Aren', qty: 16, revenue: 288000 }, { name: 'Ayam Geprek', qty: 14, revenue: 350000 }, { name: 'Tahu Isi', qty: 12, revenue: 144000 } ]
+  },
+  '7d': {
+    kpis: { revenue: 12450000, revenueDelta: 12.3, orders: 418, ordersDelta: 9.7, avgTicket: 29785, avgTicketDelta: 2.3 },
+    chart: [ { label: 'Mon', value: 1520000 }, { label: 'Tue', value: 1180000 }, { label: 'Wed', value: 1340000 }, { label: 'Thu', value: 1610000 }, { label: 'Fri', value: 2040000 }, { label: 'Sat', value: 2450000 }, { label: 'Sun', value: 2310000 } ],
+    topItemsByRevenue: [ { name: 'Nasi Goreng Spesial', qty: 126, revenue: 3528000 }, { name: 'Ayam Geprek', qty: 98, revenue: 2450000 }, { name: 'Kopi Susu Gula Aren', qty: 112, revenue: 2016000 }, { name: 'Nasi Ayam Bakar', qty: 63, revenue: 1701000 }, { name: 'Mie Goreng Jawa', qty: 56, revenue: 1344000 } ],
+    topItemsByQty: [ { name: 'Es Teh Manis', qty: 238, revenue: 1428000 }, { name: 'Nasi Goreng Spesial', qty: 126, revenue: 3528000 }, { name: 'Kopi Susu Gula Aren', qty: 112, revenue: 2016000 }, { name: 'Ayam Geprek', qty: 98, revenue: 2450000 }, { name: 'Tahu Isi', qty: 84, revenue: 1008000 } ]
+  },
+  '30d': {
+    kpis: { revenue: 54200000, revenueDelta: 6.7, orders: 1830, ordersDelta: 4.4, avgTicket: 29617, avgTicketDelta: 2.2 },
+    chart: [ { label: 'Week 1', value: 12100000 }, { label: 'Week 2', value: 13400000 }, { label: 'Week 3', value: 14300000 }, { label: 'Week 4', value: 14400000 } ],
+    topItemsByRevenue: [ { name: 'Nasi Goreng Spesial', qty: 548, revenue: 15344000 }, { name: 'Ayam Geprek', qty: 426, revenue: 10650000 }, { name: 'Kopi Susu Gula Aren', qty: 487, revenue: 8766000 }, { name: 'Nasi Ayam Bakar', qty: 274, revenue: 7398000 }, { name: 'Mie Goreng Jawa', qty: 243, revenue: 5832000 } ],
+    topItemsByQty: [ { name: 'Es Teh Manis', qty: 1034, revenue: 6204000 }, { name: 'Nasi Goreng Spesial', qty: 548, revenue: 15344000 }, { name: 'Kopi Susu Gula Aren', qty: 487, revenue: 8766000 }, { name: 'Ayam Geprek', qty: 426, revenue: 10650000 }, { name: 'Tahu Isi', qty: 365, revenue: 4380000 } ]
+  }
+};
+
+function toggleStyle(active) {
+  return active ? { bg: '#C1522A', color: '#fff', border: '#C1522A' } : { bg: '#fff', color: '#7A7062', border: '#D8CEBE' };
+}
+function pillToggleStyle(active) {
+  return active ? { bg: '#241F18', color: '#fff' } : { bg: '#FBF8F3', color: '#7A7062' };
+}
+
+class Component extends DCLogic {
+  state = {
+    screen: 'login', role: 'owner', loginRole: 'owner', toastMessage: null, tenantName: 'Warung Makan Ibu Sari',
+    signupForm: { businessName: '', businessType: 'Warung', ownerName: '', email: '', phone: '', password: '', confirmPassword: '', agreeTerms: false },
+    categories: buildInitialMenu(), menuSearch: '', activeMenuCategoryId: 'c1',
+    showItemModal: false, editingItemDraft: null, showCategoryModal: false, newCategoryName: '',
+    newGroupName: '', newGroupRequired: false, newOptionNameByGroup: {}, newOptionPriceByGroup: {},
+    posCategoryId: 'c1', posSearch: '', cart: [], orderType: 'dinein', selectedTableId: null,
+    showTablePicker: false, tables: buildInitialTables(), discountType: 'percent', discountValue: '',
+    activeModifierItem: null, modifierSelections: {},
+    showPaymentModal: false, paymentMethod: 'cash', cashTenderedInput: '', showReceipt: false, lastOrder: null,
+    shiftOpen: false, openingCash: 0, openingCashInput: '', closingCashInput: '', shiftSalesCash: 0, shiftOrderCount: 0, shiftOpenedAt: null,
+    shiftHistory: [ { id: 's0', date: 'Jul 15, 2026', opening: 200000, expected: 1620000, counted: 1610000, variance: -10000 } ],
+    dashboardPeriod: 'today', topItemsView: 'revenue'
+  };
+
+  showToast(msg) { this.setState({ toastMessage: msg }); clearTimeout(this._toastTimer); this._toastTimer = setTimeout(() => this.setState({ toastMessage: null }), 2600); }
+  login(role) { this.setState({ role, screen: role === 'owner' ? 'dashboard' : 'pos' }); }
+  goToSignup() { this.setState({ screen: 'signup' }); }
+  goToLogin() { this.setState({ screen: 'login' }); }
+  updateSignupField(field, value) { this.setState(s => ({ signupForm: { ...s.signupForm, [field]: value } })); }
+  submitSignup() {
+    const f = this.state.signupForm;
+    if (!f.businessName.trim() || !f.ownerName.trim() || !f.email.trim() || !f.password) { this.showToast('Please fill in all required fields.'); return; }
+    if (f.password !== f.confirmPassword) { this.showToast('Passwords do not match.'); return; }
+    if (!f.agreeTerms) { this.showToast('Please agree to the terms to continue.'); return; }
+    this.setState({ tenantName: f.businessName.trim(), role: 'owner', screen: 'dashboard' });
+    this.showToast('Account created — welcome to Velox!');
+  }
+  logout() { this.setState({ screen: 'login', cart: [], showPaymentModal: false, showReceipt: false, showTablePicker: false, activeModifierItem: null }); }
+  navigateTo(screen) {
+    if (this.state.role === 'kasir' && (screen === 'dashboard' || screen === 'menu')) { this.showToast('Owner access required for this screen.'); return; }
+    this.setState({ screen });
+  }
+
+  setMenuSearch(v) { this.setState({ menuSearch: v }); }
+  setActiveMenuCategory(id) { this.setState({ activeMenuCategoryId: id }); }
+  openNewItemModal() { this.setState({ showItemModal: true, editingItemDraft: { id: null, name: '', price: '', categoryId: this.state.activeMenuCategoryId, active: true, modifierGroups: [] } }); }
+  openEditItemModal(item) { this.setState({ showItemModal: true, editingItemDraft: JSON.parse(JSON.stringify(item)) }); }
+  closeItemModal() { this.setState({ showItemModal: false, editingItemDraft: null }); }
+  updateDraftField(field, value) { this.setState(s => ({ editingItemDraft: { ...s.editingItemDraft, [field]: value } })); }
+  saveItem() {
+    const draft = this.state.editingItemDraft;
+    if (!draft.name.trim() || !draft.price) { this.showToast('Name and price are required.'); return; }
+    const priceNum = Number(draft.price);
+    this.setState(s => {
+      const cats = s.categories.map(cat => {
+        if (cat.id !== draft.categoryId) return { ...cat, items: cat.items.filter(it => it.id !== draft.id) };
+        let items;
+        if (draft.id) items = cat.items.map(it => it.id === draft.id ? { ...draft, price: priceNum } : it);
+        else items = [...cat.items, { ...draft, id: 'i' + Date.now(), price: priceNum }];
+        return { ...cat, items };
+      });
+      return { categories: cats, showItemModal: false, editingItemDraft: null };
+    });
+    this.showToast('Item saved.');
+  }
+  archiveItem(item) { this.setState(s => ({ categories: s.categories.map(cat => cat.id === item.categoryId ? { ...cat, items: cat.items.map(it => it.id === item.id ? { ...it, active: !it.active } : it) } : cat) })); }
+  openNewCategoryModal() { this.setState({ showCategoryModal: true, newCategoryName: '' }); }
+  closeCategoryModal() { this.setState({ showCategoryModal: false }); }
+  saveCategory() {
+    const name = this.state.newCategoryName.trim();
+    if (!name) { this.showToast('Category name required.'); return; }
+    this.setState(s => ({ categories: [...s.categories, { id: 'c' + Date.now(), name, items: [] }], showCategoryModal: false, newCategoryName: '' }));
+    this.showToast('Category added.');
+  }
+  addModifierGroupToDraft() {
+    const name = this.state.newGroupName.trim();
+    if (!name) return;
+    this.setState(s => ({ editingItemDraft: { ...s.editingItemDraft, modifierGroups: [...s.editingItemDraft.modifierGroups, { id: 'g' + Date.now(), name, required: s.newGroupRequired, multi: !s.newGroupRequired, options: [] }] }, newGroupName: '', newGroupRequired: false }));
+  }
+  removeModifierGroupFromDraft(groupId) { this.setState(s => ({ editingItemDraft: { ...s.editingItemDraft, modifierGroups: s.editingItemDraft.modifierGroups.filter(g => g.id !== groupId) } })); }
+  addOptionToDraftGroup(groupId) {
+    const name = (this.state.newOptionNameByGroup[groupId] || '').trim();
+    const price = Number(this.state.newOptionPriceByGroup[groupId] || 0);
+    if (!name) return;
+    this.setState(s => ({
+      editingItemDraft: { ...s.editingItemDraft, modifierGroups: s.editingItemDraft.modifierGroups.map(g => g.id === groupId ? { ...g, options: [...g.options, { id: 'o' + Date.now(), name, priceDelta: price }] } : g) },
+      newOptionNameByGroup: { ...s.newOptionNameByGroup, [groupId]: '' }, newOptionPriceByGroup: { ...s.newOptionPriceByGroup, [groupId]: '' }
+    }));
+  }
+  removeOptionFromDraftGroup(groupId, optionId) { this.setState(s => ({ editingItemDraft: { ...s.editingItemDraft, modifierGroups: s.editingItemDraft.modifierGroups.map(g => g.id === groupId ? { ...g, options: g.options.filter(o => o.id !== optionId) } : g) } })); }
+
+  setPosCategory(id) { this.setState({ posCategoryId: id }); }
+  setPosSearch(v) { this.setState({ posSearch: v }); }
+  addItemToCart(item) {
+    if (item.modifierGroups && item.modifierGroups.length > 0) {
+      const sel = {}; item.modifierGroups.forEach(g => { sel[g.id] = g.multi ? [] : null; });
+      this.setState({ activeModifierItem: item, modifierSelections: sel });
+    } else this.pushCartLineNamed(item, [], 0);
+  }
+  pushCartLineNamed(item, chosenNames, modTotal) {
+    this.setState(s => {
+      const modKey = chosenNames.join('|');
+      const existing = s.cart.find(l => l.itemId === item.id && l.modKey === modKey);
+      if (existing) return { cart: s.cart.map(l => l.id === existing.id ? { ...l, qty: l.qty + 1 } : l) };
+      const line = { id: 'ln' + Date.now() + Math.random().toString(36).slice(2, 6), itemId: item.id, name: item.name, basePrice: item.price, modNames: chosenNames, modKey, modTotal, qty: 1 };
+      return { cart: [...s.cart, line] };
+    });
+  }
+  selectModifierOption(groupId, optionId, multi) {
+    this.setState(s => {
+      const sel = { ...s.modifierSelections };
+      if (multi) { const arr = sel[groupId] || []; sel[groupId] = arr.includes(optionId) ? arr.filter(x => x !== optionId) : [...arr, optionId]; }
+      else sel[groupId] = optionId;
+      return { modifierSelections: sel };
+    });
+  }
+  confirmModifiers() {
+    const item = this.state.activeModifierItem;
+    const requiredMissing = item.modifierGroups.some(g => g.required && !this.state.modifierSelections[g.id]);
+    if (requiredMissing) { this.showToast('Please select required options.'); return; }
+    let modTotal = 0; const chosen = [];
+    item.modifierGroups.forEach(g => {
+      const s = this.state.modifierSelections[g.id];
+      if (g.multi) (s || []).forEach(oid => { const opt = g.options.find(o => o.id === oid); if (opt) { modTotal += opt.priceDelta; chosen.push(opt.name); } });
+      else if (s) { const opt = g.options.find(o => o.id === s); if (opt) { modTotal += opt.priceDelta; chosen.push(opt.name); } }
+    });
+    this.pushCartLineNamed(item, chosen, modTotal);
+    this.setState({ activeModifierItem: null, modifierSelections: {} });
+  }
+  cancelModifiers() { this.setState({ activeModifierItem: null, modifierSelections: {} }); }
+  changeQty(lineId, delta) { this.setState(s => ({ cart: s.cart.map(l => l.id === lineId ? { ...l, qty: Math.max(0, l.qty + delta) } : l).filter(l => l.qty > 0) })); }
+  removeLine(lineId) { this.setState(s => ({ cart: s.cart.filter(l => l.id !== lineId) })); }
+  setOrderType(t) { if (t === 'takeaway') this.setState({ orderType: t, selectedTableId: null, showTablePicker: false }); else this.setState({ orderType: t, showTablePicker: true }); }
+  openTablePicker() { this.setState({ showTablePicker: true }); }
+  closeTablePicker() { this.setState({ showTablePicker: false }); }
+  selectTable(tableId) {
+    this.setState(s => ({
+      tables: s.tables.map(t => t.id === tableId ? { ...t, status: 'occupied' } : (t.id === s.selectedTableId ? { ...t, status: 'free' } : t)),
+      selectedTableId: tableId, showTablePicker: false
+    }));
+  }
+  setDiscountType(t) { this.setState({ discountType: t }); }
+  setDiscountValue(v) { this.setState({ discountValue: v }); }
+  openPayment() {
+    if (this.state.cart.length === 0) { this.showToast('Cart is empty.'); return; }
+    if (this.state.orderType === 'dinein' && !this.state.selectedTableId) { this.showToast('Select a table first.'); return; }
+    this.setState({ showPaymentModal: true, paymentMethod: 'cash', cashTenderedInput: '' });
+  }
+  closePayment() { this.setState({ showPaymentModal: false }); }
+  setPaymentMethod(m) { this.setState({ paymentMethod: m }); }
+  setCashTendered(v) { this.setState({ cashTenderedInput: v }); }
+  computeTotals() {
+    const subtotal = this.state.cart.reduce((sum, l) => sum + (l.basePrice + (l.modTotal || 0)) * l.qty, 0);
+    let discountAmount = 0;
+    const dv = Number(this.state.discountValue || 0);
+    if (this.state.discountType === 'percent') discountAmount = subtotal * (dv / 100); else discountAmount = dv;
+    discountAmount = Math.min(discountAmount, subtotal);
+    const taxable = subtotal - discountAmount;
+    const tax = taxable * 0.10;
+    return { subtotal, discountAmount, tax, total: taxable + tax };
+  }
+  confirmPayment() {
+    const totals = this.computeTotals();
+    if (this.state.paymentMethod === 'cash') {
+      const tendered = Number(this.state.cashTenderedInput || 0);
+      if (tendered < totals.total) { this.showToast('Cash tendered is less than total.'); return; }
+    }
+    const order = {
+      id: 'ORD-' + Math.floor(1000 + Math.random() * 9000), time: new Date(), orderType: this.state.orderType,
+      tableNumber: this.state.orderType === 'dinein' ? ((this.state.tables.find(t => t.id === this.state.selectedTableId) || {}).number) : null,
+      lines: this.state.cart, totals, paymentMethod: this.state.paymentMethod,
+      cashTendered: this.state.paymentMethod === 'cash' ? Number(this.state.cashTenderedInput || 0) : totals.total
+    };
+    this.setState(s => ({
+      tables: s.orderType === 'dinein' ? s.tables.map(t => t.id === s.selectedTableId ? { ...t, status: 'free' } : t) : s.tables,
+      lastOrder: order, showPaymentModal: false, showReceipt: true,
+      shiftSalesCash: s.shiftOpen && order.paymentMethod === 'cash' ? s.shiftSalesCash + totals.total : s.shiftSalesCash,
+      shiftOrderCount: s.shiftOpen ? s.shiftOrderCount + 1 : s.shiftOrderCount
+    }));
+  }
+  startNewOrder() { this.setState({ cart: [], selectedTableId: null, orderType: 'dinein', discountValue: '', discountType: 'percent', showReceipt: false, lastOrder: null }); }
+
+  setOpeningCashInput(v) { this.setState({ openingCashInput: v }); }
+  openShift() {
+    const amt = Number(this.state.openingCashInput || 0);
+    this.setState({ shiftOpen: true, openingCash: amt, shiftSalesCash: 0, shiftOrderCount: 0, shiftOpenedAt: new Date(), openingCashInput: '' });
+    this.showToast('Shift opened.');
+  }
+  setClosingCashInput(v) { this.setState({ closingCashInput: v }); }
+  closeShift() {
+    const counted = Number(this.state.closingCashInput || 0);
+    const expected = this.state.openingCash + this.state.shiftSalesCash;
+    const variance = counted - expected;
+    const record = { id: 's' + Date.now(), date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), opening: this.state.openingCash, expected, counted, variance, orders: this.state.shiftOrderCount };
+    this.setState(s => ({ shiftHistory: [record, ...s.shiftHistory], shiftOpen: false, openingCash: 0, shiftSalesCash: 0, shiftOrderCount: 0, closingCashInput: '' }));
+    this.showToast('Shift closed.');
+  }
+
+  setDashboardPeriod(p) { this.setState({ dashboardPeriod: p }); }
+  setTopItemsView(v) { this.setState({ topItemsView: v }); }
+
+  renderVals() {
+    const s = this.state;
+    const totals = this.computeTotals();
+    const dash = DASHBOARD_DATA[s.dashboardPeriod];
+    const maxBar = Math.max(...dash.chart.map(b => b.value));
+    const chartBars = dash.chart.map(b => ({ label: b.label, heightPct: Math.max(3, Math.round((b.value / maxBar) * 100)) }));
+    const topItemsRaw = s.topItemsView === 'revenue' ? dash.topItemsByRevenue : dash.topItemsByQty;
+    const maxTop = Math.max(...topItemsRaw.map(t => s.topItemsView === 'revenue' ? t.revenue : t.qty));
+    const topItems = topItemsRaw.map((t, i) => ({ rank: i + 1, name: t.name, barPct: Math.max(4, Math.round(((s.topItemsView === 'revenue' ? t.revenue : t.qty) / maxTop) * 100)), valueLabel: s.topItemsView === 'revenue' ? formatIDR(t.revenue) : (t.qty + ' sold') }));
+
+    function deltaBadge(v) { const up = v >= 0; return { label: (up ? '+' : '') + v.toFixed(1) + '%', bg: up ? '#E7EFE4' : '#F6E3DE', color: up ? '#4C7A4A' : '#9C2B2B' }; }
+    const revB = deltaBadge(dash.kpis.revenueDelta), ordB = deltaBadge(dash.kpis.ordersDelta), avgB = deltaBadge(dash.kpis.avgTicketDelta);
+
+    const periodTs = { today: toggleStyle(s.dashboardPeriod === 'today'), '7d': toggleStyle(s.dashboardPeriod === '7d'), '30d': toggleStyle(s.dashboardPeriod === '30d') };
+    const topTs = { revenue: pillToggleStyle(s.topItemsView === 'revenue'), qty: pillToggleStyle(s.topItemsView === 'qty') };
+
+    const activeCategory = s.categories.find(c => c.id === s.activeMenuCategoryId) || s.categories[0];
+    const menuSearchLower = s.menuSearch.trim().toLowerCase();
+    const menuItemsFiltered = (activeCategory ? activeCategory.items : []).filter(it => !menuSearchLower || it.name.toLowerCase().includes(menuSearchLower)).map(it => ({
+      id: it.id, name: it.name, priceLabel: formatIDR(it.price), modCount: it.modifierGroups.length ? it.modifierGroups.length + ' group' + (it.modifierGroups.length > 1 ? 's' : '') : '—',
+      rowOpacity: it.active ? 1 : 0.45, statusLabel: it.active ? 'Active' : 'Archived', statusBg: it.active ? '#E7EFE4' : '#F1ECE3', statusColor: it.active ? '#4C7A4A' : '#A79C8A',
+      archiveLabel: it.active ? 'Archive' : 'Restore', edit: () => this.openEditItemModal(it), toggleArchive: () => this.archiveItem(it)
+    }));
+
+    const categoriesMenuView = s.categories.map(cat => ({ id: cat.id, name: cat.name, count: cat.items.length, selectMe: () => this.setActiveMenuCategory(cat.id), ...toggleStyle(cat.id === s.activeMenuCategoryId) }));
+    const categoriesPosView = s.categories.map(cat => {
+      const active = cat.id === s.posCategoryId && !s.posSearch.trim();
+      return { id: cat.id, name: cat.name, selectPos: () => { this.setPosCategory(cat.id); this.setPosSearch(''); }, posBg: active ? '#C1522A' : '#fff', posColor: active ? '#fff' : '#7A7062', posBorder: active ? '#C1522A' : '#E6DFD3' };
+    });
+
+    const posCategory = s.categories.find(c => c.id === s.posCategoryId) || s.categories[0];
+    const posSearchLower = s.posSearch.trim().toLowerCase();
+    const rawPosItems = posSearchLower ? s.categories.flatMap(c => c.items) : (posCategory ? posCategory.items : []);
+    const posItemsFiltered = rawPosItems.filter(it => it.active && (!posSearchLower || it.name.toLowerCase().includes(posSearchLower))).map(it => ({
+      id: it.id, name: it.name, priceLabel: formatIDR(it.price), hasMods: it.modifierGroups.length > 0, add: () => this.addItemToCart(it)
+    }));
+
+    const cartLines = s.cart.map(l => {
+      const unit = l.basePrice + (l.modTotal || 0);
+      return { id: l.id, name: l.name, qty: l.qty, modNamesLabel: (l.modNames || []).join(', '), lineTotalLabel: formatIDR(unit * l.qty), increment: () => this.changeQty(l.id, 1), decrement: () => this.changeQty(l.id, -1), remove: () => this.removeLine(l.id) };
+    });
+
+    const selectedTable = s.tables.find(t => t.id === s.selectedTableId);
+    const dineInTs = toggleStyle(s.orderType === 'dinein'), takeawayTs = toggleStyle(s.orderType === 'takeaway');
+    const discPTs = pillToggleStyle(s.discountType === 'percent'), discFTs = pillToggleStyle(s.discountType === 'fixed');
+
+    const tablesView = s.tables.map(t => {
+      const isSelected = t.id === s.selectedTableId;
+      const isFree = t.status === 'free' || isSelected;
+      return { id: t.id, number: t.number, statusLabel: isSelected ? 'Selected' : (t.status === 'free' ? (t.seats + ' seats') : 'Occupied'), disabled: !isFree, cursor: isFree ? 'pointer' : 'not-allowed', select: () => this.selectTable(t.id), bg: isSelected ? '#C1522A' : (isFree ? '#fff' : '#F6E3DE'), color: isSelected ? '#fff' : (isFree ? '#241F18' : '#9C2B2B'), border: isSelected ? '#C1522A' : (isFree ? '#E6DFD3' : '#F6E3DE') };
+    });
+
+    const change = s.paymentMethod === 'cash' ? Math.max(0, Number(s.cashTenderedInput || 0) - totals.total) : 0;
+    const payCashTs = toggleStyle(s.paymentMethod === 'cash'), payQrisTs = toggleStyle(s.paymentMethod === 'qris');
+    const canConfirmCash = s.paymentMethod !== 'cash' || Number(s.cashTenderedInput || 0) >= totals.total;
+    const quickCashOptions = [
+      { label: 'Exact', apply: () => this.setCashTendered(String(Math.round(totals.total))) },
+      { label: '+50rb', apply: () => this.setCashTendered(String(Math.ceil(totals.total / 50000) * 50000)) },
+      { label: '+100rb', apply: () => this.setCashTendered(String(Math.ceil(totals.total / 100000) * 100000)) }
+    ];
+
+    let modifierGroupsView = [];
+    if (s.activeModifierItem) {
+      modifierGroupsView = s.activeModifierItem.modifierGroups.map(g => ({
+        name: g.name, requiredLabel: g.required ? '(required)' : '(optional)',
+        options: g.options.map(opt => {
+          const sel = s.modifierSelections[g.id];
+          const chosen = g.multi ? (sel || []).includes(opt.id) : sel === opt.id;
+          return { label: opt.name + (opt.priceDelta ? ' +' + formatIDR(opt.priceDelta) : ''), toggle: () => this.selectModifierOption(g.id, opt.id, g.multi), bg: chosen ? '#C1522A' : '#fff', color: chosen ? '#fff' : '#241F18', border: chosen ? '#C1522A' : '#D8CEBE' };
+        })
+      }));
+    }
+
+    const expectedCash = s.openingCash + s.shiftSalesCash;
+    const closingNum = Number(s.closingCashInput || 0);
+    const variance = closingNum - expectedCash;
+    const showVariancePreview = s.closingCashInput !== '';
+    const varianceOk = Math.abs(variance) < 1;
+
+    const draftModifierGroups = (s.editingItemDraft && s.editingItemDraft.modifierGroups) ? s.editingItemDraft.modifierGroups.map(g => ({
+      id: g.id, name: g.name, typeLabel: g.required ? 'required' : 'optional', remove: () => this.removeModifierGroupFromDraft(g.id),
+      newOptionName: s.newOptionNameByGroup[g.id] || '', newOptionPrice: s.newOptionPriceByGroup[g.id] || '',
+      onNewOptionNameChange: (e) => this.setState(st => ({ newOptionNameByGroup: { ...st.newOptionNameByGroup, [g.id]: e.target.value } })),
+      onNewOptionPriceChange: (e) => this.setState(st => ({ newOptionPriceByGroup: { ...st.newOptionPriceByGroup, [g.id]: e.target.value } })),
+      addOption: () => this.addOptionToDraftGroup(g.id),
+      options: g.options.map(opt => ({ name: opt.name, priceLabel: '+' + formatIDR(opt.priceDelta), remove: () => this.removeOptionFromDraftGroup(g.id, opt.id) }))
+    })) : [];
+
+    return {
+      isLoginScreen: s.screen === 'login', isSignupScreen: s.screen === 'signup', isLoggedIn: s.screen !== 'login' && s.screen !== 'signup',
+      isDashboard: s.screen === 'dashboard', isMenuScreen: s.screen === 'menu', isPosScreen: s.screen === 'pos', isShiftScreen: s.screen === 'shift',
+      toastMessage: s.toastMessage, logout: () => this.logout(), tenantName: s.tenantName,
+      setLoginRoleOwner: () => this.setState({ loginRole: 'owner' }), setLoginRoleKasir: () => this.setState({ loginRole: 'kasir' }),
+      ownerBtnBg: toggleStyle(s.loginRole === 'owner').bg, ownerBtnColor: toggleStyle(s.loginRole === 'owner').color, ownerBtnBorder: toggleStyle(s.loginRole === 'owner').border,
+      kasirBtnBg: toggleStyle(s.loginRole === 'kasir').bg, kasirBtnColor: toggleStyle(s.loginRole === 'kasir').color, kasirBtnBorder: toggleStyle(s.loginRole === 'kasir').border,
+      loginSubmit: () => this.login(s.loginRole), goToSignup: () => this.goToSignup(), goToLogin: () => this.goToLogin(),
+      signupBusinessName: s.signupForm.businessName, onSignupBusinessNameChange: (e) => this.updateSignupField('businessName', e.target.value),
+      signupBusinessType: s.signupForm.businessType, onSignupBusinessTypeChange: (e) => this.updateSignupField('businessType', e.target.value),
+      signupOwnerName: s.signupForm.ownerName, onSignupOwnerNameChange: (e) => this.updateSignupField('ownerName', e.target.value),
+      signupEmail: s.signupForm.email, onSignupEmailChange: (e) => this.updateSignupField('email', e.target.value),
+      signupPhone: s.signupForm.phone, onSignupPhoneChange: (e) => this.updateSignupField('phone', e.target.value),
+      signupPassword: s.signupForm.password, onSignupPasswordChange: (e) => this.updateSignupField('password', e.target.value),
+      signupConfirmPassword: s.signupForm.confirmPassword, onSignupConfirmPasswordChange: (e) => this.updateSignupField('confirmPassword', e.target.value),
+      signupAgreeTerms: s.signupForm.agreeTerms, onSignupAgreeTermsChange: (e) => this.updateSignupField('agreeTerms', e.target.checked),
+      submitSignup: () => this.submitSignup(),
+      navToDashboard: () => this.navigateTo('dashboard'), navToMenu: () => this.navigateTo('menu'), navToPos: () => this.navigateTo('pos'), navToShift: () => this.navigateTo('shift'),
+      navDashboardBg: s.screen === 'dashboard' ? '#F3E3D8' : 'transparent', navDashboardColor: s.screen === 'dashboard' ? '#C1522A' : '#7A7062',
+      navMenuBg: s.screen === 'menu' ? '#F3E3D8' : 'transparent', navMenuColor: s.screen === 'menu' ? '#C1522A' : '#7A7062',
+      navPosBg: s.screen === 'pos' ? '#F3E3D8' : 'transparent', navPosColor: s.screen === 'pos' ? '#C1522A' : '#7A7062',
+      navShiftBg: s.screen === 'shift' ? '#F3E3D8' : 'transparent', navShiftColor: s.screen === 'shift' ? '#C1522A' : '#7A7062',
+      kasirLocked: s.role === 'kasir', roleLabel: s.role === 'owner' ? 'Owner' : 'Kasir', roleInitial: s.role === 'owner' ? 'O' : 'K',
+
+      setPeriodToday: () => this.setDashboardPeriod('today'), setPeriod7d: () => this.setDashboardPeriod('7d'), setPeriod30d: () => this.setDashboardPeriod('30d'),
+      periodTodayBg: periodTs.today.bg, periodTodayColor: periodTs.today.color, period7dBg: periodTs['7d'].bg, period7dColor: periodTs['7d'].color, period30dBg: periodTs['30d'].bg, period30dColor: periodTs['30d'].color,
+      kpiRevenueLabel: formatIDR(dash.kpis.revenue), kpiRevenueDeltaLabel: revB.label, kpiRevenueDeltaBg: revB.bg, kpiRevenueDeltaColor: revB.color,
+      kpiOrders: dash.kpis.orders, kpiOrdersDeltaLabel: ordB.label, kpiOrdersDeltaBg: ordB.bg, kpiOrdersDeltaColor: ordB.color,
+      kpiAvgTicketLabel: formatIDR(dash.kpis.avgTicket), kpiAvgTicketDeltaLabel: avgB.label, kpiAvgTicketDeltaBg: avgB.bg, kpiAvgTicketDeltaColor: avgB.color,
+      chartBars, setTopRevenue: () => this.setTopItemsView('revenue'), setTopQty: () => this.setTopItemsView('qty'),
+      topRevenueBg: topTs.revenue.bg, topRevenueColor: topTs.revenue.color, topQtyBg: topTs.qty.bg, topQtyColor: topTs.qty.color, topItems,
+
+      categories: categoriesMenuView, menuSearch: s.menuSearch, onMenuSearchChange: (e) => this.setMenuSearch(e.target.value),
+      menuItemsFiltered, openNewItemModal: () => this.openNewItemModal(), openNewCategoryModal: () => this.openNewCategoryModal(),
+
+      isDineIn: s.orderType === 'dinein', setDineIn: () => this.setOrderType('dinein'), setTakeaway: () => this.setOrderType('takeaway'),
+      dineInBg: dineInTs.bg, dineInColor: dineInTs.color, takeawayBg: takeawayTs.bg, takeawayColor: takeawayTs.color,
+      openTablePicker: () => this.openTablePicker(), tableButtonLabel: selectedTable ? ('Table ' + selectedTable.number) : 'Select table',
+      posSearch: s.posSearch, onPosSearchChange: (e) => this.setPosSearch(e.target.value),
+      categoriesPos: categoriesPosView, posItemsFiltered,
+      orderContextLabel: s.orderType === 'takeaway' ? 'Takeaway' : (selectedTable ? ('Dine-in · Table ' + selectedTable.number) : 'Dine-in · no table selected'),
+      cartEmpty: cartLines.length === 0, cartLines,
+      discPercentBg: discPTs.bg, discPercentColor: discPTs.color, discFixedBg: discFTs.bg, discFixedColor: discFTs.color,
+      setDiscPercent: () => this.setDiscountType('percent'), setDiscFixed: () => this.setDiscountType('fixed'),
+      discountValue: s.discountValue, onDiscountChange: (e) => this.setDiscountValue(e.target.value),
+      subtotalLabel: formatIDR(totals.subtotal), hasDiscount: totals.discountAmount > 0, discountAmountLabel: formatIDR(totals.discountAmount), taxLabel: formatIDR(totals.tax), totalLabel: formatIDR(totals.total),
+      openPayment: () => this.openPayment(),
+
+      showTablePicker: s.showTablePicker, closeTablePicker: () => this.closeTablePicker(), stopClick: (e) => e.stopPropagation(), tables: tablesView,
+
+      activeModifierItem: s.activeModifierItem, activeModifierItemPriceLabel: s.activeModifierItem ? formatIDR(s.activeModifierItem.price) : '', modifierGroupsView, confirmModifiers: () => this.confirmModifiers(), cancelModifiers: () => this.cancelModifiers(),
+
+      showPaymentModal: s.showPaymentModal, closePayment: () => this.closePayment(),
+      isPayCash: s.paymentMethod === 'cash', isPayQris: s.paymentMethod === 'qris', setPayCash: () => this.setPaymentMethod('cash'), setPayQris: () => this.setPaymentMethod('qris'),
+      payCashBg: payCashTs.bg, payCashColor: payCashTs.color, payQrisBg: payQrisTs.bg, payQrisColor: payQrisTs.color,
+      cashTenderedInput: s.cashTenderedInput, onCashTenderedChange: (e) => this.setCashTendered(e.target.value), quickCashOptions, changeLabel: formatIDR(change),
+      payDisabled: !canConfirmCash, confirmPayBg: canConfirmCash ? '#C1522A' : '#D8CEBE', confirmPayCursor: canConfirmCash ? 'pointer' : 'not-allowed',
+      confirmPayment: () => this.confirmPayment(),
+
+      showReceipt: s.showReceipt, lastOrder: s.lastOrder,
+      lastOrderTimeLabel: s.lastOrder ? s.lastOrder.time.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '',
+      lastOrderLines: s.lastOrder ? s.lastOrder.lines.map(l => ({ qty: l.qty, name: l.name, lineTotalLabel: formatIDR((l.basePrice + (l.modTotal || 0)) * l.qty) })) : [],
+      lastOrderTotalLabel: s.lastOrder ? formatIDR(s.lastOrder.totals.total) : '',
+      lastOrderChangeLabel: (s.lastOrder && s.lastOrder.paymentMethod === 'cash' && (s.lastOrder.cashTendered - s.lastOrder.totals.total) > 0) ? formatIDR(s.lastOrder.cashTendered - s.lastOrder.totals.total) : null,
+      startNewOrder: () => this.startNewOrder(),
+
+      shiftOpen: s.shiftOpen, shiftOpenInverse: s.shiftOpen,
+      shiftOpenedLabel: s.shiftOpenedAt ? s.shiftOpenedAt.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : '—',
+      shiftOrderCount: s.shiftOrderCount, openingCashLabel: formatIDR(s.openingCash), shiftSalesCashLabel: formatIDR(s.shiftSalesCash), expectedCashLabel: formatIDR(expectedCash),
+      closingCashInput: s.closingCashInput, onClosingCashChange: (e) => this.setClosingCashInput(e.target.value), closeShift: () => this.closeShift(),
+      showVariancePreview, varianceLabel: (variance >= 0 ? '+' : '') + formatIDR(variance), varianceBg: varianceOk ? '#E7EFE4' : '#F6E3DE', varianceColor: varianceOk ? '#4C7A4A' : '#9C2B2B',
+      openingCashInput: s.openingCashInput, onOpeningCashChange: (e) => this.setOpeningCashInput(e.target.value), openShift: () => this.openShift(),
+      shiftHistory: s.shiftHistory.map(h => ({ date: h.date, openingLabel: formatIDR(h.opening), expectedLabel: formatIDR(h.expected), countedLabel: formatIDR(h.counted), varianceLabel: (h.variance >= 0 ? '+' : '') + formatIDR(h.variance), varianceColor: Math.abs(h.variance) < 1 ? '#4C7A4A' : '#9C2B2B' })),
+
+      showItemModal: s.showItemModal, itemModalTitle: (s.editingItemDraft && s.editingItemDraft.id) ? 'Edit item' : 'New item',
+      editingItemDraft: s.editingItemDraft || { name: '', price: '', categoryId: '', active: true },
+      onDraftNameChange: (e) => this.updateDraftField('name', e.target.value), onDraftPriceChange: (e) => this.updateDraftField('price', e.target.value),
+      onDraftCategoryChange: (e) => this.updateDraftField('categoryId', e.target.value), onDraftActiveChange: (e) => this.updateDraftField('active', e.target.checked),
+      draftModifierGroups, newGroupName: s.newGroupName, onNewGroupNameChange: (e) => this.setState({ newGroupName: e.target.value }),
+      newGroupRequired: s.newGroupRequired, onNewGroupRequiredChange: (e) => this.setState({ newGroupRequired: e.target.checked }),
+      addModifierGroupToDraft: () => this.addModifierGroupToDraft(), closeItemModal: () => this.closeItemModal(), saveItem: () => this.saveItem(),
+
+      showCategoryModal: s.showCategoryModal, newCategoryName: s.newCategoryName, onNewCategoryNameChange: (e) => this.setState({ newCategoryName: e.target.value }),
+      closeCategoryModal: () => this.closeCategoryModal(), saveCategory: () => this.saveCategory()
+    };
+  }
+}
+</script>
+</body>
+</html>
