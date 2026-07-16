@@ -349,7 +349,7 @@ const AppContent: React.FC = () => {
       {/* Floating Microservices E2E Inspector Badge */}
       <div style={{
         position: 'fixed',
-        bottom: isMobile ? '80px' : '20px',
+        bottom: isMobile ? '136px' : '20px',
         left: isDesktop ? '240px' : (isTablet ? '84px' : '16px'),
         zIndex: 90,
         transition: 'left 0.2s ease, bottom 0.2s ease'
