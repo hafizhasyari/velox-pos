@@ -22,10 +22,10 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!businessName.trim() || !ownerName.trim() || !email.trim() || !password) {
+    if (!businessName.trim() || !ownerName.trim() || !email.trim() || !phone.trim() || !password || !confirmPassword) {
       setAlertInfo({
         title: 'Missing Required Fields',
-        message: 'Please fill in your Business Name, Owner Full Name, Email, and Password before continuing.',
+        message: 'Please fill out all required fields before continuing.',
         type: 'error'
       });
       return;
@@ -117,7 +117,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
         backgroundColor: '#F6F2EC',
         padding: isDesktop ? '48px 0' : isMobile ? '24px 16px' : '40px 24px'
       }}>
-        <form onSubmit={handleSubmit} style={{
+        <form noValidate onSubmit={handleSubmit} style={{
           width: '100%',
           maxWidth: isDesktop ? '400px' : '480px',
           padding: isDesktop ? '32px' : isMobile ? '24px 20px' : '32px',
@@ -145,6 +145,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             value={businessName}
             onChange={(e) => setBusinessName(e.target.value)}
             placeholder="Warung Makan Ibu Sari"
+            className={alertInfo?.title === 'Missing Required Fields' && !businessName.trim() ? 'input-error' : ''}
             style={{
               width: '100%',
               padding: '11px 12px',
@@ -184,6 +185,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
                 value={ownerName}
                 onChange={(e) => setOwnerName(e.target.value)}
                 placeholder="Ibu Sari"
+                className={alertInfo?.title === 'Missing Required Fields' && !ownerName.trim() ? 'input-error' : ''}
                 style={{
                   width: '100%',
                   padding: '11px 12px',
@@ -206,6 +208,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="owner@warungibusari.id"
+            className={alertInfo?.title === 'Missing Required Fields' && !email.trim() ? 'input-error' : ''}
             style={{
               width: '100%',
               padding: '11px 12px',
@@ -227,6 +230,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
             value={phone}
             onChange={(e) => setPhone(e.target.value)}
             placeholder="+62 812 3456 7890"
+            className={alertInfo?.title === 'Missing Required Fields' && !phone.trim() ? 'input-error' : ''}
             style={{
               width: '100%',
               padding: '11px 12px',
@@ -250,6 +254,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
+                className={alertInfo?.title === 'Missing Required Fields' && !password ? 'input-error' : ''}
                 style={{
                   width: '100%',
                   padding: '11px 12px',
@@ -271,6 +276,7 @@ export const SignupScreen: React.FC<SignupScreenProps> = ({ onSignup, onGoToLogi
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
+                className={alertInfo?.title === 'Missing Required Fields' && !confirmPassword ? 'input-error' : ''}
                 style={{
                   width: '100%',
                   padding: '11px 12px',

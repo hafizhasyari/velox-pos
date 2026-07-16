@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import type { VoucherPromo } from '../types/pos';
 import { Ticket, Plus, Search, Trash2, Edit, CheckCircle2, XCircle, Percent, X, Tag } from 'lucide-react';
 import { CustomSelect } from './CustomSelect';
+import { AlertNotification } from './AlertNotification';
 
 interface PromotionScreenProps {
   promotions: VoucherPromo[];
@@ -20,6 +21,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPromo, setEditingPromo] = useState<VoucherPromo | null>(null);
+  const [deleteConfirmCode, setDeleteConfirmCode] = useState<string | null>(null);
 
   // Form states
   const [formCode, setFormCode] = useState('');
@@ -341,11 +343,7 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                   Edit
                 </button>
                 <button
-                  onClick={() => {
-                    if (window.confirm(`Are you sure you want to delete promo code "${promo.code}"?`)) {
-                      onDeletePromo(promo.code);
-                    }
-                  }}
+                  onClick={() => setDeleteConfirmCode(promo.code)}
                   style={{
                     padding: '6px 10px',
                     borderRadius: '6px',
@@ -395,11 +393,14 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
               </button>
             </div>
 
-            <form onSubmit={handleSave} style={{ padding: '24px' }}>
+            <form noValidate onSubmit={handleSave} style={{ padding: '24px' }}>
               {formError && (
-                <div style={{ padding: '10px 14px', backgroundColor: '#FFF0F0', border: '1px solid #F8D7DA', borderRadius: '8px', color: '#DC2626', fontSize: '13px', fontWeight: 600, marginBottom: '16px' }}>
-                  {formError}
-                </div>
+                <AlertNotification
+                  title="Validation Error"
+                  message={formError}
+                  type="error"
+                  onClose={() => setFormError('')}
+                />
               )}
 
               <div className="responsive-grid-2" style={{ gap: '16px', marginBottom: '16px' }}>
@@ -581,6 +582,45 @@ export const PromotionScreen: React.FC<PromotionScreenProps> = ({
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Custom Burnt Velvet Delete Confirmation Modal */}
+      {deleteConfirmCode && (
+        <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(36,31,24,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, padding: '20px' }}>
+          <div className="responsive-modal-box" style={{ backgroundColor: '#fff', borderRadius: '16px', border: '1px solid #E6DFD3', width: '100%', maxWidth: '420px', padding: '24px', boxShadow: '0 20px 50px rgba(36,31,24,0.35)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
+              <div style={{ width: '44px', height: '44px', borderRadius: '12px', backgroundColor: '#FFF0F0', border: '1px solid #F8D7DA', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#DC2626', flexShrink: 0 }}>
+                <Trash2 size={22} />
+              </div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '18px', fontWeight: 700, color: '#241F18' }}>Delete Voucher?</h3>
+                <p style={{ margin: '2px 0 0', fontSize: '13px', color: 'var(--color-muted)' }}>This action cannot be undone.</p>
+              </div>
+            </div>
+            <p style={{ fontSize: '14px', color: '#241F18', lineHeight: 1.5, marginBottom: '24px', backgroundColor: '#FBF8F3', padding: '12px 14px', borderRadius: '8px', border: '1px solid #E6DFD3' }}>
+              Are you sure you want to permanently delete promo code <strong style={{ fontFamily: 'var(--font-mono)', color: 'var(--color-velvet)' }}>"{deleteConfirmCode}"</strong>?
+            </p>
+            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '10px' }}>
+              <button
+                onClick={() => setDeleteConfirmCode(null)}
+                style={{ padding: '10px 18px', borderRadius: '8px', border: '1px solid #D8CEBE', backgroundColor: '#fff', color: '#241F18', fontWeight: 600, fontSize: '13.5px', cursor: 'pointer' }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={async () => {
+                  if (deleteConfirmCode) {
+                    await onDeletePromo(deleteConfirmCode);
+                    setDeleteConfirmCode(null);
+                  }
+                }}
+                style={{ padding: '10px 20px', borderRadius: '8px', border: 'none', backgroundColor: '#DC2626', color: '#fff', fontWeight: 700, fontSize: '13.5px', cursor: 'pointer', boxShadow: '0 2px 6px rgba(220,38,38,0.25)' }}
+              >
+                Delete Voucher
+              </button>
+            </div>
           </div>
         </div>
       )}

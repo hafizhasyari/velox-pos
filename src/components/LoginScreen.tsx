@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import type { RoleType } from '../types/pos';
 import { useViewport } from '../hooks/useViewport';
+import { AlertNotification } from './AlertNotification';
 
 interface LoginScreenProps {
   onLogin: (role: RoleType) => void;
@@ -12,9 +13,15 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
   const [loginRole, setLoginRole] = useState<RoleType>('owner');
   const [email, setEmail] = useState('owner@warungibusari.id');
   const [password, setPassword] = useState('password123');
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setValidationError(null);
+    if (!email.trim() || !password.trim()) {
+      setValidationError('Please fill out all required fields before signing in.');
+      return;
+    }
     onLogin(loginRole);
   };
 
@@ -85,7 +92,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
         backgroundColor: '#F6F2EC',
         padding: isDesktop ? '0' : isMobile ? '24px 16px' : '40px 24px'
       }}>
-        <form onSubmit={handleSubmit} style={{
+        <form noValidate onSubmit={handleSubmit} style={{
           width: '100%',
           maxWidth: isDesktop ? '360px' : '420px',
           padding: isDesktop ? '32px' : isMobile ? '24px 20px' : '32px',
@@ -96,14 +103,24 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
         }}>
           <h2 style={{ fontSize: '24px', fontWeight: 600, margin: '0 0 28px' }}>Sign in</h2>
           
+          {validationError && (
+            <AlertNotification
+              title="Missing Required Fields"
+              message={validationError}
+              type="error"
+              onClose={() => setValidationError(null)}
+            />
+          )}
+
           <label style={{ display: 'block', fontSize: '12px', fontWeight: 500, color: 'var(--color-muted)', marginBottom: '6px' }}>
             Email
           </label>
           <input
             type="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => { setEmail(e.target.value); setValidationError(null); }}
             placeholder="owner@warungibusari.id"
+            className={validationError && !email.trim() ? 'input-error' : ''}
             style={{
               width: '100%',
               padding: '11px 12px',
@@ -123,8 +140,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
           <input
             type="password"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => { setPassword(e.target.value); setValidationError(null); }}
             placeholder="••••••••"
+            className={validationError && !password.trim() ? 'input-error' : ''}
             style={{
               width: '100%',
               padding: '11px 12px',

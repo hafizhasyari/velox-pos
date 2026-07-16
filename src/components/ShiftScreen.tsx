@@ -81,7 +81,7 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
           </div>
 
           {!shiftOpen ? (
-            <form onSubmit={handleOpenSubmit}>
+            <form noValidate onSubmit={handleOpenSubmit}>
               <p style={{ fontSize: '13px', color: 'var(--color-muted)', lineHeight: 1.5, marginBottom: '20px' }}>
                 Open a new cashier shift by entering the starting petty cash in the drawer. Orders can only be processed when a shift is active.
               </p>
@@ -101,7 +101,6 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
                   fontFamily: 'var(--font-mono)',
                   marginBottom: '20px'
                 }}
-                required
               />
               <button
                 type="submit"
@@ -122,7 +121,7 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
               </button>
             </form>
           ) : (
-            <form onSubmit={handleCloseSubmit}>
+            <form noValidate onSubmit={handleCloseSubmit}>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', backgroundColor: '#FBF8F3', border: '1px solid #E6DFD3', borderRadius: '8px', padding: '16px', marginBottom: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '13px' }}>
                   <span style={{ color: 'var(--color-muted)' }}>Opening Cash</span>
@@ -153,8 +152,9 @@ export const ShiftScreen: React.FC<ShiftScreenProps> = ({
               <input
                 type="number"
                 value={closingInput}
-                onChange={(e) => setClosingInput(e.target.value)}
+                onChange={(e) => { setClosingInput(e.target.value); setShiftAlert(null); }}
                 placeholder={shiftExpectedCash.toString()}
+                className={shiftAlert && closingInput === '' ? 'input-error' : ''}
                 style={{
                   width: '100%',
                   padding: '11px 12px',

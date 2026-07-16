@@ -28,6 +28,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
   const [showItemModal, setShowItemModal] = useState(false);
   const [editingItem, setEditingItem] = useState<MenuItem | null>(null);
   const [modalAlert, setModalAlert] = useState<{ title: string; message: string; type?: 'error' | 'warning' } | null>(null);
+  const [categoryError, setCategoryError] = useState<string | null>(null);
 
   // Draft modifiers inside item modal
   const [newGroupName, setNewGroupName] = useState('');
@@ -134,7 +135,11 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
 
   const handleSaveCategorySubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newCategoryName.trim()) return;
+    setCategoryError(null);
+    if (!newCategoryName.trim()) {
+      setCategoryError('Please enter a category name before saving.');
+      return;
+    }
     onSaveCategory(newCategoryName.trim());
     setNewCategoryName('');
     setShowCategoryModal(false);
@@ -361,7 +366,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
           zIndex: 60,
           animation: 'voFadeIn 0.15s ease'
         }}>
-          <form onSubmit={handleSaveItemSubmit} className="responsive-modal-box" style={{
+          <form noValidate onSubmit={handleSaveItemSubmit} className="responsive-modal-box" style={{
             backgroundColor: '#fff',
             borderRadius: '12px',
             padding: '26px',
@@ -389,7 +394,8 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
             <input
               type="text"
               value={editingItem.name}
-              onChange={(e) => setEditingItem({ ...editingItem, name: e.target.value })}
+              onChange={(e) => { setEditingItem({ ...editingItem, name: e.target.value }); setModalAlert(null); }}
+              className={modalAlert && !editingItem.name.trim() ? 'input-error' : ''}
               style={{ width: '100%', padding: '10px 12px', border: '1px solid #D8CEBE', borderRadius: '7px', fontSize: '13.5px', marginBottom: '14px' }}
             />
 
@@ -401,7 +407,8 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
                 <input
                   type="number"
                   value={editingItem.price || ''}
-                  onChange={(e) => setEditingItem({ ...editingItem, price: Number(e.target.value) })}
+                  onChange={(e) => { setEditingItem({ ...editingItem, price: Number(e.target.value) }); setModalAlert(null); }}
+                  className={modalAlert && !editingItem.price ? 'input-error' : ''}
                   style={{ width: '100%', padding: '10px 12px', border: '1px solid #D8CEBE', borderRadius: '7px', fontSize: '13.5px' }}
                 />
               </div>
@@ -523,7 +530,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
           zIndex: 60,
           animation: 'voFadeIn 0.15s ease'
         }}>
-          <form onSubmit={handleSaveCategorySubmit} className="responsive-modal-box" style={{
+          <form noValidate onSubmit={handleSaveCategorySubmit} className="responsive-modal-box" style={{
             backgroundColor: '#fff',
             borderRadius: '12px',
             padding: '26px',
@@ -532,15 +539,26 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <span style={{ fontSize: '15px', fontWeight: 700 }}>New category</span>
-              <button type="button" onClick={() => setShowCategoryModal(false)} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>
+              <button type="button" onClick={() => { setShowCategoryModal(false); setCategoryError(null); }} style={{ border: 'none', background: 'none', cursor: 'pointer' }}>
                 <X size={16} />
               </button>
             </div>
+
+            {categoryError && (
+              <AlertNotification
+                title="Missing Required Field"
+                message={categoryError}
+                type="error"
+                onClose={() => setCategoryError(null)}
+              />
+            )}
+
             <input
               type="text"
               value={newCategoryName}
-              onChange={(e) => setNewCategoryName(e.target.value)}
+              onChange={(e) => { setNewCategoryName(e.target.value); setCategoryError(null); }}
               placeholder="e.g. Desserts"
+              className={categoryError && !newCategoryName.trim() ? 'input-error' : ''}
               style={{ width: '100%', padding: '10px 12px', border: '1px solid #D8CEBE', borderRadius: '7px', fontSize: '13.5px', marginBottom: '18px' }}
               required
             />

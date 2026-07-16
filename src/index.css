@@ -51,6 +51,32 @@ input:focus, select:focus, textarea:focus {
   box-shadow: 0 0 0 3px rgba(162, 63, 29, 0.15) !important;
 }
 
+/* Remove OS Native Number Input Spinners */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Custom Themed Autofill Styling */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px #FFFBF8 inset !important;
+  -webkit-text-fill-color: var(--color-text) !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Custom Input Error State for Form Validation */
+input.input-error, select.input-error, textarea.input-error {
+  border-color: #C84C24 !important;
+  background-color: #FFF8F3 !important;
+  box-shadow: 0 0 0 3px rgba(200, 76, 36, 0.15) !important;
+}
+
 /* Custom Precise Dropdown Menu (<select>) Styling */
 select {
   appearance: none;
