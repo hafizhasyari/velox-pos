@@ -1,6 +1,6 @@
-import { MockDatabase, type UserAccount, type OrderRecord } from './mockDatabase';
+import { MockDatabase, type OrderRecord } from './mockDatabase';
 import { API_CONFIG } from '../apiConfig';
-import type { Category, MenuItem, ShiftRecord } from '../../types/pos';
+import type { Category, MenuItem, ShiftRecord, UserAccount } from '../../types/pos';
 
 export interface HttpResponse<T = unknown> {
   status: number;
@@ -65,6 +65,31 @@ export const MockRegistry = {
           tenantName: newTenantName
         }
       };
+    }
+
+    if (endpoint === '/auth/users' && method === 'GET') {
+      return { status: 200, data: db.users };
+    }
+
+    if (endpoint === '/auth/users' && method === 'POST') {
+      const { name, email, role } = body || {};
+      const newUser: UserAccount = {
+        id: 'u_' + Date.now(),
+        name,
+        email,
+        role: role || 'kasir',
+        tenantId: db.tenantId
+      };
+      db.users.push(newUser);
+      MockDatabase.save(db);
+      return { status: 201, data: db.users };
+    }
+
+    if (endpoint === '/auth/users' && method === 'DELETE') {
+      const { id } = body || {};
+      db.users = db.users.filter((u: UserAccount) => u.id !== id || u.role === 'owner');
+      MockDatabase.save(db);
+      return { status: 200, data: db.users };
     }
 
     // ==========================================
@@ -145,7 +170,9 @@ export const MockRegistry = {
       
       const subtotal = items.reduce((acc: number, l: any) => acc + (l.basePrice + l.modTotal) * l.qty, 0);
       const disc = discountType === 'pct' ? Math.round((subtotal * discountValue) / 100) : discountValue;
-      const tax = Math.round(Math.max(0, subtotal - disc) * 0.1);
+      const cfg = db.tenantConfig;
+      const taxRate = cfg?.taxEnabled ? (cfg?.taxRate ?? 0.11) : 0;
+      const tax = Math.round(Math.max(0, subtotal - disc) * taxRate);
       const total = Math.max(0, subtotal - disc) + tax;
 
       if (paymentMethod === 'cash' && cashTendered < total) {
@@ -330,6 +357,19 @@ export const MockRegistry = {
       db.promotions = db.promotions.filter(p => p.code.toUpperCase() !== code.toUpperCase());
       MockDatabase.save(db);
       return { status: 200, data: db.promotions };
+    }
+
+    // ==========================================
+    // 8. Tenant Config Service (/config)
+    // ==========================================
+    if (endpoint === '/config/tenant' && method === 'GET') {
+      return { status: 200, data: db.tenantConfig };
+    }
+
+    if (endpoint === '/config/tenant' && method === 'PUT') {
+      db.tenantConfig = { ...db.tenantConfig, ...body };
+      MockDatabase.save(db);
+      return { status: 200, data: db.tenantConfig };
     }
 
     return { status: 404, error: `Microservice endpoint ${method} ${endpoint} not found in MockRegistry`, data: null };

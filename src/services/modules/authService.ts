@@ -1,6 +1,5 @@
 import { transport } from '../transport';
-import type { RoleType } from '../../types/pos';
-import type { UserAccount } from '../mocks/mockDatabase';
+import type { RoleType, UserAccount } from '../../types/pos';
 
 export interface AuthSession {
   token: string;
@@ -29,5 +28,29 @@ export const authService = {
 
   logout(): void {
     localStorage.removeItem('velox_auth_token');
+  },
+
+  async getUsers(): Promise<UserAccount[]> {
+    const res = await transport.get<UserAccount[]>('/auth/users');
+    if (res.error || !res.data) {
+      throw new Error(res.error || 'Failed to fetch users');
+    }
+    return res.data;
+  },
+
+  async addKasir(name: string, email: string): Promise<UserAccount[]> {
+    const res = await transport.post<UserAccount[]>('/auth/users', { name, email, role: 'kasir' });
+    if (res.error || !res.data) {
+      throw new Error(res.error || 'Failed to add kasir');
+    }
+    return res.data;
+  },
+
+  async deleteUser(userId: string): Promise<UserAccount[]> {
+    const res = await transport.delete<UserAccount[]>('/auth/users', { id: userId });
+    if (res.error || !res.data) {
+      throw new Error(res.error || 'Failed to delete user');
+    }
+    return res.data;
   }
 };

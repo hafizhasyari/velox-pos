@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Category, MenuItem, TableItem, CartLine, ShiftRecord, RoleType, KitchenTicket, KitchenTicketStatus, VoucherPromo } from '../types/pos';
+import type { Category, MenuItem, TableItem, CartLine, ShiftRecord, RoleType, KitchenTicket, KitchenTicketStatus, VoucherPromo, TenantConfig, UserAccount } from '../types/pos';
 import {
   authService,
   catalogService,
@@ -9,6 +9,7 @@ import {
   analyticsService,
   kitchenService,
   promotionService,
+  configService,
   type DashboardKPIsResponse
 } from '../services';
 import { MockDatabase } from '../services/mocks/mockDatabase';
@@ -21,6 +22,7 @@ export function usePosServices() {
   // Microservices Domain State
   const [role, setRole] = useState<RoleType>('owner');
   const [tenantName, setTenantName] = useState<string>('Warung Makan Ibu Sari');
+  const [users, setUsers] = useState<UserAccount[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [tables, setTables] = useState<TableItem[]>([]);
   
@@ -37,6 +39,13 @@ export function usePosServices() {
   const [kitchenTickets, setKitchenTickets] = useState<KitchenTicket[]>([]);
   const [promotions, setPromotions] = useState<VoucherPromo[]>([]);
 
+  // Tenant Config State
+  const [tenantConfig, setTenantConfig] = useState<TenantConfig>({
+    taxRate: 0.11,
+    taxEnabled: true,
+    taxLabel: 'PPN 11%'
+  });
+
   // E2E DevMode State
   const [devModeOpen, setDevModeOpen] = useState<boolean>(false);
   const [isSimulatedError, setIsSimulatedError] = useState<boolean>(false);
@@ -46,13 +55,15 @@ export function usePosServices() {
     setLoading(true);
     setError(null);
     try {
-      const [cats, tbls, shiftRes, kpiRes, kdsRes, promoRes] = await Promise.all([
+      const [cats, tbls, shiftRes, kpiRes, kdsRes, promoRes, cfgRes, usersRes] = await Promise.all([
         catalogService.getCategories(),
         orderService.getTables(),
         shiftService.getCurrentShift(),
         analyticsService.getKPIs('today'),
         kitchenService.getTickets(),
-        promotionService.getPromotions()
+        promotionService.getPromotions(),
+        configService.getTenantConfig(),
+        authService.getUsers()
       ]);
 
       setCategories(cats);
@@ -64,6 +75,8 @@ export function usePosServices() {
       setKpis(kpiRes);
       setKitchenTickets(kdsRes);
       setPromotions(promoRes);
+      setTenantConfig(cfgRes);
+      setUsers(usersRes);
     } catch (err: any) {
       setError(err.message || 'Failed to sync with microservice gateways');
     } finally {
@@ -206,6 +219,36 @@ export function usePosServices() {
     }
   };
 
+  const updateTaxConfig = async (config: Partial<TenantConfig>) => {
+    try {
+      const updated = await configService.updateTenantConfig(config);
+      setTenantConfig(updated);
+    } catch (err: any) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
+  const addStaff = async (name: string, email: string) => {
+    try {
+      const updated = await authService.addKasir(name, email);
+      setUsers(updated);
+    } catch (err: any) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
+  const deleteStaff = async (id: string) => {
+    try {
+      const updated = await authService.deleteUser(id);
+      setUsers(updated);
+    } catch (err: any) {
+      setError(err.message);
+      throw err;
+    }
+  };
+
   const resetMockDatabase = async () => {
     MockDatabase.reset();
     setIsSimulatedError(false);
@@ -218,6 +261,8 @@ export function usePosServices() {
     error,
     role,
     tenantName,
+    tenantConfig,
+    users,
     categories,
     tables,
     shiftOpen,
@@ -244,6 +289,9 @@ export function usePosServices() {
     savePromo,
     togglePromo,
     deletePromo,
+    updateTaxConfig,
+    addStaff,
+    deleteStaff,
     toggleNetworkErrorSimulation,
     resetMockDatabase,
     refreshAllData

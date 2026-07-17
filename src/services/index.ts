@@ -8,3 +8,4 @@ export * from './modules/shiftService';
 export * from './modules/analyticsService';
 export * from './modules/kitchenService';
 export * from './modules/promotionService';
+export * from './modules/configService';

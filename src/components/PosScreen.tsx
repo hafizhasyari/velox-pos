@@ -24,6 +24,8 @@ interface PosScreenProps {
   onChargeOrder: (paymentMethod: 'cash' | 'qris', cashTendered: number) => void;
   promotions?: VoucherPromo[];
   onValidatePromo?: (code: string, subtotal: number) => Promise<VoucherPromo>;
+  taxRate: number;
+  taxLabel: string;
 }
 
 export const PosScreen: React.FC<PosScreenProps> = ({
@@ -44,7 +46,9 @@ export const PosScreen: React.FC<PosScreenProps> = ({
   onSetDiscount,
   onChargeOrder,
   promotions = [],
-  onValidatePromo
+  onValidatePromo,
+  taxRate,
+  taxLabel
 }) => {
   const { isMobile, isCompactPos } = useViewport();
   const [showMobileCartDrawer, setShowMobileCartDrawer] = useState(false);
@@ -91,7 +95,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
     discountAmount = discountValue;
   }
   const afterDiscount = Math.max(0, subtotal - discountAmount);
-  const tax = Math.round(afterDiscount * 0.1);
+  const tax = Math.round(afterDiscount * taxRate);
   const total = afterDiscount + tax;
 
   // Handle clicking item on grid
@@ -349,7 +353,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
               </div>
             )}
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ color: 'var(--color-muted)' }}>Tax (10%)</span>
+              <span style={{ color: 'var(--color-muted)' }}>{taxLabel} ({(taxRate * 100).toFixed(0)}%)</span>
               <span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>{formatIDR(tax)}</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '17px', fontWeight: 700, paddingTop: '8px', borderTop: '1px solid #E6DFD3', marginTop: '4px' }}>
@@ -831,7 +835,7 @@ export const PosScreen: React.FC<PosScreenProps> = ({
               {lastOrderReceipt.totals.discountAmount > 0 && (
                 <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-danger-text)' }}><span>Discount</span><span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>-{formatIDR(lastOrderReceipt.totals.discountAmount)}</span></div>
               )}
-              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Tax (10%)</span><span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>{formatIDR(lastOrderReceipt.totals.tax)}</span></div>
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>{taxLabel} ({(taxRate * 100).toFixed(0)}%)</span><span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>{formatIDR(lastOrderReceipt.totals.tax)}</span></div>
               <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '14px', fontWeight: 700, marginTop: '4px' }}><span>Total</span><span className="tnum" style={{ fontFamily: 'var(--font-mono)' }}>{formatIDR(lastOrderReceipt.totals.total)}</span></div>
             </div>
 

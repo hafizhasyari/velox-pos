@@ -1,15 +1,7 @@
-import type { Category, TableItem, ShiftRecord, KitchenTicketStatus, VoucherPromo } from '../../types/pos';
+import type { Category, TableItem, ShiftRecord, KitchenTicketStatus, VoucherPromo, TenantConfig, UserAccount } from '../../types/pos';
 import { buildInitialMenu, buildInitialTables } from '../../data/initialData';
 
 const DB_KEY = 'velox_db_v1';
-
-export interface UserAccount {
-  id: string;
-  email: string;
-  name: string;
-  role: 'owner' | 'kasir';
-  tenantId: string;
-}
 
 export interface OrderRecord {
   id: string;
@@ -39,6 +31,7 @@ export interface CurrentShiftState {
 export interface MockDatabaseSchema {
   tenantId: string;
   tenantName: string;
+  tenantConfig: TenantConfig;
   users: UserAccount[];
   categories: Category[];
   tables: TableItem[];
@@ -52,6 +45,11 @@ function getInitialDatabase(): MockDatabaseSchema {
   return {
     tenantId: 't_warung_sari_01',
     tenantName: 'Warung Makan Ibu Sari',
+    tenantConfig: {
+      taxRate: 0.11,
+      taxEnabled: true,
+      taxLabel: 'PPN 11%'
+    },
     users: [
       { id: 'u_owner', email: 'owner@warungibusari.id', name: 'Ibu Sari', role: 'owner', tenantId: 't_warung_sari_01' },
       { id: 'u_kasir', email: 'kasir@warungibusari.id', name: 'Rizky (Kasir 1)', role: 'kasir', tenantId: 't_warung_sari_01' }
@@ -108,6 +106,9 @@ export const MockDatabase = {
       const data = JSON.parse(raw) as MockDatabaseSchema;
       if (!data.promotions) {
         data.promotions = getInitialDatabase().promotions;
+      }
+      if (!data.tenantConfig) {
+        data.tenantConfig = getInitialDatabase().tenantConfig;
       }
       data.orders = (data.orders || []).map(o => ({
         ...o,

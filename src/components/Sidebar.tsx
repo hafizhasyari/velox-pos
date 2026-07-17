@@ -1,6 +1,6 @@
 import React from 'react';
 import type { ScreenType, RoleType } from '../types/pos';
-import { LayoutDashboard, Utensils, ShoppingCart, Clock, LogOut, ChefHat, Ticket } from 'lucide-react';
+import { LayoutDashboard, Utensils, ShoppingCart, Clock, LogOut, ChefHat, Ticket, Settings } from 'lucide-react';
 import { useViewport } from '../hooks/useViewport';
 
 interface SidebarProps {
@@ -28,6 +28,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
     { id: 'pos' as ScreenType, label: 'Order / POS', icon: ShoppingCart, locked: false },
     { id: 'kds' as ScreenType, label: 'KDS / Kitchen', icon: ChefHat, locked: false },
     { id: 'shift' as ScreenType, label: 'Shift', icon: Clock, locked: false },
+    { id: 'settings' as ScreenType, label: 'Settings', icon: Settings, locked: isKasirLocked },
   ];
 
   const visibleNavItems = navItems.filter(item => !item.locked);

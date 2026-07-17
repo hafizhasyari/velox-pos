@@ -100,5 +100,19 @@ export interface VoucherPromo {
   active: boolean;
 }
 
-export type ScreenType = 'login' | 'signup' | 'dashboard' | 'menu' | 'promotions' | 'pos' | 'shift' | 'kds';
+export interface TenantConfig {
+  taxRate: number;     // decimal, e.g. 0.11 for 11%, 0 for disabled
+  taxEnabled: boolean;
+  taxLabel: string;    // display label, e.g. "PPN 11%"
+}
+
+export interface UserAccount {
+  id: string;
+  email: string;
+  name: string;
+  role: 'owner' | 'kasir';
+  tenantId: string;
+}
+
+export type ScreenType = 'login' | 'signup' | 'dashboard' | 'menu' | 'promotions' | 'pos' | 'shift' | 'kds' | 'settings';
 export type RoleType = 'owner' | 'kasir';

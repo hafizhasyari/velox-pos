@@ -11,6 +11,7 @@ import { PosScreen } from './components/PosScreen';
 import { ShiftScreen } from './components/ShiftScreen';
 import { KdsScreen } from './components/KdsScreen';
 import { PromotionScreen } from './components/PromotionScreen';
+import { SettingsScreen } from './components/SettingsScreen';
 import { Activity, AlertTriangle, Database, Server } from 'lucide-react';
 import { useViewport } from './hooks/useViewport';
 import './index.css';
@@ -21,7 +22,7 @@ const AppContent: React.FC = () => {
   const navigate = useNavigate();
 
   const rawPath = location.pathname.replace(/^\//, '').toLowerCase();
-  const validScreens: ScreenType[] = ['login', 'signup', 'dashboard', 'menu', 'promotions', 'pos', 'shift', 'kds'];
+  const validScreens: ScreenType[] = ['login', 'signup', 'dashboard', 'menu', 'promotions', 'pos', 'shift', 'kds', 'settings'];
   const screen: ScreenType = validScreens.includes(rawPath as ScreenType)
     ? (rawPath as ScreenType)
     : (localStorage.getItem('velox_auth_token') ? 'pos' : 'login');
@@ -38,6 +39,8 @@ const AppContent: React.FC = () => {
     error,
     role,
     tenantName,
+    tenantConfig,
+    users,
     categories,
     tables,
     shiftOpen,
@@ -63,6 +66,9 @@ const AppContent: React.FC = () => {
     savePromo,
     togglePromo,
     deletePromo,
+    updateTaxConfig,
+    addStaff,
+    deleteStaff,
     toggleNetworkErrorSimulation,
     resetMockDatabase,
     refreshAllData
@@ -307,6 +313,8 @@ const AppContent: React.FC = () => {
             tenantName={tenantName}
             promotions={promotions}
             onValidatePromo={validateAndApplyPromo}
+            taxRate={tenantConfig.taxRate}
+            taxLabel={tenantConfig.taxLabel}
             onSetOrderType={setOrderType}
             onSelectTable={handleSelectTable}
             onAddToCart={handleAddToCart}
@@ -324,6 +332,15 @@ const AppContent: React.FC = () => {
           <KdsScreen
             tickets={kitchenTickets}
             onUpdateStatus={updateKitchenStatus}
+          />
+        )}
+        {!loading && !error && screen === 'settings' && (
+          <SettingsScreen 
+            tenantConfig={tenantConfig} 
+            users={users}
+            onUpdate={updateTaxConfig} 
+            onAddStaff={addStaff}
+            onDeleteStaff={deleteStaff}
           />
         )}
         {!loading && !error && screen === 'shift' && (
