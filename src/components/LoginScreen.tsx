@@ -1,19 +1,24 @@
 import React, { useState } from 'react';
-import type { RoleType } from '../types/pos';
+import type { RoleType, Role } from '../types/pos';
 import { useViewport } from '../hooks/useViewport';
 import { AlertNotification } from './AlertNotification';
+import { RoleSelector } from './RoleSelector';
 
 interface LoginScreenProps {
   onLogin: (role: RoleType) => void;
   onGoToSignup: () => void;
+  roles: Role[];
 }
 
-export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup }) => {
+export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup, roles }) => {
   const { isDesktop, isMobile } = useViewport();
   const [loginRole, setLoginRole] = useState<RoleType>('owner');
   const [email, setEmail] = useState('owner@warungibusari.id');
   const [password, setPassword] = useState('password123');
   const [validationError, setValidationError] = useState<string | null>(null);
+
+  const selectedRoleObj = roles.find(r => r.id === loginRole);
+  const selectedRoleName = selectedRoleObj?.name || 'User';
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -165,41 +170,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
             marginBottom: '8px'
           }}>Continue as (demo)</div>
 
-          <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
-            <button
-              type="button"
-              onClick={() => setLoginRole('owner')}
-              style={{
-                flex: 1,
-                padding: '10px',
-                borderRadius: '6px',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                border: `1px solid ${loginRole === 'owner' ? 'var(--color-velvet)' : '#D8CEBE'}`,
-                backgroundColor: loginRole === 'owner' ? 'var(--color-velvet)' : '#fff',
-                color: loginRole === 'owner' ? '#fff' : 'var(--color-muted)'
-              }}
-            >
-              Owner
-            </button>
-            <button
-              type="button"
-              onClick={() => setLoginRole('kasir')}
-              style={{
-                flex: 1,
-                padding: '10px',
-                borderRadius: '6px',
-                fontSize: '13px',
-                fontWeight: 600,
-                cursor: 'pointer',
-                border: `1px solid ${loginRole === 'kasir' ? 'var(--color-velvet)' : '#D8CEBE'}`,
-                backgroundColor: loginRole === 'kasir' ? 'var(--color-velvet)' : '#fff',
-                color: loginRole === 'kasir' ? '#fff' : 'var(--color-muted)'
-              }}
-            >
-              Kasir
-            </button>
+          <div style={{ marginBottom: '24px' }}>
+            <RoleSelector
+              roles={roles}
+              selectedRoleId={loginRole}
+              onChange={(roleId) => setLoginRole(roleId)}
+              filterSystemRoles={false}
+              placeholder="Pilih role..."
+            />
           </div>
 
           <button
@@ -217,7 +195,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onLogin, onGoToSignup 
               boxShadow: '0 2px 6px rgba(193, 82, 42, 0.25)'
             }}
           >
-            Sign In as {loginRole === 'owner' ? 'Owner' : 'Kasir'}
+            Sign In as {selectedRoleName}
           </button>
 
           <div style={{ textAlign: 'center', marginTop: '18px', fontSize: '12.5px', color: 'var(--color-muted)' }}>

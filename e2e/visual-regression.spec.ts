@@ -6,7 +6,7 @@ test.describe('Visual Regression Suite', () => {
     await page.evaluate(() => localStorage.clear());
     await page.reload();
     // Login as Owner (full access to all screens)
-    await page.click('button:has-text("Owner")');
+    await page.selectOption('select', 'owner');
     await page.click('button:has-text("Sign In")');
   });
 
@@ -36,7 +36,7 @@ test.describe('Visual Regression Suite', () => {
     // Fresh login as Kasir (clear state and re-navigate)
     await page.evaluate(() => localStorage.clear());
     await page.reload();
-    await page.click('button:has-text("Kasir")');
+    await page.selectOption('select', 'kasir');
     await page.click('button:has-text("Sign In")');
     await page.waitForTimeout(600);
     await expect(page).toHaveScreenshot('kasir-pos-desktop.png', {

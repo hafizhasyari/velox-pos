@@ -7,7 +7,7 @@ test.describe('Accessibility Audit Suite', () => {
     await page.evaluate(() => localStorage.clear());
     await page.reload();
     // Login as Owner (full access to all screens)
-    await page.click('button:has-text("Owner")');
+    await page.selectOption('select', 'owner');
     await page.click('button:has-text("Sign In")');
   });
 

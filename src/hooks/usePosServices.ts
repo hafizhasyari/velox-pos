@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import type { Category, MenuItem, TableItem, CartLine, ShiftRecord, RoleType, KitchenTicket, KitchenTicketStatus, VoucherPromo, TenantConfig, UserAccount } from '../types/pos';
+import type { Category, MenuItem, TableItem, CartLine, ShiftRecord, RoleType, KitchenTicket, KitchenTicketStatus, VoucherPromo, TenantConfig, UserAccount, Role, Permission, CreateRoleDto, UpdateRoleDto } from '../types/pos';
 import {
   authService,
   catalogService,
@@ -12,6 +12,7 @@ import {
   configService,
   type DashboardKPIsResponse
 } from '../services';
+import { roleService } from '../services/modules/roleService';
 import { MockDatabase } from '../services/mocks/mockDatabase';
 import { setSimulatedNetworkError } from '../services/mocks/mockRegistry';
 
@@ -23,6 +24,8 @@ export function usePosServices() {
   const [role, setRole] = useState<RoleType>('owner');
   const [tenantName, setTenantName] = useState<string>('Warung Makan Ibu Sari');
   const [users, setUsers] = useState<UserAccount[]>([]);
+  const [roles, setRoles] = useState<Role[]>([]);
+  const [permissions, setPermissions] = useState<Permission[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [tables, setTables] = useState<TableItem[]>([]);
   
@@ -55,7 +58,7 @@ export function usePosServices() {
     setLoading(true);
     setError(null);
     try {
-      const [cats, tbls, shiftRes, kpiRes, kdsRes, promoRes, cfgRes, usersRes] = await Promise.all([
+      const [cats, tbls, shiftRes, kpiRes, kdsRes, promoRes, cfgRes, usersRes, rolesRes, permsRes] = await Promise.all([
         catalogService.getCategories(),
         orderService.getTables(),
         shiftService.getCurrentShift(),
@@ -63,7 +66,9 @@ export function usePosServices() {
         kitchenService.getTickets(),
         promotionService.getPromotions(),
         configService.getTenantConfig(),
-        authService.getUsers()
+        authService.getUsers(),
+        roleService.getRoles(),
+        roleService.getPermissions()
       ]);
 
       setCategories(cats);
@@ -77,6 +82,8 @@ export function usePosServices() {
       setPromotions(promoRes);
       setTenantConfig(cfgRes);
       setUsers(usersRes);
+      setRoles(rolesRes);
+      setPermissions(permsRes);
     } catch (err: any) {
       setError(err.message || 'Failed to sync with microservice gateways');
     } finally {
@@ -91,14 +98,14 @@ export function usePosServices() {
   // Actions
   const login = async (selectedRole: RoleType) => {
     const session = await authService.login(selectedRole);
-    setRole(session.user.role);
+    setRole(session.user.roleId || session.user.role || 'owner');
     setTenantName(session.tenantName);
     await refreshAllData();
   };
 
   const signup = async (businessName: string, ownerName: string, email: string) => {
     const session = await authService.signup(businessName, ownerName, email);
-    setRole(session.user.role);
+    setRole(session.user.roleId || session.user.role || 'owner');
     setTenantName(session.tenantName);
     await refreshAllData();
   };
@@ -229,9 +236,9 @@ export function usePosServices() {
     }
   };
 
-  const addStaff = async (name: string, email: string) => {
+  const addStaff = async (name: string, email: string, roleId: string = 'kasir') => {
     try {
-      const updated = await authService.addKasir(name, email);
+      const updated = await authService.addStaff(name, email, roleId);
       setUsers(updated);
     } catch (err: any) {
       setError(err.message);
@@ -245,6 +252,52 @@ export function usePosServices() {
       setUsers(updated);
     } catch (err: any) {
       setError(err.message);
+      throw err;
+    }
+  };
+
+  // Role Management Actions
+  const loadRoles = async () => {
+    try {
+      const [rolesData, permissionsData] = await Promise.all([
+        roleService.getRoles(),
+        roleService.getPermissions(),
+      ]);
+      setRoles(rolesData);
+      setPermissions(permissionsData);
+    } catch (err: any) {
+      setError(err.message || 'Gagal load roles');
+    }
+  };
+
+  const createRole = async (data: CreateRoleDto) => {
+    try {
+      const newRole = await roleService.createRole(data);
+      setRoles(prev => [...prev, newRole]);
+      return newRole;
+    } catch (err: any) {
+      setError(err.message || 'Gagal membuat role');
+      throw err;
+    }
+  };
+
+  const updateRole = async (id: string, data: UpdateRoleDto) => {
+    try {
+      const updatedRole = await roleService.updateRole(id, data);
+      setRoles(prev => prev.map(r => r.id === id ? updatedRole : r));
+      return updatedRole;
+    } catch (err: any) {
+      setError(err.message || 'Gagal update role');
+      throw err;
+    }
+  };
+
+  const deleteRole = async (id: string) => {
+    try {
+      await roleService.deleteRole(id);
+      setRoles(prev => prev.filter(r => r.id !== id));
+    } catch (err: any) {
+      setError(err.message || 'Gagal hapus role');
       throw err;
     }
   };
@@ -263,6 +316,8 @@ export function usePosServices() {
     tenantName,
     tenantConfig,
     users,
+    roles,
+    permissions,
     categories,
     tables,
     shiftOpen,
@@ -292,6 +347,10 @@ export function usePosServices() {
     updateTaxConfig,
     addStaff,
     deleteStaff,
+    loadRoles,
+    createRole,
+    updateRole,
+    deleteRole,
     toggleNetworkErrorSimulation,
     resetMockDatabase,
     refreshAllData

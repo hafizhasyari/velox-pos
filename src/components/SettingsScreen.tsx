@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
-import type { TenantConfig, UserAccount } from '../types/pos';
+import type { TenantConfig, UserAccount, Role, Permission, CreateRoleDto, UpdateRoleDto } from '../types/pos';
 import { formatIDR } from '../data/initialData';
-import { Settings, Percent, Save, ToggleLeft, ToggleRight, CheckCircle2, Users, UserPlus, Trash2, ShieldAlert } from 'lucide-react';
+import { Settings, Percent, Save, ToggleLeft, ToggleRight, CheckCircle2, Users, UserPlus, Trash2, ShieldAlert, Shield } from 'lucide-react';
 import { AlertNotification } from './AlertNotification';
+import { RoleSelector } from './RoleSelector';
+import { RoleManagementTab } from './RoleManagementTab';
+import { getRoleById } from '../utils/permissionHelper';
 
 interface SettingsScreenProps {
   tenantConfig: TenantConfig;
   users: UserAccount[];
+  roles: Role[];
+  permissions: Permission[];
   onUpdate: (config: Partial<TenantConfig>) => Promise<void>;
-  onAddStaff: (name: string, email: string) => Promise<void>;
+  onAddStaff: (name: string, email: string, roleId: string) => Promise<void>;
   onDeleteStaff: (id: string) => Promise<void>;
+  onCreateRole: (data: CreateRoleDto) => Promise<Role>;
+  onUpdateRole: (id: string, data: UpdateRoleDto) => Promise<Role>;
+  onDeleteRole: (id: string) => Promise<void>;
 }
 
 const PRESET_RATES = [
@@ -19,8 +27,8 @@ const PRESET_RATES = [
   { label: '12%', value: 0.12, desc: 'Tarif rencana berikutnya' },
 ];
 
-export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, users, onUpdate, onAddStaff, onDeleteStaff }) => {
-  const [activeTab, setActiveTab] = useState<'tax' | 'staff'>('tax');
+export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, users, roles, permissions, onUpdate, onAddStaff, onDeleteStaff, onCreateRole, onUpdateRole, onDeleteRole }) => {
+  const [activeTab, setActiveTab] = useState<'tax' | 'staff' | 'roles'>('tax');
 
   // Tax State
   const [taxEnabled, setTaxEnabled] = useState(tenantConfig.taxEnabled);
@@ -31,6 +39,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, us
   // Staff State
   const [newStaffName, setNewStaffName] = useState('');
   const [newStaffEmail, setNewStaffEmail] = useState('');
+  const [newStaffRoleId, setNewStaffRoleId] = useState<string>('kasir');
   
   // Global UI State
   const [isSaving, setIsSaving] = useState(false);
@@ -74,16 +83,17 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, us
 
   const handleAddStaff = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newStaffName.trim() || !newStaffEmail.trim()) return;
+    if (!newStaffName.trim() || !newStaffEmail.trim() || !newStaffRoleId) return;
     
     setIsSaving(true);
     setSavedAlert(null);
     setErrorAlert(null);
     try {
-      await onAddStaff(newStaffName, newStaffEmail);
+      await onAddStaff(newStaffName, newStaffEmail, newStaffRoleId);
       setNewStaffName('');
       setNewStaffEmail('');
-      setSavedAlert(`Kasir ${newStaffName} berhasil ditambahkan.`);
+      setNewStaffRoleId('kasir');
+      setSavedAlert(`Staff ${newStaffName} berhasil ditambahkan.`);
     } catch (err: any) {
       setErrorAlert(err.message || 'Gagal menambahkan staff.');
     } finally {
@@ -159,6 +169,26 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, us
         >
           <Users size={18} />
           Manajemen Staff
+        </button>
+        <button
+          onClick={() => setActiveTab('roles')}
+          style={{
+            padding: '12px 20px',
+            background: 'none',
+            border: 'none',
+            borderBottom: activeTab === 'roles' ? '2.5px solid var(--color-velvet)' : '2.5px solid transparent',
+            color: activeTab === 'roles' ? 'var(--color-velvet)' : 'var(--color-muted)',
+            fontWeight: activeTab === 'roles' ? 700 : 600,
+            fontSize: '14.5px',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            transition: 'all 0.15s ease'
+          }}
+        >
+          <Shield size={18} />
+          Roles
         </button>
       </div>
 
@@ -344,10 +374,13 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, us
                 </div>
               ) : (
                 <ul style={{ listStyle: 'none', margin: 0, padding: 0 }}>
-                  {users.map((user, idx) => (
+                  {users.map((user, idx) => {
+                    const userRole = getRoleById(user.roleId, roles);
+                    const isOwnerRole = userRole?.id === 'owner';
+                    return (
                     <li key={user.id} style={{ padding: '16px 24px', borderBottom: idx < users.length - 1 ? '1px solid #F0EAE1' : 'none', display: 'flex', alignItems: 'center', justifyContent: 'space-between', transition: 'background-color 0.15s ease' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-                        <div style={{ width: '42px', height: '42px', borderRadius: '21px', backgroundColor: user.role === 'owner' ? 'var(--color-velvet)' : '#E6DFD3', color: user.role === 'owner' ? '#fff' : '#241F18', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 700 }}>
+                        <div style={{ width: '42px', height: '42px', borderRadius: '21px', backgroundColor: isOwnerRole ? 'var(--color-velvet)' : '#E6DFD3', color: isOwnerRole ? '#fff' : '#241F18', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '16px', fontWeight: 700 }}>
                           {user.name.charAt(0).toUpperCase()}
                         </div>
                         <div>
@@ -364,20 +397,20 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, us
                           fontWeight: 700,
                           textTransform: 'uppercase',
                           letterSpacing: '0.04em',
-                          backgroundColor: user.role === 'owner' ? 'rgba(162, 63, 29, 0.1)' : '#F6F2EC',
-                          color: user.role === 'owner' ? 'var(--color-velvet)' : '#7C7160',
-                          border: `1px solid ${user.role === 'owner' ? 'rgba(162, 63, 29, 0.2)' : '#E6DFD3'}`
+                          backgroundColor: isOwnerRole ? 'rgba(162, 63, 29, 0.1)' : '#F6F2EC',
+                          color: isOwnerRole ? 'var(--color-velvet)' : '#7C7160',
+                          border: `1px solid ${isOwnerRole ? 'rgba(162, 63, 29, 0.2)' : '#E6DFD3'}`
                         }}>
-                          {user.role}
+                          {userRole?.name || 'Unknown'}
                         </span>
                         
-                        {user.role === 'kasir' ? (
+                        {!isOwnerRole ? (
                           <button
                             onClick={() => handleDeleteStaff(user.id, user.name)}
                             style={{
                               background: 'none', border: 'none', padding: '6px', cursor: 'pointer', color: 'var(--color-danger-text)', opacity: 0.7, transition: 'opacity 0.2s ease', display: 'flex', alignItems: 'center', justifyContent: 'center'
                             }}
-                            title="Hapus Kasir"
+                            title="Hapus Staff"
                             onMouseOver={(e) => e.currentTarget.style.opacity = '1'}
                             onMouseOut={(e) => e.currentTarget.style.opacity = '0.7'}
                           >
@@ -388,7 +421,8 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, us
                         )}
                       </div>
                     </li>
-                  ))}
+                    );
+                  })}
                 </ul>
               )}
             </div>
@@ -400,7 +434,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, us
               <div style={{ padding: '16px 20px', borderBottom: '1px solid #F0EAE1', backgroundColor: '#FBF8F3' }}>
                 <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#241F18', margin: 0, display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <UserPlus size={16} color="var(--color-velvet)" />
-                  Tambah Kasir Baru
+                  Tambah Staff Baru
                 </h3>
               </div>
               
@@ -418,7 +452,7 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, us
                     style={{ width: '100%', padding: '10px 12px', border: '1px solid #D8CEBE', borderRadius: '8px', fontSize: '14px', color: '#241F18' }}
                   />
                 </div>
-                <div style={{ marginBottom: '20px' }}>
+                <div style={{ marginBottom: '16px' }}>
                   <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--color-muted)', marginBottom: '6px' }}>
                     EMAIL KASIR
                   </label>
@@ -431,17 +465,29 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, us
                     style={{ width: '100%', padding: '10px 12px', border: '1px solid #D8CEBE', borderRadius: '8px', fontSize: '14px', color: '#241F18' }}
                   />
                 </div>
+
+                <div style={{ marginBottom: '20px' }}>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: 600, color: 'var(--color-muted)', marginBottom: '6px' }}>
+                    ROLE
+                  </label>
+                  <RoleSelector
+                    roles={roles}
+                    selectedRoleId={newStaffRoleId}
+                    onChange={setNewStaffRoleId}
+                    filterSystemRoles={true}
+                  />
+                </div>
                 
                 <button
                   type="submit"
-                  disabled={isSaving || !newStaffName || !newStaffEmail}
+                  disabled={isSaving || !newStaffName || !newStaffEmail || !newStaffRoleId}
                   style={{
                     width: '100%',
                     display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '10px 20px', borderRadius: '8px', border: 'none', backgroundColor: 'var(--color-velvet)', color: '#fff', fontWeight: 700, fontSize: '13.5px', cursor: (isSaving || !newStaffName || !newStaffEmail) ? 'not-allowed' : 'pointer', opacity: (isSaving || !newStaffName || !newStaffEmail) ? 0.7 : 1, transition: 'all 0.15s ease'
                   }}
                 >
                   <UserPlus size={15} />
-                  {isSaving ? 'Menyimpan...' : 'Tambah Kasir'}
+                  {isSaving ? 'Menyimpan...' : 'Tambah Staff'}
                 </button>
               </div>
             </form>
@@ -449,12 +495,24 @@ export const SettingsScreen: React.FC<SettingsScreenProps> = ({ tenantConfig, us
             <div style={{ backgroundColor: '#F6F2EC', border: '1px solid #E6DFD3', borderRadius: '12px', padding: '16px', display: 'flex', gap: '12px' }}>
               <ShieldAlert size={20} color="var(--color-muted)" style={{ flexShrink: 0 }} />
               <div style={{ fontSize: '12px', color: 'var(--color-muted)', lineHeight: 1.5 }}>
-                <strong style={{ color: '#241F18' }}>Role & Permission:</strong> Kasir memiliki akses ke Order/POS, KDS, dan Shift. Kasir tidak dapat melihat menu Settings, laporan Dashboard, dan tidak dapat mengubah master data Menu.
+                <strong style={{ color: '#241F18' }}>Role & Permission:</strong> Setiap staff memiliki role yang menentukan akses menu. Atur role dan permission di tab "Roles".
               </div>
             </div>
           </div>
           
         </div>
+      )}
+
+      {/* TAB: ROLES MANAGEMENT */}
+      {activeTab === 'roles' && (
+        <RoleManagementTab
+          roles={roles}
+          permissions={permissions}
+          users={users}
+          onCreateRole={onCreateRole}
+          onUpdateRole={onUpdateRole}
+          onDeleteRole={onDeleteRole}
+        />
       )}
     </div>
   );

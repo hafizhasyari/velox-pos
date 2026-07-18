@@ -15,7 +15,7 @@ test.describe('Velox POS Microservices Frontend E2E Suite', () => {
     await expect(page.locator('h2:has-text("Sign in")')).toBeVisible();
 
     // Login as Kasir
-    await page.click('button:has-text("Kasir")');
+    await page.selectOption('select', 'kasir');
     await page.click('button:has-text("Sign In")');
 
     // Should redirect to POS screen
@@ -27,7 +27,7 @@ test.describe('Velox POS Microservices Frontend E2E Suite', () => {
 
   test('E2E Flow 2: Order & Payment Microservices Integration', async ({ page }) => {
     // Login as Owner
-    await page.click('button:has-text("Owner")');
+    await page.selectOption('select', 'owner');
     await page.click('button:has-text("Sign In")');
 
     // Go to Order / POS tab
@@ -63,7 +63,7 @@ test.describe('Velox POS Microservices Frontend E2E Suite', () => {
 
   test('E2E Flow 3: DevMode Microservice Gateway Error Simulation & Recovery', async ({ page }) => {
     // Login as Owner
-    await page.click('button:has-text("Owner")');
+    await page.selectOption('select', 'owner');
     await page.click('button:has-text("Sign In")');
 
     // Open floating DevMode widget
@@ -85,7 +85,7 @@ test.describe('Velox POS Microservices Frontend E2E Suite', () => {
 
   test('E2E Flow 4: URL Path Routing & Deep-Link Persistence via react-router-dom', async ({ page }) => {
     // Login as Owner
-    await page.click('button:has-text("Owner")');
+    await page.selectOption('select', 'owner');
     await page.click('button:has-text("Sign In")');
 
     // Verify initial redirect to /dashboard
@@ -115,7 +115,7 @@ test.describe('Velox POS Microservices Frontend E2E Suite', () => {
 
   test('E2E Flow 5: Voucher Promo Application & KDS Real-time Workflow', async ({ page }) => {
     // 1. Login as Kasir
-    await page.click('button:has-text("Kasir")');
+    await page.selectOption('select', 'kasir');
     await page.click('button:has-text("Sign In")');
     await expect(page).toHaveURL(/\/pos/);
 
@@ -156,7 +156,7 @@ test.describe('Velox POS Microservices Frontend E2E Suite', () => {
 
   test('E2E Flow 6: Voucher Management Dashboard & Live POS Redemption Verification', async ({ page }) => {
     // 1. Login as Owner
-    await page.click('button:has-text("Owner")');
+    await page.selectOption('select', 'owner');
     await page.click('button:has-text("Sign In")');
     await expect(page).toHaveURL(/\/dashboard/);
 

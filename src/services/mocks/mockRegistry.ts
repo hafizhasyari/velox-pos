@@ -1,6 +1,7 @@
 import { MockDatabase, type OrderRecord } from './mockDatabase';
 import { API_CONFIG } from '../apiConfig';
-import type { Category, MenuItem, ShiftRecord, UserAccount } from '../../types/pos';
+import type { Category, MenuItem, ShiftRecord, UserAccount, Role, CreateRoleDto, UpdateRoleDto } from '../../types/pos';
+import { MAX_ROLES_PER_TENANT } from '../../types/rbac';
 
 export interface HttpResponse<T = unknown> {
   status: number;
@@ -33,11 +34,11 @@ export const MockRegistry = {
     // ==========================================
     if (endpoint.startsWith('/auth/login') && method === 'POST') {
       const { role } = body || {};
-      const user = db.users.find((u) => u.role === role) || db.users[0];
+      const user = db.users.find((u) => u.roleId === role || u.role === role) || db.users[0];
       return {
         status: 200,
         data: {
-          token: `jwt_mock_${user.role}_${Date.now()}`,
+          token: `jwt_mock_${user.roleId}_${Date.now()}`,
           user,
           tenantName: db.tenantName
         }
@@ -52,6 +53,7 @@ export const MockRegistry = {
         id: 'u_' + Date.now(),
         email: email || 'owner@warungbaru.id',
         name: ownerName || 'Owner Baru',
+        roleId: 'owner',
         role: 'owner',
         tenantId: 't_' + Date.now()
       };
@@ -72,12 +74,13 @@ export const MockRegistry = {
     }
 
     if (endpoint === '/auth/users' && method === 'POST') {
-      const { name, email, role } = body || {};
+      const { name, email, role, roleId } = body || {};
       const newUser: UserAccount = {
         id: 'u_' + Date.now(),
         name,
         email,
-        role: role || 'kasir',
+        roleId: roleId || role || 'kasir',  // Support both roleId (new) and role (legacy)
+        role: role || 'kasir',  // Keep for backward compat
         tenantId: db.tenantId
       };
       db.users.push(newUser);
@@ -87,13 +90,142 @@ export const MockRegistry = {
 
     if (endpoint === '/auth/users' && method === 'DELETE') {
       const { id } = body || {};
-      db.users = db.users.filter((u: UserAccount) => u.id !== id || u.role === 'owner');
+      db.users = db.users.filter((u: UserAccount) => u.id !== id || u.roleId === 'owner');
       MockDatabase.save(db);
       return { status: 200, data: db.users };
     }
 
     // ==========================================
-    // 2. Catalog Service (/catalog)
+    // 2. Role Management Service (/roles)
+    // ==========================================
+    if (endpoint === '/roles' && method === 'GET') {
+      return { status: 200, data: db.roles };
+    }
+
+    if (endpoint.startsWith('/roles/') && method === 'GET') {
+      const id = endpoint.split('/')[2];
+      const role = db.roles.find((r: Role) => r.id === id);
+      if (!role) {
+        return { status: 404, data: null, error: 'Role not found' };
+      }
+      return { status: 200, data: role };
+    }
+
+    if (endpoint === '/roles' && method === 'POST') {
+      if (db.roles.length >= MAX_ROLES_PER_TENANT) {
+        return { 
+          status: 400, 
+          data: null, 
+          error: `Maksimal ${MAX_ROLES_PER_TENANT} roles per tenant` 
+        };
+      }
+
+      const { name, description, permissions } = body as CreateRoleDto;
+
+      // Validate unique name
+      if (db.roles.some((r: Role) => r.name.toLowerCase() === name.toLowerCase())) {
+        return { 
+          status: 400, 
+          data: null, 
+          error: 'Role dengan nama ini sudah ada' 
+        };
+      }
+
+      const newRole: Role = {
+        id: `role_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+        name,
+        description,
+        permissions,
+        isSystem: false,
+        isEditable: true,
+        isDeletable: true,
+        tenantId: db.tenantId,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+
+      db.roles.push(newRole);
+      MockDatabase.save(db);
+      return { status: 201, data: newRole };
+    }
+
+    if (endpoint.startsWith('/roles/') && method === 'PUT') {
+      const id = endpoint.split('/')[2];
+      const roleIndex = db.roles.findIndex((r: Role) => r.id === id);
+      
+      if (roleIndex === -1) {
+        return { status: 404, data: null, error: 'Role not found' };
+      }
+
+      const role = db.roles[roleIndex];
+      if (!role.isEditable) {
+        return { 
+          status: 403, 
+          data: null, 
+          error: 'Role sistem tidak dapat diubah' 
+        };
+      }
+
+      const updates = body as UpdateRoleDto;
+
+      // Validate unique name if changed
+      if (updates.name && updates.name !== role.name) {
+        if (db.roles.some((r: Role) => r.name.toLowerCase() === updates.name!.toLowerCase())) {
+          return { 
+            status: 400, 
+            data: null, 
+            error: 'Role dengan nama ini sudah ada' 
+          };
+        }
+      }
+
+      db.roles[roleIndex] = {
+        ...role,
+        ...updates,
+        updatedAt: new Date().toISOString(),
+      };
+
+      MockDatabase.save(db);
+      return { status: 200, data: db.roles[roleIndex] };
+    }
+
+    if (endpoint.startsWith('/roles/') && method === 'DELETE') {
+      const id = endpoint.split('/')[2];
+      const role = db.roles.find((r: Role) => r.id === id);
+
+      if (!role) {
+        return { status: 404, data: null, error: 'Role not found' };
+      }
+
+      if (!role.isDeletable) {
+        return { 
+          status: 403, 
+          data: null, 
+          error: 'Role sistem tidak dapat dihapus' 
+        };
+      }
+
+      // Check if any users have this role
+      const usersWithRole = db.users.filter((u: UserAccount) => u.roleId === id);
+      if (usersWithRole.length > 0) {
+        return { 
+          status: 400, 
+          data: null, 
+          error: `${usersWithRole.length} user masih menggunakan role ini` 
+        };
+      }
+
+      db.roles = db.roles.filter((r: Role) => r.id !== id);
+      MockDatabase.save(db);
+      return { status: 200, data: null };
+    }
+
+    if (endpoint === '/permissions' && method === 'GET') {
+      return { status: 200, data: db.permissions };
+    }
+
+    // ==========================================
+    // 3. Catalog Service (/catalog)
     // ==========================================
     if (endpoint === '/catalog' && method === 'GET') {
       return { status: 200, data: db.categories };

@@ -14,7 +14,7 @@ test.describe('Velox POS Responsive Layout E2E Suite', () => {
 
     // Login as Owner
     await expect(page.locator('h2:has-text("Sign in")')).toBeVisible();
-    await page.click('button:has-text("Owner")');
+    await page.selectOption('select', 'owner');
     await page.click('button:has-text("Sign In")');
 
     // On mobile, Top Header bar should display tenant brand name ("Velox") and role badge ("owner")
@@ -77,7 +77,7 @@ test.describe('Velox POS Responsive Layout E2E Suite', () => {
     await page.goto('/');
 
     // Login as Owner
-    await page.click('button:has-text("Owner")');
+    await page.selectOption('select', 'owner');
     await page.click('button:has-text("Sign In")');
 
     // On tablet (640px - 1024px), sidebar should collapse to compact 68px width icon rail
@@ -102,7 +102,7 @@ test.describe('Velox POS Responsive Layout E2E Suite', () => {
     await page.goto('/');
 
     // Login as Owner
-    await page.click('button:has-text("Owner")');
+    await page.selectOption('select', 'owner');
     await page.click('button:has-text("Sign In")');
 
     // On desktop (> 1024px), sidebar should be expanded with width 216px and visible labels

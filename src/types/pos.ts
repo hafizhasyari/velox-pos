@@ -110,9 +110,14 @@ export interface UserAccount {
   id: string;
   email: string;
   name: string;
-  role: 'owner' | 'kasir';
+  role?: 'owner' | 'kasir';  // Deprecated - for backward compatibility
+  roleId: string;             // Primary role identifier
   tenantId: string;
 }
 
 export type ScreenType = 'login' | 'signup' | 'dashboard' | 'menu' | 'promotions' | 'pos' | 'shift' | 'kds' | 'settings';
-export type RoleType = 'owner' | 'kasir';
+export type RoleType = string;  // Changed from 'owner' | 'kasir' to flexible string
+
+// Re-export RBAC types
+export type { Role, Permission, CreateRoleDto, UpdateRoleDto } from './rbac';
+export { MAX_ROLES_PER_TENANT } from './rbac';

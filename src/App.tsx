@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, useNavigate, useLocation } from 'react-router-dom';
-import type { ScreenType, RoleType, MenuItem, CartLine } from './types/pos';
+import type { ScreenType, RoleType, MenuItem, CartLine, UserAccount } from './types/pos';
 import { usePosServices } from './hooks/usePosServices';
 import { Sidebar } from './components/Sidebar';
 import { LoginScreen } from './components/LoginScreen';
@@ -14,6 +14,7 @@ import { PromotionScreen } from './components/PromotionScreen';
 import { SettingsScreen } from './components/SettingsScreen';
 import { Activity, AlertTriangle, Database, Server } from 'lucide-react';
 import { useViewport } from './hooks/useViewport';
+import { canAccessScreen, getAllowedScreens } from './utils/permissionHelper';
 import './index.css';
 
 const AppContent: React.FC = () => {
@@ -41,6 +42,8 @@ const AppContent: React.FC = () => {
     tenantName,
     tenantConfig,
     users,
+    roles,
+    permissions,
     categories,
     tables,
     shiftOpen,
@@ -69,10 +72,16 @@ const AppContent: React.FC = () => {
     updateTaxConfig,
     addStaff,
     deleteStaff,
+    createRole,
+    updateRole,
+    deleteRole,
     toggleNetworkErrorSimulation,
     resetMockDatabase,
     refreshAllData
   } = usePosServices();
+
+  // Get current user object
+  const currentUser: UserAccount | undefined = users.find(u => u.roleId === role);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -89,18 +98,27 @@ const AppContent: React.FC = () => {
     }
   }, [location.pathname, screen, navigate]);
 
-  // RBAC Route Guard (`Kasir` redirect)
+  // RBAC Route Guard (Dynamic permission check)
   useEffect(() => {
-    if (role === 'kasir' && (screen === 'dashboard' || screen === 'menu' || screen === 'promotions')) {
-      navigate('/pos', { replace: true });
-      showToast('Kasir role restricted to POS & Shift screens');
+    if (!currentUser || !roles.length || screen === 'login' || screen === 'signup') return;
+    
+    const hasAccess = canAccessScreen(currentUser.roleId, screen, roles);
+    
+    if (!hasAccess) {
+      const allowedScreens = getAllowedScreens(currentUser.roleId, roles);
+      const firstAllowed = allowedScreens[0] || 'pos';
+      
+      navigate(`/${firstAllowed}`, { replace: true });
+      showToast('Anda tidak memiliki akses ke halaman ini');
     }
-  }, [role, screen, navigate]);
+  }, [currentUser, roles, screen, navigate]);
 
   const handleLogin = async (selectedRole: RoleType) => {
     try {
       await login(selectedRole);
-      navigate(selectedRole === 'owner' ? '/dashboard' : '/pos');
+      const allowedScreens = getAllowedScreens(selectedRole, roles);
+      const firstAllowed = allowedScreens.includes('dashboard') ? 'dashboard' : (allowedScreens[0] || 'pos');
+      navigate(`/${firstAllowed}`);
       showToast(`Logged into Auth Microservice as ${selectedRole.toUpperCase()}`);
     } catch (err: any) {
       showToast(`Login error: ${err.message}`);
@@ -232,7 +250,7 @@ const AppContent: React.FC = () => {
   };
 
   if (screen === 'login') {
-    return <LoginScreen onLogin={handleLogin} onGoToSignup={() => navigate('/signup')} />;
+    return <LoginScreen onLogin={handleLogin} onGoToSignup={() => navigate('/signup')} roles={roles} />;
   }
 
   if (screen === 'signup') {
@@ -244,6 +262,8 @@ const AppContent: React.FC = () => {
       <Sidebar
         screen={screen}
         role={role}
+        currentUser={currentUser}
+        roles={roles}
         tenantName={tenantName}
         onNavigate={(s) => navigate('/' + s)}
         onLogout={handleLogout}
@@ -338,9 +358,14 @@ const AppContent: React.FC = () => {
           <SettingsScreen 
             tenantConfig={tenantConfig} 
             users={users}
+            roles={roles}
+            permissions={permissions}
             onUpdate={updateTaxConfig} 
             onAddStaff={addStaff}
             onDeleteStaff={deleteStaff}
+            onCreateRole={createRole}
+            onUpdateRole={updateRole}
+            onDeleteRole={deleteRole}
           />
         )}
         {!loading && !error && screen === 'shift' && (

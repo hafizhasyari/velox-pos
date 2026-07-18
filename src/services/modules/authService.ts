@@ -46,6 +46,14 @@ export const authService = {
     return res.data;
   },
 
+  async addStaff(name: string, email: string, roleId: string): Promise<UserAccount[]> {
+    const res = await transport.post<UserAccount[]>('/auth/users', { name, email, roleId });
+    if (res.error || !res.data) {
+      throw new Error(res.error || 'Failed to add staff');
+    }
+    return res.data;
+  },
+
   async deleteUser(userId: string): Promise<UserAccount[]> {
     const res = await transport.delete<UserAccount[]>('/auth/users', { id: userId });
     if (res.error || !res.data) {
